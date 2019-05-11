@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -8,8 +10,44 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   constructor() { }
-
+  isSignIn : boolean = false;
+  userName :string  = '';
   ngOnInit() {
+    var userSession = new blockstack.UserSession()
+    if (userSession.isSignInPending()) {
+        userSession.handlePendingSignIn()
+        .then(userData => {
+            const profile = userData.profile;
+            this.isSignIn = true;
+            this.userName = userData.username;
+
+        })
+    } else 
+    
+    if (blockstack.isUserSignedIn()) {
+      const userData = blockstack.loadUserData()
+       this.isSignIn = true;
+       this.userName = userData.username;
+     } 
   }
+
+  signIn():void{
+    blockstack.redirectToSignIn();
+    var userSession = new blockstack.UserSession()
+    if (userSession.isSignInPending()) {
+        userSession.handlePendingSignIn()
+        .then(userData => {
+            const profile = userData.profile;
+            this.isSignIn = true;
+            this.userName = userData.username;
+        })
+    }
+  }
+
+  signOut():void{
+    blockstack.signUserOut(window.location.origin);
+  }
+
+
 
 }

@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/7ee92c70-c5bb-49fb-b036-0b18519d9820/resourceGroups/dMyBlog/providers/Microsoft.Web/sites/dmyblog",
+    "appService.deploySubpath": "dist\\dMyBlog"
+}
