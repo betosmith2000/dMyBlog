@@ -6,13 +6,13 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Blog<span class="sr-only">(current)</span></a>
+      <li class="nav-item ">
+        <a class="nav-link" [routerLink]="['']" >Home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" [routerLink]="['/blog']" >Blog<span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item dropdown">
+      <!--<li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Administración
         </a>
@@ -20,11 +20,11 @@
           <a class="dropdown-item" [routerLink]="['/usuarios']">Usuarios</a>
           
         </div>
-      </li>
+      </li>-->
   
     </ul>
     <form class="form-inline my-2 my-lg-0">
-        <a class="text-info" *ngIf="isSignIn" [routerLink]="['/settings']">{{userName}}</a>&nbsp;&nbsp;
+        <a class="text-info"  *ngIf="isSignIn" [routerLink]="['/settings']">{{userName}} <i class="fas fa-cog"></i> </a>&nbsp;&nbsp;
         <button class="btn btn-primary my-2 my-sm-0" type="button" (click)="signIn()" *ngIf="!isSignIn">Sign In with Blockstack</button>
         <button class="btn btn-primary my-2 my-sm-0" type="button" (click)="signOut()" *ngIf="isSignIn">Sign Out</button>
     </form>

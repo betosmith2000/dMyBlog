@@ -11,7 +11,7 @@ export class HeaderComponent implements OnInit {
 
   constructor() { }
   isSignIn : boolean = false;
-  userName :string  = '';
+  userName :string  = 'User name';
   ngOnInit() {
     var userSession = new blockstack.UserSession()
     if (userSession.isSignInPending()) {
@@ -24,8 +24,8 @@ export class HeaderComponent implements OnInit {
         })
     } else 
     
-    if (blockstack.isUserSignedIn()) {
-      const userData = blockstack.loadUserData()
+    if (userSession.isUserSignedIn()) {
+      const userData = userSession.loadUserData();
        this.isSignIn = true;
        this.userName = userData.username;
      } 

@@ -1,0 +1,38 @@
+<div class="container">
+  <h2 class="display-4">{{userName}}</h2>
+
+  <div class="card ">
+    <div class="card-body">
+      <form novalidate (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
+        <div class="form-group row">
+          <label for="blogName" class="col-sm-3 col-form-label">Blog name:</label>
+          <div class="col-sm-9">
+              <input type="text" class="form-control" id="blogName"  placeholder="Blog name" formControlName="blogName"
+                     [ngClass]="{'is-invalid':(blogName.touched || blogName.dirty) && !blogName.valid}" />
+              <span class="invalid-feedback" *ngIf="blogName.invalid && (blogName.touched || blogName.dirty) ">
+                  <span *ngIf="blogName.errors.required">Blog name is required.</span>
+                  <span *ngIf="blogName.errors.maxlength">Max blog name length 64.</span>
+              </span>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="blogDescription" class="col-sm-3 col-form-label">Blog Description:</label>
+          <div class="col-sm-9">
+              <input type="text" class="form-control" id="blogDescription" placeholder="Blog description" formControlName="blogDescription"
+                     [ngClass]="{'is-invalid':(blogDescription.touched || blogDescription.dirty) && !blogDescription.valid}" />
+              <span class="invalid-feedback" *ngIf="blogDescription.invalid && (blogDescription.touched || blogDescription.dirty) ">
+                  <span *ngIf="blogDescription.errors.required">Blog description is required.</span>
+                  <span *ngIf="blogDescription.errors.maxlength">Max blog description length 1024.</span>
+              </span>
+          </div>
+        </div>
+
+        <div class="float-md-right">
+          <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Save</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
