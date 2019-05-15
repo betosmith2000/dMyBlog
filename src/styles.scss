@@ -1,9 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@fortawesome/fontawesome-free/css/all.css";
+@import "~ngx-toastr/toastr.css";  
+
+body{
+    background-color:#FAFAFA!important;
+}
+
 .noPadding {
     padding: 0px !important;
 }
 
 .link{
     cursor: pointer;
+}
+
+.bg-my-blog{
+    background-color: #BEBBBA;
 }

@@ -7,6 +7,7 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { AdminModule } from './admin/admin.module';
 import { HomeComponent } from './home/home.component';
 import { BlogComponent } from './blog/blog.component';
+import { ToastrModule} from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { BlogComponent } from './blog/blog.component';
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
-    AdminModule
+    AdminModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

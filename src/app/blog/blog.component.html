@@ -1,10 +1,44 @@
 <div class="container">
-  <div class="card bg-dark text-white">
-    <img src="https://hips.hearstapps.com/pop.h-cdn.co/assets/17/22/1496409090-sh-20080503t161440-ti1-0000-bl-1.jpg" class="card-img header-img" alt="...">
-    <div class="card-img-overlay">
-      <h1 class="card-title">{{header?.blogName}}</h1>
+ 
+  <div class="card mb-3">
+    <img class="card-img-top header-img bg-transparent" [src]="header?.blogHeaderImage" alt="...">
+    <div class="card-body">
+      <h2 class="card-title">{{header?.blogName}}</h2>
       <p class="card-text">{{header?.blogDescription}}</p>
-      <p class="card-text">{{userName}}</p>
+      <p class="card-text text-right"><small class="text-muted">{{userName}}</small></p>
     </div>
   </div>
+
+  <div class="row">
+
+    <div class="col-lg-6 col-sm-12">
+        <div class="card post-bottom">
+            <div class="row no-gutters">
+                <div class="col-auto">
+                    <img [src]="LOGO" class="img-fluid img-post" alt="">
+                </div>
+                <div class="col">
+                    <div class="card-block px-2">
+                        <h4 class="card-title">Title</h4>
+                        <div>
+                            <a href="#" class="btn btn-link text-info">Description</a>
+                        </div>
+                        <div class="small text-muted text-right">
+                          27-03-2019 08:40 p.m.
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+      </div> 
+    </div>
+   
+   
+
+  
+
+  </div>
+
+
 </div>

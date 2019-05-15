@@ -10,10 +10,12 @@ export class BlogComponent implements OnInit {
   header :any;
   userSession :any;
   userName :string  = '';
+  image :string ="";
   readonly settingsFileName:string = '/settings.txt';
   readOptions : any = {decrypt: false};
   writeOptions : any = {encrypt:false};
 
+  private LOGO = require("../../assets/logo-header.png");
   constructor() { }
 
   ngOnInit() {
@@ -25,6 +27,7 @@ export class BlogComponent implements OnInit {
       this.userSession.getFile(this.settingsFileName,this.readOptions)
         .then((fileContents) => {
           this.header = JSON.parse(fileContents);
+          this.image = this.header.blogHeaderImage;
         });
      } 
   }

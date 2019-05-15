@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-  <a class="navbar-brand" [routerLink]="['']"><i class="fab fa-angular fa-2x"></i>dMy Blog</a>
+<nav class="navbar navbar-expand-lg  navbar-light bg-my-blog">
+  <a class="navbar-brand" [routerLink]="['']"><img [src]="LOGO" alt="dMy Blog" class="logo-header"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -24,7 +24,7 @@
   
     </ul>
     <form class="form-inline my-2 my-lg-0">
-        <a class="text-info"  *ngIf="isSignIn" [routerLink]="['/settings']">{{userName}} <i class="fas fa-cog"></i> </a>&nbsp;&nbsp;
+        <a class="text-info"   [routerLink]="['/settings']" *ngIf="isSignIn">{{userName}} <i class="fas fa-cog"></i> </a>&nbsp;&nbsp;
         <button class="btn btn-primary my-2 my-sm-0" type="button" (click)="signIn()" *ngIf="!isSignIn">Sign In with Blockstack</button>
         <button class="btn btn-primary my-2 my-sm-0" type="button" (click)="signOut()" *ngIf="isSignIn">Sign Out</button>
     </form>
