@@ -16,6 +16,12 @@ export class BlogComponent implements OnInit {
   writeOptions : any = {encrypt:false};
 
   private LOGO = require("../../assets/logo-header.png");
+
+
+  readonly postsFileName:string = '/posts.txt';
+  readonly postContentFileName:string = '/post-ID.txt';
+  readonly postImageFileName:string = '/post-img-ID.txt';
+  posts:any;
   constructor() { }
 
   ngOnInit() {
@@ -28,8 +34,29 @@ export class BlogComponent implements OnInit {
         .then((fileContents) => {
           this.header = JSON.parse(fileContents);
           this.image = this.header.blogHeaderImage;
+
+        this.userSession.getFile(this.postsFileName,this.readOptions)
+          .then((postContents) => {
+            this.posts = JSON.parse(postContents);
+            if(this.posts == null)
+              this.posts = new Array();
+          });
+
         });
      } 
+  }
+
+  getPostImage(p:any):string {
+    debugger;
+    if(p.imageFile== null || p.imageFile=='')
+      return this.LOGO;
+    else 
+    {
+      this.userSession.getFile(p.imageFile,this.readOptions)
+      .then((imageContent) => {
+        return imageContent;
+      });
+    }
   }
 
 }

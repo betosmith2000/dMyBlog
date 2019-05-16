@@ -8,23 +8,25 @@
       <p class="card-text text-right"><small class="text-muted">{{userName}}</small></p>
     </div>
   </div>
-
+  <div class=" text-right">
+    <button class="btn btn-link " (click)="showNewPost">New Post <i class="far fa-edit"></i></button>
+  </div>
   <div class="row">
 
-    <div class="col-lg-6 col-sm-12">
+    <div class="col-lg-6 col-sm-12" *ngFor="let p of posts">
         <div class="card post-bottom">
             <div class="row no-gutters">
                 <div class="col-auto">
-                    <img [src]="LOGO" class="img-fluid img-post" alt="">
+                    <img [src]="getPostImage(p)" class="img-fluid img-post" alt="">
                 </div>
                 <div class="col">
                     <div class="card-block px-2">
-                        <h4 class="card-title">Title</h4>
+                        <h4 class="card-title">{{p.title}}</h4>
                         <div>
-                            <a href="#" class="btn btn-link text-info">Description</a>
+                            <a href="#" class="btn btn-link text-info">{{p.excerpt}}</a>
                         </div>
                         <div class="small text-muted text-right">
-                          27-03-2019 08:40 p.m.
+                          {{p.date|date:'short'}}
                         </div>
                         
                         
@@ -35,10 +37,13 @@
     </div>
    
    
-
   
 
   </div>
 
 
+</div>
+
+<div >
+  <app-post></app-post>
 </div>
