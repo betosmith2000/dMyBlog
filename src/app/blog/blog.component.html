@@ -1,15 +1,15 @@
-<div class="container">
+<div class="container" *ngIf="!isNewPost">
  
   <div class="card mb-3">
     <img class="card-img-top header-img bg-transparent" [src]="header?.blogHeaderImage" alt="...">
     <div class="card-body">
-      <h2 class="card-title">{{header?.blogName}}</h2>
+      <h2 class="card-title display-4">{{header?.blogName}}</h2>
       <p class="card-text">{{header?.blogDescription}}</p>
       <p class="card-text text-right"><small class="text-muted">{{userName}}</small></p>
     </div>
   </div>
   <div class=" text-right">
-    <button class="btn btn-link " (click)="showNewPost">New Post <i class="far fa-edit"></i></button>
+    <button class="btn btn-link " (click)="showNewPost()">New Post <i class="far fa-edit"></i></button>
   </div>
   <div class="row">
 
@@ -17,16 +17,16 @@
         <div class="card post-bottom">
             <div class="row no-gutters">
                 <div class="col-auto">
-                    <img [src]="getPostImage(p)" class="img-fluid img-post" alt="">
+                    <img [src]="p.imageFileContent"  class="img-fluid img-post" alt="">
                 </div>
                 <div class="col">
                     <div class="card-block px-2">
                         <h4 class="card-title">{{p.title}}</h4>
                         <div>
-                            <a href="#" class="btn btn-link text-info">{{p.excerpt}}</a>
+                            <a href="#" class="btn btn-link text-info text-left">{{p.excerpt}}</a>
                         </div>
                         <div class="small text-muted text-right">
-                          {{p.date|date:'short'}}
+                          {{p.date|date:'madium'}}
                         </div>
                         
                         
@@ -44,6 +44,6 @@
 
 </div>
 
-<div >
-  <app-post></app-post>
+<div *ngIf="isNewPost" >
+  <app-post [Post]="post" (closed)="onClosed($event)"></app-post>
 </div>

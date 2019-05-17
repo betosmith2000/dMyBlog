@@ -1,4 +1,5 @@
 <div class="container">
+    <h2 class="display-4">New Post</h2>
     <div class="card ">
         <div class="card-body">
           <form novalidate (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
@@ -44,6 +45,7 @@
 
             
             <div class="float-md-right">
+              <button type="button" class="btn btn-outline-secondary" (click)="close()"  >Cancel</button>&nbsp;
               <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Save</button>
             </div>
     

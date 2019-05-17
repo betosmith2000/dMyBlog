@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
@@ -18,7 +18,7 @@ export class PostComponent implements OnInit {
   readOptions : any = {decrypt: false};
   writeOptions : any = {encrypt:false};
   userSession :any;
-  postImage: string;
+  postImageContent: string;
   posts:any;
   
 
@@ -26,6 +26,18 @@ export class PostComponent implements OnInit {
   postTitle:FormControl;
   postContent:FormControl;
   
+
+  private _post: string = '';
+  @Input()
+  set Post(post: any) {
+      this._post = post;
+      this.ngOnInit();
+  }
+  get Post(): any {
+      return this._post;
+  }
+
+  @Output() closed = new EventEmitter<boolean>();
 
   constructor(private toastr:ToastrService) { }
 
@@ -68,27 +80,40 @@ export class PostComponent implements OnInit {
       date: new Date().toISOString(),
       title:this.postTitle.value,
       excerpt:this.postContent.value.substring(0,100),
-      postFile: this.postContentFileName.replace('ID',hash.toString()) ,
-      imageFile:this.postImageFileName.replace('ID',hash.toString()) 
+      postFileName: this.postContentFileName.replace('ID',hash.toString()) ,
+      imageFileName:this.postImageFileName.replace('ID',hash.toString()) 
     };
+    if(this.postImageContent == null || this.postImageContent == '')
+      postData.imageFileName = null;
     this.posts.push(postData);
     
-    let str = JSON.stringify(p);
-    let strPosts = JSON.stringify(this.posts);
-    this.userSession.putFile(this.postsFileName,strPosts, this.writeOptions)
+    let postContent = JSON.stringify(p);
+    let postsArray = JSON.stringify(this.posts);
+    this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
     .then(() =>{
-      this.userSession.putFile(this.postImageFileName,this.postImage, this.writeOptions)
+      this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
       .then(() =>{
-        this.userSession.putFile(this.postContentFileName,str, this.writeOptions)
-        .then(() =>{
-          this.toastr.success("The changes have been saved!",'Success')  
-        });
+        if(postData.imageFileName != null){
+          this.userSession.putFile(postData.imageFileName,this.postImageContent, this.writeOptions)
+          .then(() =>{
+            this.toastr.success("The changes have been saved!",'Success');
+            this.closed.emit(true);  
+          });
+        }
+        else{
+          this.toastr.success("The changes have been saved!",'Success');
+          this.closed.emit(true);  
+        }
+
       });
     
     });
   }
 
-  
+  close():void{
+    this.closed.emit(false);
+  }
+
   handleInputChange(e) {
     var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
 
@@ -108,7 +133,7 @@ export class PostComponent implements OnInit {
 
   _handleReaderLoaded(e) {
     var reader = e.target;
-    this.postImage =  reader.result;
+    this.postImageContent =  reader.result;
     
   }
 

@@ -14,8 +14,9 @@ export class BlogComponent implements OnInit {
   readonly settingsFileName:string = '/settings.txt';
   readOptions : any = {decrypt: false};
   writeOptions : any = {encrypt:false};
-
+  isNewPost : boolean = false;
   private LOGO = require("../../assets/logo-header.png");
+  selectedPost: any;
 
 
   readonly postsFileName:string = '/posts.txt';
@@ -40,6 +41,10 @@ export class BlogComponent implements OnInit {
             this.posts = JSON.parse(postContents);
             if(this.posts == null)
               this.posts = new Array();
+            this.posts.forEach(p => {
+              p.imageFileContent = null;
+              this.getPostImage(p);
+            });
           });
 
         });
@@ -47,16 +52,36 @@ export class BlogComponent implements OnInit {
   }
 
   getPostImage(p:any):string {
-    debugger;
-    if(p.imageFile== null || p.imageFile=='')
+    if(p.imageFileName== null || p.imageFileName=='')
       return this.LOGO;
     else 
     {
-      this.userSession.getFile(p.imageFile,this.readOptions)
+      this.userSession.getFile(p.imageFileName,this.readOptions)
       .then((imageContent) => {
-        return imageContent;
+        p.imageFileContent= imageContent;
       });
     }
   }
+
+  showNewPost():void{
+    this.selectedPost = null;
+    this.isNewPost = true;
+  }
+  
+
+  
+  onClosed(res: boolean): void {
+
+    this.isNewPost = false;
+    if(res)
+    {
+
+    }
+    else{
+      
+    }
+}
+
+
 
 }
