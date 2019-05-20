@@ -46,7 +46,7 @@ export class PostComponent implements OnInit {
     this.initializeForm();
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
-    if (this.userSession.isUserSignedIn()) {
+    if (this.userSession.isUserSignedIn() && this.Post!=null) {
 
     
       this.userSession.getFile(this.Post.postFileName,this.readOptions)
