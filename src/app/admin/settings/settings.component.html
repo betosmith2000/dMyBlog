@@ -50,4 +50,41 @@
       </form>
     </div>
   </div>
+
+  <h2 class="display-4">Posts</h2>
+  <div class="card ">
+    <div class="card-body">
+      
+      <table class="table table-borderless table-hover" *ngIf="(posts.length > 0)">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+            <th scope="col">Date</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of posts">
+            <th scope="row">{{p.title}}</th>
+            <td>{{p.excerpt}}</td>
+            <td>{{p.date|date:'medium'}}</td>
+            <td class="text-right">
+              <div class="btn-group" role="group" aria-label="Actions">
+                <button type="button" class="btn btn-danger btn-sm" title="Delete post" (click)="deletePost(p)">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>
+                <button type="button" class="btn btn-primary btn-sm" title="Edit post" (click)="editPost(p)"><i class="far fa-edit"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="posts.length === 0">
+        <div class="align-middle">
+           <label for="btnNewPost">There is nothing yet!, try add</label> <button id="btnNewPost" type="button" (click)="showNewPost()" class="btn btn-link align-bottom">New Post <i class="far fa-file"></i></button>
+        </div>
+
+    </div>
+    </div>
+  </div>
 </div>

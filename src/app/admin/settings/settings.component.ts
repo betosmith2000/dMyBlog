@@ -13,6 +13,10 @@ import { ToastrService } from 'ngx-toastr';
 export class SettingsComponent implements OnInit {
   userName :string  = 'User name';
   readonly settingsFileName:string = '/settings.txt';
+  readonly postsFileName:string = '/posts.txt';
+  readonly postContentFileName:string = '/post-ID.txt';
+  readonly postImageFileName:string = '/post-img-ID.txt';
+
   readOptions : any = {decrypt: false};
   writeOptions : any = {encrypt:false};
   userSession :any;
@@ -21,6 +25,10 @@ export class SettingsComponent implements OnInit {
   blogName : FormControl;
   blogDescription: FormControl;
   blogHeaderImage : FormControl;
+
+  posts:Array<any> = new Array();
+
+
   constructor(private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -38,6 +46,15 @@ export class SettingsComponent implements OnInit {
             this.blogName.setValue(data.blogName);
             this.blogDescription.setValue(data.blogDescription);
             this.blogHeaderImage.setValue(data.blogHeaderImage);
+
+            
+          this.userSession.getFile(this.postsFileName,this.readOptions)
+            .then((postContents) => {
+              this.posts = JSON.parse(postContents);
+              if(this.posts == null)
+                this.posts = new Array();
+            });
+          
           }
         });
      } 
@@ -89,5 +106,34 @@ export class SettingsComponent implements OnInit {
     this.blogHeaderImage.setValue( reader.result);
     
   }
+
+  showNewPost():void{
+  //  this.selectedPost = null;
+  //  this.isNewPost = true;
+  }
+  
+  deletePost(p:any):void{
+    let idx = this.posts.findIndex(e=> e.id == p.id);
+  if(confirm('Are you sure you want to delete this post?')){
+      this.posts.splice(idx,1);
+      let postsArray = JSON.stringify(this.posts);
+
+      this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
+      .then(() =>{
+        this.toastr.success("The post was delete!",'Success')  
+        
+        this.userSession.deleteFile(p.postFileName);
+        if(p.imageFileName)
+          this.userSession.deleteFile(p.imageFileName);
+      
+      });
+    }
+  }
+
+  editPost(p:any):void{
+    alert("edit"+ JSON.stringify(p));
+  }
+
+
 
 }

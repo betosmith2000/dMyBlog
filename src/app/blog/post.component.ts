@@ -26,8 +26,9 @@ export class PostComponent implements OnInit {
   postTitle:FormControl;
   postContent:FormControl;
   
+  editingPost:any;
 
-  private _post: string = '';
+  private _post: any = null;
   @Input()
   set Post(post: any) {
       this._post = post;
@@ -37,21 +38,22 @@ export class PostComponent implements OnInit {
       return this._post;
   }
 
-  @Output() closed = new EventEmitter<boolean>();
+  @Output() closed = new EventEmitter<any>();
 
   constructor(private toastr:ToastrService) { }
 
   ngOnInit() {
     this.initializeForm();
-    this.userSession = new blockstack.UserSession()
+    const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
+    this.userSession = new blockstack.UserSession({appConfig:appConfig});
     if (this.userSession.isUserSignedIn()) {
 
     
-      this.userSession.getFile(this.postsFileName,this.readOptions)
+      this.userSession.getFile(this.Post.postFileName,this.readOptions)
         .then((fileContents) => {
-          this.posts = JSON.parse(fileContents);
-          if(this.posts == null)
-            this.posts=new Array();
+          this.editingPost = JSON.parse(fileContents);
+          this.postTitle.setValue(this.editingPost.postTitle);
+          this.postContent.setValue(this.editingPost.postContent);
         });
      } 
 
@@ -65,53 +67,69 @@ export class PostComponent implements OnInit {
       postTitle : this.postTitle,
       postContent : this.postContent
     });
+
+    //Edit 
+    if(this.Post != null){
+      
+      this.userSession.getFile(this.postsFileName,this.readOptions)
+        .then((fileContents) => {
+          this.posts = JSON.parse(fileContents);
+          if(this.posts == null)
+            this.posts=new Array();
+        });
+    }
   }
 
   save():void{
     debugger
-    if(this.posts == null)
-    this.posts=new Array();
+    if(this.editingPost == null){ //New post
+      if(this.posts == null)
+      this.posts=new Array();
 
-    
-    let p = Object.assign({},  this.form.value);
-    let hash  = Md5.hashStr(new Date().toISOString(),false);
-    var postData = {
-      id: this.posts.length + 1,
-      date: new Date().toISOString(),
-      title:this.postTitle.value,
-      excerpt:this.postContent.value.substring(0,100),
-      postFileName: this.postContentFileName.replace('ID',hash.toString()) ,
-      imageFileName:this.postImageFileName.replace('ID',hash.toString()) 
-    };
-    if(this.postImageContent == null || this.postImageContent == '')
-      postData.imageFileName = null;
-    this.posts.push(postData);
-    
-    let postContent = JSON.stringify(p);
-    let postsArray = JSON.stringify(this.posts);
-    this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
-    .then(() =>{
-      this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
+      
+      let p = Object.assign({},  this.form.value);
+      let hash  = Md5.hashStr(new Date().toISOString(),false);
+      var postData = {
+        id: this.posts.length + 1,
+        date: new Date().toISOString(),
+        title:this.postTitle.value,
+        excerpt:this.postContent.value.substring(0,100),
+        postFileName: this.postContentFileName.replace('ID',hash.toString()) ,
+        imageFileName:this.postImageFileName.replace('ID',hash.toString()) 
+      };
+      if(this.postImageContent == null || this.postImageContent == '')
+        postData.imageFileName = null;
+      this.posts.push(postData);
+      
+      let postContent = JSON.stringify(p);
+      let postsArray = JSON.stringify(this.posts);
+      this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
       .then(() =>{
-        if(postData.imageFileName != null){
-          this.userSession.putFile(postData.imageFileName,this.postImageContent, this.writeOptions)
-          .then(() =>{
+        this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
+        .then(() =>{
+          if(postData.imageFileName != null){
+            this.userSession.putFile(postData.imageFileName,this.postImageContent, this.writeOptions)
+            .then(() =>{
+              this.toastr.success("The changes have been saved!",'Success');
+              this.closed.emit(postData);  
+            });
+          }
+          else{
             this.toastr.success("The changes have been saved!",'Success');
-            this.closed.emit(true);  
-          });
-        }
-        else{
-          this.toastr.success("The changes have been saved!",'Success');
-          this.closed.emit(true);  
-        }
+            this.closed.emit(postData);  
+          }
 
+        });
+      
       });
-    
-    });
+    }
+    else{ //Edit post
+
+    }
   }
 
   close():void{
-    this.closed.emit(false);
+    this.closed.emit(null);
   }
 
   handleInputChange(e) {
@@ -121,8 +139,8 @@ export class PostComponent implements OnInit {
     var reader = new FileReader();
 
     if (!file.type.match(pattern)) {
-        alert('invalid format');
-        return;
+      this.toastr.error("Uploaded file is not a valid image. Only image files are allowed!",'Error');
+      return;
     }
 
 
