@@ -8,7 +8,6 @@ import { AdminModule } from './admin/admin.module';
 import { HomeComponent } from './home/home.component';
 import { BlogComponent } from './blog/blog.component';
 import { ToastrModule} from 'ngx-toastr';
-import { PostComponent } from './blog/post.component';
 import { ShareModule } from './share/share.module';
 
 @NgModule({
@@ -17,15 +16,14 @@ import { ShareModule } from './share/share.module';
     HeaderComponent,
     FooterComponent,
     HomeComponent,
-    BlogComponent,
-    PostComponent,
+    BlogComponent
   ],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
     ShareModule,
     AdminModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

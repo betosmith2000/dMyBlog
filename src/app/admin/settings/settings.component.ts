@@ -28,6 +28,8 @@ export class SettingsComponent implements OnInit {
 
   posts:Array<any> = new Array();
 
+  isNewPost : boolean = false;
+  selectedPost: any;
 
   constructor(private toastr: ToastrService) { }
 
@@ -131,9 +133,19 @@ export class SettingsComponent implements OnInit {
   }
 
   editPost(p:any):void{
-    alert("edit"+ JSON.stringify(p));
+    this.selectedPost = p;
+    this.isNewPost = true;
   }
 
+
+  onClosed(res: any): void {
+    this.isNewPost = false;
+    if(res)
+    {
+      this.posts.push(res);
+    }
+   
+  }
 
 
 }

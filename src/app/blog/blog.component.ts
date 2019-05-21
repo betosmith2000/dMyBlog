@@ -38,7 +38,7 @@ export class BlogComponent implements OnInit {
       this.userSession.getFile(this.settingsFileName,this.readOptions)
         .then((fileContents) => {
           this.header = JSON.parse(fileContents);
-          this.image = this.header.blogHeaderImage;
+          this.image = this.header ? this.header.blogHeaderImage: null;
 
         this.userSession.getFile(this.postsFileName,this.readOptions)
           .then((postContents) => {
@@ -105,7 +105,8 @@ export class BlogComponent implements OnInit {
   }
 
   editPost(p:any):void{
-    alert("edit"+ JSON.stringify(p));
+    this.selectedPost = p;
+    this.isNewPost = true;
   }
 
 

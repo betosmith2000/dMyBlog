@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { Md5 } from 'ts-md5/dist/md5';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-balloon';
 
 @Component({
   selector: 'app-post',
@@ -27,6 +28,8 @@ export class PostComponent implements OnInit {
   postContent:FormControl;
   
   editingPost:any;
+  
+  Editor = ClassicEditor;
 
   private _post: any = null;
   @Input()
@@ -43,12 +46,11 @@ export class PostComponent implements OnInit {
   constructor(private toastr:ToastrService) { }
 
   ngOnInit() {
-    this.initializeForm();
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
-    if (this.userSession.isUserSignedIn() && this.Post!=null) {
+    this.initializeForm();
 
-    
+    if (this.userSession.isUserSignedIn() && this.Post!=null) {
       this.userSession.getFile(this.Post.postFileName,this.readOptions)
         .then((fileContents) => {
           this.editingPost = JSON.parse(fileContents);
@@ -89,11 +91,15 @@ export class PostComponent implements OnInit {
       
       let p = Object.assign({},  this.form.value);
       let hash  = Md5.hashStr(new Date().toISOString(),false);
+
+      let div = document.createElement("div");
+      div.innerHTML = this.postContent.value.substring(0,130);
+
       var postData = {
         id: this.posts.length + 1,
         date: new Date().toISOString(),
         title:this.postTitle.value,
-        excerpt:this.postContent.value.substring(0,100),
+        excerpt:div.textContent,
         postFileName: this.postContentFileName.replace('ID',hash.toString()) ,
         imageFileName:this.postImageFileName.replace('ID',hash.toString()) 
       };

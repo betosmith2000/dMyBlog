@@ -4,7 +4,9 @@ import { SettingsComponent } from './settings/settings.component';
 import { ShareModule } from '../share/share.module';
 
 @NgModule({
-  declarations: [SettingsComponent],
+  declarations: [
+    SettingsComponent
+    ],
   imports: [
     CommonModule,
     ShareModule

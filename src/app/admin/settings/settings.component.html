@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!isNewPost">
   <h2 class="display-4">{{userName}}</h2>
 
   <div class="card ">
@@ -67,7 +67,7 @@
         <tbody>
           <tr *ngFor="let p of posts">
             <th scope="row">{{p.title}}</th>
-            <td>{{p.excerpt}}</td>
+            <td >p.excerpt</td>
             <td>{{p.date|date:'medium'}}</td>
             <td class="text-right">
               <div class="btn-group" role="group" aria-label="Actions">
@@ -87,4 +87,9 @@
     </div>
     </div>
   </div>
+</div>
+
+
+<div *ngIf="isNewPost" >
+  <app-post [Post]="selectedPost" (closed)="onClosed($event)"></app-post>
 </div>
