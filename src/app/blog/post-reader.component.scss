@@ -1,0 +1,25 @@
+
+.img-post{
+    min-width: 150px;
+    min-height: 150px;
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.header{
+    position: relative;
+    min-height: 150px;
+}
+
+.header-content {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 15px;
+  }
+  .header-content-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-left: 15px;
+  }

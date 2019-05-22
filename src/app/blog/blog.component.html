@@ -1,6 +1,6 @@
-<div class="container" *ngIf="!isNewPost">
+<div class="container" *ngIf="!isNewPost && !isViewingPost">
  
-  <div class="card mb-3">
+  <div class="card mb-3 shadow-sm">
     <img class="card-img-top header-img bg-transparent" [src]="header?.blogHeaderImage" alt="...">
     <div class="card-body">
       <h2 class="card-title display-4">{{header?.blogName}}</h2>
@@ -13,37 +13,73 @@
   </div>
   <div class="row">
 
-    <div class="col-lg-6 col-sm-12" *ngFor="let p of posts">
-        <div class="card post-bottom">
-            <div class="row no-gutters">
-                <div class="col-auto">
-                    <img [src]="p.imageFileContent"  class="img-fluid img-post" alt="">
+  <!-- <div class="col-lg-6 col-sm-12" *ngFor="let p of posts">
+      <div class="card post-bottom shadow">
+          <div class="row no-gutters">
+              <div class="col-auto">
+                  <img [src]="p.imageFileContent"  class="img-fluid img-post" alt="">
+              </div>
+              <div class="col">
+                  <div class="card-block px-2 header" >
+                      <h4 class="card-title text-capitalize truncate" >{{p.title}}</h4>
+                      <div>
+                          <button type="button"  class="btn btn-link text-secondary text-left text-capitalize btn-sm" (click)="viewPost(p)" >{{p.excerpt}} . . .</button>
+                      </div>
+                      <div class="header-content">
+                        <div class="row">
+                          <div class="col-6">
+                              <div class="small text-muted ml-2 mt-3">
+                                {{p.date|date:'medium'}}  
+                              </div>
+                          </div>
+                          <div class="col-6" >
+                            <div class="btn-group mb-2 mr-2 float-right" role="group" aria-label="Basic example" *ngIf="isAdmin">
+                                <button type="button" class="btn btn-danger btn-sm " title="Delete post" (click)="deletePost(p)">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>
+                                <button type="button" class="btn btn-primary btn-sm" title="Edit post" (click)="editPost(p)"><i class="far fa-edit"></i></button>
+                              </div>
+                          </div>
+                        </div>
+
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div> 
+    </div> -->
+   
+    <div class="col-lg-6 col-sm-12 mb-5" *ngFor="let p of posts">
+        <div class="card text-white manita" (click)="viewPost(p)" >
+            <img [src]="p.imageFileContent" class="card-img" alt="...">
+            <div class="card-img-overlay">
+              <div class="card-title  bg-dark transparency p-3" >
+                  <h5 class="card-title " >{{p.title}}</h5>
+              </div>
+              
+              
+            </div>
+            <div class="h-100 d-flex flex-column justify-content-end mx-3 card-img-overlay">
+              <div class="row bg-dark transparency   ">
+                <div class="col">
+                    <label class="small float-left" >By: {{p.author}}</label>
                 </div>
                 <div class="col">
-                    <div class="card-block px-2">
-                        <h4 class="card-title">{{p.title}}</h4>
-                        <div>
-                            <a href="#" class="btn btn-link text-secondary text-left" >{{p.excerpt}}</a>
-                        </div>
-                        <div class="small text-muted text-right" *ngIf="isAdmin">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                              <button type="button" class="btn btn-danger btn-sm" title="Delete post" (click)="deletePost(p)">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>
-                              <button type="button" class="btn btn-primary btn-sm" title="Edit post" (click)="editPost(p)"><i class="far fa-edit"></i></button>
-                            </div>
-                          
-                        </div>
-                        <div class="small text-muted text-right">
-                          {{p.date|date:'medium'}}  
-                        </div>
-                        
-                        
-                    </div>
+                    <label class="small float-right" >{{p.date|date:'medium'}}</label>
                 </div>
+              </div>
             </div>
-      </div> 
+            <div class="h-100 d-flex flex-column justify-content-end card-img-overlay">
+              <div class="row">
+                <div class="col-lg-12" style="margin-bottom:5px; " >
+                  <div class="btn-group mb-4 mr-1 float-right" role="group" aria-label="Basic example" *ngIf="isAdmin">
+                    
+                    <button type="button" class="btn btn-danger btn-sm " title="Delete post" (click)="deletePost(p)">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>
+                    <button type="button" class="btn btn-primary btn-sm" title="Edit post" (click)="editPost(p)"><i class="far fa-edit"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
-   
-   
   
 
   </div>
@@ -53,4 +89,8 @@
 
 <div *ngIf="isNewPost" >
   <app-post [Post]="selectedPost" (closed)="onClosed($event)"></app-post>
+</div>
+
+<div *ngIf="isViewingPost" >
+  <app-post-reader [Post]="selectedPost" (closed)="onClosedViewer($event)"></app-post-reader>
 </div>

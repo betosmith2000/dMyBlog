@@ -15,8 +15,9 @@ export class BlogComponent implements OnInit {
   readonly settingsFileName:string = '/settings.txt';
   readOptions : any = {decrypt: false};
   writeOptions : any = {encrypt:false};
-  isNewPost : boolean = false;
   isAdmin : boolean = false;
+  isNewPost : boolean = false;
+  isViewingPost : boolean = false;
   private LOGO = require("../../assets/logo-header.png");
   selectedPost: any;
 
@@ -72,6 +73,10 @@ export class BlogComponent implements OnInit {
     this.isNewPost = true;
   }
   
+  viewPost(p:any){
+    this.selectedPost = p;
+    this.isViewingPost =true;
+  }
 
   
   onClosed(res: any): void {
@@ -85,6 +90,11 @@ export class BlogComponent implements OnInit {
     }
    
   }
+
+  onClosedViewer(res: any): void {
+    this.isViewingPost = false;
+  }
+
 
   deletePost(p:any):void{
     let idx = this.posts.findIndex(e=> e.id == p.id);

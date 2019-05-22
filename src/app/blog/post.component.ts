@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { Md5 } from 'ts-md5/dist/md5';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-balloon';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-inline';
 
 @Component({
   selector: 'app-post',
@@ -21,7 +21,7 @@ export class PostComponent implements OnInit {
   userSession :any;
   postImageContent: string;
   posts:any;
-  
+  userName :string;  
 
   form :FormGroup;
   postTitle:FormControl;
@@ -35,7 +35,6 @@ export class PostComponent implements OnInit {
   @Input()
   set Post(post: any) {
       this._post = post;
-      this.ngOnInit();
   }
   get Post(): any {
       return this._post;
@@ -49,8 +48,11 @@ export class PostComponent implements OnInit {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     this.initializeForm();
-
+    const userData = this.userSession.loadUserData();
+    this.userName = userData.username;
     if (this.userSession.isUserSignedIn() && this.Post!=null) {
+     
+
       this.userSession.getFile(this.Post.postFileName,this.readOptions)
         .then((fileContents) => {
           this.editingPost = JSON.parse(fileContents);
@@ -71,19 +73,16 @@ export class PostComponent implements OnInit {
     });
 
     //Edit 
-    if(this.Post != null){
       
-      this.userSession.getFile(this.postsFileName,this.readOptions)
-        .then((fileContents) => {
-          this.posts = JSON.parse(fileContents);
-          if(this.posts == null)
-            this.posts=new Array();
-        });
-    }
+    this.userSession.getFile(this.postsFileName,this.readOptions)
+      .then((fileContents) => {
+        this.posts = JSON.parse(fileContents);
+        if(this.posts == null)
+          this.posts=new Array();
+      });
   }
 
   save():void{
-    debugger
     if(this.editingPost == null){ //New post
       if(this.posts == null)
       this.posts=new Array();
@@ -100,6 +99,7 @@ export class PostComponent implements OnInit {
         date: new Date().toISOString(),
         title:this.postTitle.value,
         excerpt:div.textContent,
+        author: this.userName,
         postFileName: this.postContentFileName.replace('ID',hash.toString()) ,
         imageFileName:this.postImageFileName.replace('ID',hash.toString()) 
       };

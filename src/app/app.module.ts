@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { BlogComponent } from './blog/blog.component';
 import { ToastrModule} from 'ngx-toastr';
 import { ShareModule } from './share/share.module';
+import { PostReaderComponent } from './blog/post-reader.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ShareModule } from './share/share.module';
     HeaderComponent,
     FooterComponent,
     HomeComponent,
-    BlogComponent
+    BlogComponent,
+    PostReaderComponent
   ],
   imports: [
     BrowserAnimationsModule,

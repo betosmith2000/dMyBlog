@@ -1,7 +1,7 @@
 <div class="container" *ngIf="!isNewPost">
   <h2 class="display-4">{{userName}}</h2>
 
-  <div class="card ">
+  <div class="card shadow-sm">
     <div class="card-body">
       <form novalidate (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
         <div class="form-group row">
@@ -52,24 +52,24 @@
   </div>
 
   <h2 class="display-4">Posts</h2>
-  <div class="card ">
+  <div class="card shadow-sm">
     <div class="card-body">
       
       <table class="table table-borderless table-hover" *ngIf="(posts.length > 0)">
         <thead>
           <tr>
             <th scope="col">Title</th>
-            <th scope="col">Content</th>
+            <!-- <th scope="col">Content</th> -->
             <th scope="col">Date</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let p of posts">
-            <th scope="row">{{p.title}}</th>
-            <td >p.excerpt</td>
-            <td>{{p.date|date:'medium'}}</td>
-            <td class="text-right">
+            <th class="small" scope="row">{{p.title}}</th>
+            <!-- <td col="2" >{{p.excerpt}}</td> -->
+            <td class="small">{{p.date|date:'medium'}}</td>
+            <td class="float-right small">
               <div class="btn-group" role="group" aria-label="Actions">
                 <button type="button" class="btn btn-danger btn-sm" title="Delete post" (click)="deletePost(p)">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>
                 <button type="button" class="btn btn-primary btn-sm" title="Edit post" (click)="editPost(p)"><i class="far fa-edit"></i></button>

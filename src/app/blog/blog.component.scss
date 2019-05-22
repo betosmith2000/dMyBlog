@@ -13,3 +13,32 @@
     max-width: 200px;
     max-height: 200px;
 }
+
+
+
+.header{
+    position: relative;
+    min-height: 200px;
+}
+
+.header-content {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    right: 0;
+  }
+
+  .truncate {
+    width: 650px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .transparency{
+      opacity: .85;
+  }
+
+.card-img-overlay{
+    padding: 0!important;
+}
