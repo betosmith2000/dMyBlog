@@ -56,7 +56,7 @@
             <h6>Start to write great content below!</h6>
             <div class="form-group row">
               <div class="col-sm-12">
-                <ckeditor [editor]="Editor" formControlName="postContent"  placeholder="Type the content here!" ></ckeditor>
+                <ckeditor [editor]="Editor" formControlName="postContent"   [config]="ckconfig" ></ckeditor>
               </div>
             </div>
 

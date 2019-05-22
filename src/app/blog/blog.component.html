@@ -1,7 +1,7 @@
 <div class="container" *ngIf="!isNewPost && !isViewingPost">
  
   <div class="card mb-3 shadow-sm">
-    <img class="card-img-top header-img bg-transparent" [src]="header?.blogHeaderImage" alt="...">
+    <img class="card-img-top header-img bg-transparent" [src]="header?.blogHeaderImage" alt="..." *ngIf="header?.blogHeaderImage">
     <div class="card-body">
       <h2 class="card-title display-4">{{header?.blogName}}</h2>
       <p class="card-text">{{header?.blogDescription}}</p>
@@ -49,7 +49,7 @@
    
     <div class="col-lg-6 col-sm-12 mb-5" *ngFor="let p of posts">
         <div class="card text-white manita" (click)="viewPost(p)" >
-            <img [src]="p.imageFileContent" class="card-img" alt="...">
+            <img [src]="p.imageFileContent" class="card-img" alt="..." *ngIf="p.imageFileContent">
             <div class="card-img-overlay">
               <div class="card-title  bg-dark transparency p-3" >
                   <h5 class="card-title " >{{p.title}}</h5>

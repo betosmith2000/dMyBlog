@@ -20,7 +20,7 @@ export class BlogComponent implements OnInit {
   isViewingPost : boolean = false;
   private LOGO = require("../../assets/logo-header.png");
   selectedPost: any;
-
+  
 
   readonly postsFileName:string = '/posts.txt';
   readonly postContentFileName:string = '/post-ID.txt';
@@ -31,17 +31,18 @@ export class BlogComponent implements OnInit {
   ngOnInit() {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
+    const userData = this.userSession.loadUserData();
+    this.userName = userData.username;
     if (this.userSession.isUserSignedIn()) {
-      const userData = this.userSession.loadUserData();
-      this.userName = userData.username;
+      
       this.isAdmin = true;
     
       this.userSession.getFile(this.settingsFileName,this.readOptions)
         .then((fileContents) => {
           this.header = JSON.parse(fileContents);
           this.image = this.header ? this.header.blogHeaderImage: null;
-
-        this.userSession.getFile(this.postsFileName,this.readOptions)
+          
+          this.userSession.getFile(this.postsFileName,this.readOptions)
           .then((postContents) => {
             this.posts = JSON.parse(postContents);
             if(this.posts == null)
