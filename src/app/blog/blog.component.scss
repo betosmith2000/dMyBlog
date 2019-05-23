@@ -14,6 +14,20 @@
     max-height: 200px;
 }
 
+.card-height-res{
+    max-height: 400px;
+    min-height: 400px;
+   
+    background-color: white;
+}
+.card-height-res img{
+    text-align: center;
+    vertical-align: middle;
+    max-height: 480px;
+    margin: auto;
+    
+}
+
 
 
 .header{
@@ -38,7 +52,9 @@
   .transparency{
       opacity: .85;
   }
-
+  .transparency-header{
+    opacity: .55;
+  }
 .card-img-overlay{
     padding: 0!important;
 }

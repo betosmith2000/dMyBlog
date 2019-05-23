@@ -81,15 +81,21 @@ export class BlogComponent implements OnInit {
 
   
   onClosed(res: any): void {
-
     this.isNewPost = false;
     if(res)
-    {
-      res.imageFileContent = null;
-      this.getPostImage(res);
-      this.posts.push(res);
+    {    
+      let postResume = this.posts.filter(e => e.postFileName == res.postFileName );
+      if(postResume.length==1){ //edit
+        postResume = postResume[0];
+        postResume.excerpt=res.excerpt;
+        postResume.title = res.title;
+        this.getPostImage(postResume);
+      }else{
+        res.imageFileContent = null;
+        this.getPostImage(res);
+        this.posts.push(res);
+      }
     }
-   
   }
 
   onClosedViewer(res: any): void {
@@ -97,9 +103,11 @@ export class BlogComponent implements OnInit {
   }
 
 
-  deletePost(p:any):void{
-    let idx = this.posts.findIndex(e=> e.id == p.id);
-  if(confirm('Are you sure you want to delete this post?')){
+  deletePost(event:Event, p:any):void{
+    event.stopPropagation();
+    if(confirm('Are you sure you want to delete this post?')){
+      let idx = this.posts.findIndex(e=> e.id == p.id);
+
       this.posts.splice(idx,1);
       let postsArray = JSON.stringify(this.posts);
 
@@ -113,6 +121,7 @@ export class BlogComponent implements OnInit {
       
       });
     }
+    
   }
 
   editPost(p:any):void{
