@@ -5,6 +5,7 @@ import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { Md5 } from 'ts-md5/dist/md5';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-inline';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
+import { CustomUploaderAdapter } from './CKEditor/customUploaderAdapter';
 
 
 
