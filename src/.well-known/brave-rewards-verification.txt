@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: dmyblog.co
+Token: 3f954cd4b600cc15b2179924e4f73d203e4cac7a3f65ffacd77d2ca3497a1f8f

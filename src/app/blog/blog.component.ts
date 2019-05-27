@@ -13,7 +13,7 @@ export class BlogComponent implements OnInit {
   userName :string  = '';
   image :string ="";
   readonly settingsFileName:string = '/settings.txt';
-  readOptions : any = {decrypt: false};
+  readOptions : any = {decrypt: false, username:null};
   writeOptions : any = {encrypt:false};
   isAdmin : boolean = false;
   isNewPost : boolean = false;
