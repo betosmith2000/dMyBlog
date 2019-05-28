@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
   constructor() { }
   isSignIn : boolean = false;
   userName :string  = 'User name';
-  private LOGO = require("../../../assets/logo-header.png");
+  LOGO = require("../../../assets/logo-header.png");
 
   ngOnInit() {
     var userSession = new blockstack.UserSession()

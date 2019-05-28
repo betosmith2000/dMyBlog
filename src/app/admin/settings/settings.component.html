@@ -1,4 +1,4 @@
-<div class="container" *ngIf="!isNewPost">
+<div class="container top-padding" *ngIf="!isNewPost">
   <h2 class="display-4">{{userName}}</h2>
 
   <div class="card shadow-sm">
@@ -50,10 +50,14 @@
       </form>
     </div>
   </div>
-
+  
   <h2 class="display-4">Posts</h2>
+    
+  
+  
   <div class="card shadow-sm">
     <div class="card-body">
+        <button  type="button" (click)="showNewPost()" class="btn btn-link float-right" *ngIf="posts.length > 0">New Post <i class="far fa-file"></i></button>
       
       <table class="table table-borderless table-hover" *ngIf="(posts.length > 0)">
         <thead>

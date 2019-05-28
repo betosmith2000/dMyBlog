@@ -110,8 +110,8 @@ export class SettingsComponent implements OnInit {
   }
 
   showNewPost():void{
-  //  this.selectedPost = null;
-  //  this.isNewPost = true;
+    this.selectedPost = null;
+    this.isNewPost = true;
   }
   
   deletePost(p:any):void{
