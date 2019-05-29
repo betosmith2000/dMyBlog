@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-blog',
@@ -13,7 +14,7 @@ export class BlogComponent implements OnInit {
   userName :string  = '';
   image :string ="";
   readonly settingsFileName:string = '/settings.txt';
-  readOptions : any = {decrypt: false, username:null};
+  readOptions : any = {decrypt: false, username: null};
   writeOptions : any = {encrypt:false};
   isAdmin : boolean = false;
   isNewPost : boolean = false;
@@ -25,18 +26,27 @@ export class BlogComponent implements OnInit {
   readonly postsFileName:string = '/posts.txt';
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
-  posts:any;
-  constructor(private toastr: ToastrService) { }
+  posts:any = new Array();
+  constructor(private toastr: ToastrService, private route:ActivatedRoute) { }
 
   ngOnInit() {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
-    const userData = this.userSession.loadUserData();
-    this.userName = userData.username;
-    if (this.userSession.isUserSignedIn()) {
+    this.route.paramMap.subscribe(params => {
+      let userBlog = params.get("userBlog");
       
-      this.isAdmin = true;
-    
+      const userData = this.userSession.loadUserData();
+     
+      this.userName = userBlog;
+      if(this.userName==null || this.userName.trim() ==''){
+        this.userName = userData.username;
+      }
+      if(this.userSession.isUserSignedIn() && this.userName == userData.username)
+        this.isAdmin = true;
+      else 
+        this.isAdmin = false;
+      this.readOptions.username = this.userName;
+      
       this.userSession.getFile(this.settingsFileName,this.readOptions)
         .then((fileContents) => {
           this.header = JSON.parse(fileContents);
@@ -51,10 +61,18 @@ export class BlogComponent implements OnInit {
               p.imageFileContent = null;
               this.getPostImage(p);
             });
-          });
+          })
+          .catch((error) => {
+            console.log('Error reading post collection!')
+          });;
 
-        });
-     } 
+        })
+        .catch((error) => {
+        console.log('Error reading settings!')
+      });
+    });
+
+    
   }
 
   getPostImage(p:any):void {

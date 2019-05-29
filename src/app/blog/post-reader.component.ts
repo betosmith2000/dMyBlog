@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class PostReaderComponent implements OnInit {
   private LOGO = require("../../assets/logo-header.png");
 
   userSession : any;
-  readOptions : any = {decrypt: false};
+  readOptions : any = {decrypt: false, username: null};
   viewingPost : any;
   private _post: any = null;
   @Input()
@@ -31,22 +32,36 @@ export class PostReaderComponent implements OnInit {
 
   @Output() closed = new EventEmitter<any>();
 
-  constructor() { }
+
+  userName :string  = '';
+  postId :string = '';
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
-    if (this.userSession.isUserSignedIn() && this.Post!=null) {
+    this.route.paramMap.subscribe(params => {
+      this.userName = params.get("userBlog");
+      this.postId = params.get("postId");
+
+      if(this.userName==null || this.userName.trim() ==''){
+        const userData = this.userSession.loadUserData();
+        this.userName = userData.username;
+      }
+      this.readOptions.username = this.userName;
       this.userSession.getFile(this.Post.postFileName,this.readOptions)
-        .then((fileContents) => {
-          this.viewingPost = JSON.parse(fileContents);
-          this.title = this.viewingPost.postTitle;
-          this.content = this.viewingPost.postContent;
-          this.author = this.Post.author;
-          this.date = this.Post.date;
-          this.getPostImage(this.Post);
-        });
-     } 
+      .then((fileContents) => {
+        this.viewingPost = JSON.parse(fileContents);
+        this.title = this.viewingPost.postTitle;
+        this.content = this.viewingPost.postContent;
+        this.author = this.Post.author;
+        this.date = this.Post.date;
+        this.getPostImage(this.Post);
+      });
+    });
+
+   
   }
 
   close():void{

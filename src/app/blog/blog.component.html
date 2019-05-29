@@ -99,6 +99,12 @@
             </div>
           </div>
     </div>
+
+    
+    <div class="col" *ngIf="posts?.length==0">
+      <p class="alert alert-info" role="alert">User <span class="font-weight-bold" >{{userName}}</span>  has not posted yet!</p>
+    </div>
+    
   
 
   </div>

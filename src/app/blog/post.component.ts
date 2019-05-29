@@ -156,7 +156,6 @@ export class PostComponent implements OnInit {
       });
     }
     else{ //Edit post
-      debugger;
       let p = Object.assign({},  this.form.value);
       
       let postResume = this.posts.filter(e => e.postFileName == this._post.postFileName );
