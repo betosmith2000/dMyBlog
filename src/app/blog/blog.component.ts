@@ -34,17 +34,24 @@ export class BlogComponent implements OnInit {
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     this.route.paramMap.subscribe(params => {
       let userBlog = params.get("userBlog");
-      
-      const userData = this.userSession.loadUserData();
-     
       this.userName = userBlog;
-      if(this.userName==null || this.userName.trim() ==''){
-        this.userName = userData.username;
-      }
-      if(this.userSession.isUserSignedIn() && this.userName == userData.username)
-        this.isAdmin = true;
-      else 
+      if(!this.userSession.isUserSignedIn())
+      {
+        
         this.isAdmin = false;
+      }
+      else{
+        const userData = this.userSession.loadUserData();
+        if(this.userName==null || this.userName.trim() ==''){
+          this.userName = userData.username;
+        }
+        if(this.userSession.isUserSignedIn() && this.userName == userData.username)
+          this.isAdmin = true;
+        else 
+          this.isAdmin = false;
+        
+      }
+      
       this.readOptions.username = this.userName;
       
       this.userSession.getFile(this.settingsFileName,this.readOptions)
