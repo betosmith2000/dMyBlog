@@ -18,6 +18,7 @@ export class PostReaderComponent implements OnInit {
   author:string;
   date:Date;
   private LOGO = require("../../assets/logo-header.png");
+  readonly postsFileName:string = '/posts.txt';
 
   userSession : any;
   readOptions : any = {decrypt: false, username: null};
@@ -36,10 +37,11 @@ export class PostReaderComponent implements OnInit {
 
   userName :string  = '';
   postId :string = '';
-
+  posts:any;
   constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
+    debugger
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     this.route.paramMap.subscribe(params => {
@@ -53,26 +55,49 @@ export class PostReaderComponent implements OnInit {
         this.userName = userData.username;
       }
       this.readOptions.username = this.userName;
-      this.userSession.getFile(this.Post.postFileName,this.readOptions)
-      .then((fileContents) => {
-        this.viewingPost = JSON.parse(fileContents);
-        this.title = this.viewingPost.postTitle;
-        this.content = this.viewingPost.postContent;
-        this.author = this.Post.author;
-        this.date = this.Post.date;
-        this.getPostImage(this.Post);
-        this.ngxService.stop();
-
-      })
-      .catch((error)=>{
-        console.log('Error reading post');
-        this.ngxService.stop();        
-      });
+      if(this.Post==null){
+        this.userSession.getFile(this.postsFileName,this.readOptions)
+        .then((fileContents) => {
+          this.posts = JSON.parse(fileContents);
+          if(this.posts == null)
+            this.posts=new Array();
+          let post = this.posts.filter(e=> e.id== this.postId);
+          if(post.length > 0)
+            this._post = post[0];
+          this.readPost();
+        })
+        .catch((error)=>{
+          console.log('Error loading post collection');
+          this.ngxService.stop();
+          
+        });
+  
+      }
+      else{
+        this.readPost()
+      }
     });
 
    
   }
 
+  readPost():void{
+    this.userSession.getFile(this.Post.postFileName,this.readOptions)
+    .then((fileContents) => {
+      this.viewingPost = JSON.parse(fileContents);
+      this.title = this.viewingPost.postTitle;
+      this.content = this.viewingPost.postContent;
+      this.author = this.Post.author;
+      this.date = this.Post.date;
+      this.getPostImage(this.Post);
+      this.ngxService.stop();
+
+    })
+    .catch((error)=>{
+      console.log('Error reading post');
+      this.ngxService.stop();        
+    });
+  }
   close():void{
     this.closed.emit(null);
   }

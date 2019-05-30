@@ -123,7 +123,7 @@ export class PostComponent implements OnInit {
       div.innerHTML = this.postContent.value.substring(0,130);
 
       var postData = {
-       // id: this.posts.length + 1,
+        id: hash.toString(),
         date: new Date().toISOString(),
         title:this.postTitle.value,
         excerpt:div.textContent,
