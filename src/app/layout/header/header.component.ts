@@ -13,33 +13,34 @@ export class HeaderComponent implements OnInit {
   isSignIn : boolean = false;
   userName :string  = 'User name';
   LOGO = require("../../../assets/logo-header.png");
+  userSession :any;
 
   ngOnInit() {
-    var userSession = new blockstack.UserSession()
-    if (userSession.isSignInPending()) {
-        userSession.handlePendingSignIn()
+    const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
+    this.userSession = new blockstack.UserSession({appConfig:appConfig});
+    if (this.userSession.isSignInPending()) {
+        this.userSession.handlePendingSignIn()
         .then(userData => {
-            const profile = userData.profile;
+            //const profile = userData.profile;
             this.isSignIn = true;
             this.userName = userData.username;
 
         })
     } else 
     
-    if (userSession.isUserSignedIn()) {
-      const userData = userSession.loadUserData();
+    if (this.userSession.isUserSignedIn()) {
+      const userData = this.userSession.loadUserData();
        this.isSignIn = true;
        this.userName = userData.username;
      } 
   }
 
   signIn():void{
-    blockstack.redirectToSignIn();
-    var userSession = new blockstack.UserSession()
-    if (userSession.isSignInPending()) {
-        userSession.handlePendingSignIn()
+    this.userSession.redirectToSignIn();
+    if (this.userSession.isSignInPending()) {
+        this.userSession.handlePendingSignIn()
         .then(userData => {
-            const profile = userData.profile;
+            //const profile = userData.profile;
             this.isSignIn = true;
             this.userName = userData.username;
         })
@@ -47,7 +48,7 @@ export class HeaderComponent implements OnInit {
   }
 
   signOut():void{
-    blockstack.signUserOut(window.location.origin);
+    this.userSession.signUserOut(window.location.origin);
   }
 
 
