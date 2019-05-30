@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { ActivatedRoute } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -36,12 +37,14 @@ export class PostReaderComponent implements OnInit {
   userName :string  = '';
   postId :string = '';
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     this.route.paramMap.subscribe(params => {
+      this.ngxService.start();
+
       this.userName = params.get("userBlog");
       this.postId = params.get("postId");
 
@@ -58,6 +61,12 @@ export class PostReaderComponent implements OnInit {
         this.author = this.Post.author;
         this.date = this.Post.date;
         this.getPostImage(this.Post);
+        this.ngxService.stop();
+
+      })
+      .catch((error)=>{
+        console.log('Error reading post');
+        this.ngxService.stop();        
       });
     });
 

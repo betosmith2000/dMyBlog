@@ -6,6 +6,7 @@ import { Md5 } from 'ts-md5/dist/md5';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-inline';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { CustomUploaderAdapter } from './CKEditor/customUploaderAdapter';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 
@@ -56,18 +57,8 @@ export class PostComponent implements OnInit {
     };
   }
 
-  constructor(private toastr:ToastrService) { 
-  //   this.Editor.create( 
-  //     document.querySelector( '#editor' ), {
-  //     extraPlugins: [ CustomUploadAdapterPlugin ]
-  //  } 
-  //   ).
-  //   then(editor => {
-  //     CKEditorInspector.attach( editor );
-  //   })
-  //   .catch( error => {
-  //       console.log( error );
-  //   } );
+  constructor(private toastr:ToastrService, private ngxService: NgxUiLoaderService) { 
+  
   }
 
   ngOnInit() {
@@ -77,13 +68,18 @@ export class PostComponent implements OnInit {
     const userData = this.userSession.loadUserData();
     this.userName = userData.username;
     if (this.userSession.isUserSignedIn() && this.Post!=null) {
-     
+     this.ngxService.start();
 
       this.userSession.getFile(this.Post.postFileName,this.readOptions)
         .then((fileContents) => {
           this.editingPost = JSON.parse(fileContents);
           this.postTitle.setValue(this.editingPost.postTitle);
           this.postContent.setValue(this.editingPost.postContent);
+          this.ngxService.stop();
+        })
+        .catch((error) => {
+          console.log('Error loading post!');
+          this.ngxService.stop();
         });
      } 
 
@@ -99,16 +95,22 @@ export class PostComponent implements OnInit {
     });
 
     //Edit 
-      
+      this.ngxService.start();
     this.userSession.getFile(this.postsFileName,this.readOptions)
       .then((fileContents) => {
         this.posts = JSON.parse(fileContents);
         if(this.posts == null)
           this.posts=new Array();
+          this.ngxService.stop();
+      })
+      .catch((error)=>{
+        console.log('Error loading post collection');
       });
+
   }
 
   save():void{
+    this.ngxService.start();
     if(this.editingPost == null){ //New post
       if(this.posts == null)
       this.posts=new Array();
@@ -143,16 +145,24 @@ export class PostComponent implements OnInit {
             this.userSession.putFile(postData.imageFileName,this.postImageContent, this.writeOptions)
             .then(() =>{
               this.toastr.success("The changes have been saved!",'Success');
+              this.ngxService.stop();
               this.closed.emit(postData);  
+
             });
           }
           else{
             this.toastr.success("The changes have been saved!",'Success');
+            this.ngxService.stop();
+
             this.closed.emit(postData);  
           }
 
         });
       
+      })
+      .catch((error)=>{
+        console.log('Error saving changes');
+        this.ngxService.stop();
       });
     }
     else{ //Edit post
@@ -177,15 +187,21 @@ export class PostComponent implements OnInit {
           this.userSession.putFile(this._post.imageFileName,this.postImageContent, this.writeOptions)
           .then(() =>{
             this.toastr.success("The changes have been saved!",'Success');
+            this.ngxService.stop();
             this.closed.emit(postResume);  
           });
         }
         else{
           this.toastr.success("The changes have been saved!",'Success');
+          this.ngxService.stop();
           this.closed.emit(postResume);  
         }
 
       });
+    })
+    .catch((error)=>{
+      console.log('Error updating post');
+      this.ngxService.stop();
     });
     }
   }

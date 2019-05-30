@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-blog',
@@ -27,12 +28,14 @@ export class BlogComponent implements OnInit {
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
   posts:any = new Array();
-  constructor(private toastr: ToastrService, private route:ActivatedRoute) { }
+  constructor(private toastr: ToastrService, private route:ActivatedRoute, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     this.route.paramMap.subscribe(params => {
+      this.ngxService.start(); 
+
       let userBlog = params.get("userBlog");
       this.userName = userBlog;
       if(!this.userSession.isUserSignedIn())
@@ -68,14 +71,18 @@ export class BlogComponent implements OnInit {
               p.imageFileContent = null;
               this.getPostImage(p);
             });
+            this.ngxService.stop();
+
           })
           .catch((error) => {
             console.log('Error reading post collection!')
+            this.ngxService.stop();
           });;
 
         })
         .catch((error) => {
-        console.log('Error reading settings!')
+          console.log('Error reading settings!')
+          this.ngxService.stop();
       });
     });
 
@@ -129,8 +136,11 @@ export class BlogComponent implements OnInit {
 
 
   deletePost(event:Event, p:any):void{
-    event.stopPropagation();
+    event.stopPropagation();    
+
     if(confirm('Are you sure you want to delete this post?')){
+      this.ngxService.start(); 
+
       let idx = this.posts.findIndex(e=> e.id == p.id);
 
       this.posts.splice(idx,1);
@@ -138,12 +148,38 @@ export class BlogComponent implements OnInit {
 
       this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
       .then(() =>{
-        this.toastr.success("The post was delete!",'Success')  
+        
+        //TODO:Uncomment when delete feature avaliable
+        //this.userSession.deleteFile(p.postFileName);
+        //if(p.imageFileName)
+        //  this.userSession.deleteFile(p.imageFileName);
 
-        this.userSession.deleteFile(p.postFileName);
-        if(p.imageFileName)
-          this.userSession.deleteFile(p.imageFileName);
-      
+        //TODO: Comment when delete feature avaliable
+        this.userSession.putFile(p.postFileName,  'Deleted!', this.writeOptions)
+        .then(() =>{
+          if(p.imageFileName != null && p.imageFileName != ''){
+            this.userSession.putFile(p.imageFileName,'Deleted!', this.writeOptions)
+            .then(() =>{
+              this.toastr.success("The post was delete!",'Success')        
+              this.ngxService.stop();
+              
+            });
+          }
+          else{
+            this.toastr.success("The post was delete!",'Success')  
+            this.ngxService.stop();
+          }
+  
+        }) 
+        .catch((error)=>{
+          console.log('Error deleting post');
+          this.ngxService.stop();
+        });;
+
+        this.ngxService.stop(); 
+      }).catch((error) => {
+        console.log('Error deleting post!')
+        this.ngxService.stop();
       });
     }
     

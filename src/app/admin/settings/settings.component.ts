@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
 @Component({
@@ -31,13 +32,15 @@ export class SettingsComponent implements OnInit {
   isNewPost : boolean = false;
   selectedPost: any;
 
-  constructor(private toastr: ToastrService) { }
+  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService) { }
 
   ngOnInit() {
     
     this.initializeForm();
     this.userSession = new blockstack.UserSession()
     if (this.userSession.isUserSignedIn()) {
+      this.ngxService.start();
+
       const userData = this.userSession.loadUserData();
       this.userName = userData.username;
     
@@ -55,9 +58,18 @@ export class SettingsComponent implements OnInit {
               this.posts = JSON.parse(postContents);
               if(this.posts == null)
                 this.posts = new Array();
+              this.ngxService.stop();              
             });
           
           }
+          else{
+            this.ngxService.stop();
+          }
+        })
+        .catch((error)=>{
+          console.log('Error reading settings');
+          this.ngxService.stop();
+          
         });
      } 
 
@@ -79,9 +91,15 @@ export class SettingsComponent implements OnInit {
   save(){
     let p = Object.assign({},  this.form.value);
     let str = JSON.stringify(p);
+    this.ngxService.start();
     this.userSession.putFile(this.settingsFileName,str, this.writeOptions)
       .then(() =>{
+        this.ngxService.stop();
         this.toastr.success("The changes have been saved!",'Success')  
+    })
+    .catch((error)=>{
+      console.log('Errro updating settings');
+      this.ngxService.stop();
     });
 
   }
@@ -117,16 +135,40 @@ export class SettingsComponent implements OnInit {
   deletePost(p:any):void{
     let idx = this.posts.findIndex(e=> e.id == p.id);
   if(confirm('Are you sure you want to delete this post?')){
+      this.ngxService.start();
       this.posts.splice(idx,1);
       let postsArray = JSON.stringify(this.posts);
 
       this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
       .then(() =>{
-        this.toastr.success("The post was delete!",'Success')  
+       // this.toastr.success("The post was delete!",'Success')  
         
-        this.userSession.deleteFile(p.postFileName);
-        if(p.imageFileName)
-          this.userSession.deleteFile(p.imageFileName);
+        //TODO:Uncomment when delete feature avaliable
+        //this.userSession.deleteFile(p.postFileName);
+        //if(p.imageFileName)
+        //  this.userSession.deleteFile(p.imageFileName);
+
+        //TODO: Comment when delete feature avaliable
+        this.userSession.putFile(p.postFileName,  'Deleted!', this.writeOptions)
+        .then(() =>{
+          if(p.imageFileName != null && p.imageFileName != ''){
+            this.userSession.putFile(p.imageFileName,'Deleted!', this.writeOptions)
+            .then(() =>{
+              this.toastr.success("The post was delete!",'Success')        
+              this.ngxService.stop();
+              
+            });
+          }
+          else{
+            this.toastr.success("The post was delete!",'Success')  
+            this.ngxService.stop();
+          }
+  
+        }) 
+        .catch((error)=>{
+          console.log('Error deleting post');
+          this.ngxService.stop();
+        });;
       
       });
     }
