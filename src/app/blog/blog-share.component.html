@@ -1,0 +1,15 @@
+<div class="form-row">
+    <div class="col">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">URL</span>
+            </div>
+            <input type="text" class="form-control"  aria-label="Url to share" [(ngModel)]="url" #urlinput>
+            <div class="input-group-append">
+              <button class="input-group-text" type="button" (click)="copyInputMessage(urlinput)">Copy</button>
+            </div>
+
+           
+          </div>
+      </div>
+</div>

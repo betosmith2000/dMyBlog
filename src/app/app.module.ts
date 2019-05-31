@@ -10,6 +10,7 @@ import { BlogComponent } from './blog/blog.component';
 import { ToastrModule} from 'ngx-toastr';
 import { ShareModule } from './share/share.module';
 import { PostReaderComponent } from './blog/post-reader.component';
+import { BlogShareComponent } from './blog/blog-share.component';
 
 @NgModule({
   declarations: [
@@ -18,14 +19,16 @@ import { PostReaderComponent } from './blog/post-reader.component';
     FooterComponent,
     HomeComponent,
     BlogComponent,
-    PostReaderComponent
+    PostReaderComponent,
+    BlogShareComponent
   ],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
     ShareModule,
     AdminModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot()
+
   ],
   providers: [],
   bootstrap: [AppComponent]

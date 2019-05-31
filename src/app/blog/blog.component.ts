@@ -13,6 +13,7 @@ export class BlogComponent implements OnInit {
   header :any;
   userSession :any;
   userName :string  = '';
+  postId:string = null;
   image :string ="";
   readonly settingsFileName:string = '/settings.txt';
   readOptions : any = {decrypt: false, username: null};
@@ -22,7 +23,7 @@ export class BlogComponent implements OnInit {
   isViewingPost : boolean = false;
   private LOGO = require("../../assets/logo-header.png");
   selectedPost: any;
-  
+  shareTitle : string = 'Share this ';
 
   readonly postsFileName:string = '/posts.txt';
   readonly postContentFileName:string = '/post-ID.txt';
@@ -190,6 +191,15 @@ export class BlogComponent implements OnInit {
     this.isNewPost = true;
   }
 
+  shareBlog():void {
+    this.shareTitle = "Share this Blog!"
+  }
 
+  sharePost(event:Event, p:any){
+    //event.stopPropagation();    
+    this.shareTitle = "Share this Post!"
+    this.postId=p.id;
+    alert(this.postId)
+  }
 
 }
