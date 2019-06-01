@@ -11,6 +11,8 @@ import { ToastrModule} from 'ngx-toastr';
 import { ShareModule } from './share/share.module';
 import { PostReaderComponent } from './blog/post-reader.component';
 import { BlogShareComponent } from './blog/blog-share.component';
+import { DiscoverComponent } from './blog/discover.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,14 +22,16 @@ import { BlogShareComponent } from './blog/blog-share.component';
     HomeComponent,
     BlogComponent,
     PostReaderComponent,
-    BlogShareComponent
+    BlogShareComponent,
+    DiscoverComponent
   ],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
     ShareModule,
     AdminModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    HttpClientModule
 
   ],
   providers: [],

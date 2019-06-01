@@ -34,14 +34,13 @@ export class PostReaderComponent implements OnInit {
 
   @Output() closed = new EventEmitter<any>();
 
-
+  isMissingPost:boolean=false;
   userName :string  = '';
   postId :string = '';
   posts:any;
   constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
-    debugger
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     this.route.paramMap.subscribe(params => {
@@ -61,9 +60,15 @@ export class PostReaderComponent implements OnInit {
           this.posts = JSON.parse(fileContents);
           if(this.posts == null)
             this.posts=new Array();
-          let post = this.posts.filter(e=> e.id== this.postId);
-          if(post.length > 0)
+          let post = this.posts.filter(e=> e.shareCode == this.postId && e.status != 0);
+          if(post.length > 0){
             this._post = post[0];
+            this.isMissingPost  =false;
+          }
+          else{
+            this.isMissingPost = true;
+            
+          }
           this.readPost();
         })
         .catch((error)=>{

@@ -4,6 +4,7 @@ import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { ApiService } from 'src/app/share/data-service';
 
 
 @Component({
@@ -30,9 +31,10 @@ export class SettingsComponent implements OnInit {
   posts:Array<any> = new Array();
 
   isNewPost : boolean = false;
+  isUpdatePost :boolean = false;
   selectedPost: any;
 
-  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService) { }
+  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, private _api: ApiService) { }
 
   ngOnInit() {
     
@@ -130,62 +132,96 @@ export class SettingsComponent implements OnInit {
   showNewPost():void{
     this.selectedPost = null;
     this.isNewPost = true;
+    this.isUpdatePost=false;
   }
   
   deletePost(p:any):void{
     let idx = this.posts.findIndex(e=> e.id == p.id);
-  if(confirm('Are you sure you want to delete this post?')){
+    if(confirm('Are you sure you want to delete this post?')){
       this.ngxService.start();
       this.posts.splice(idx,1);
-      let postsArray = JSON.stringify(this.posts);
-
-      this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
-      .then(() =>{
-       // this.toastr.success("The post was delete!",'Success')  
-        
-        //TODO:Uncomment when delete feature avaliable
-        //this.userSession.deleteFile(p.postFileName);
-        //if(p.imageFileName)
-        //  this.userSession.deleteFile(p.imageFileName);
-
-        //TODO: Comment when delete feature avaliable
-        this.userSession.putFile(p.postFileName,  'Deleted!', this.writeOptions)
-        .then(() =>{
-          if(p.imageFileName != null && p.imageFileName != ''){
-            this.userSession.putFile(p.imageFileName,'Deleted!', this.writeOptions)
-            .then(() =>{
-              this.toastr.success("The post was delete!",'Success')        
-              this.ngxService.stop();
-              
-            });
-          }
-          else{
-            this.toastr.success("The post was delete!",'Success')  
-            this.ngxService.stop();
-          }
-  
-        }) 
-        .catch((error)=>{
-          console.log('Error deleting post');
+    
+      if(p.id.length == 24)
+      {
+        this._api.delete(p.id)
+        .subscribe(res => {
+          this.saveFiles(p);
+          console.log('Delete discoverable Post id:' + p.id);
+        }, error =>{
+          console.log('Error to save post to index');
           this.ngxService.stop();
-        });;
-      
-      });
+
+        });
+      }
+      else{
+        this.saveFiles(p);
+      }
+
     }
   }
 
+  
+  saveFiles(p:any):void{
+    let postsArray = JSON.stringify(this.posts);
+
+    this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
+    .then(() =>{
+      
+      //TODO:Uncomment when delete feature avaliable
+      //this.userSession.deleteFile(p.postFileName);
+      //if(p.imageFileName)
+      //  this.userSession.deleteFile(p.imageFileName);
+
+      //TODO: Comment when delete feature avaliable
+      this.userSession.putFile(p.postFileName,  'Deleted!', this.writeOptions)
+      .then(() =>{
+        if(p.imageFileName != null && p.imageFileName != ''){
+          this.userSession.putFile(p.imageFileName,'Deleted!', this.writeOptions)
+          .then(() =>{
+            this.toastr.success("The post was delete!",'Success')        
+            this.ngxService.stop();
+            
+          });
+        }
+        else{
+          this.toastr.success("The post was delete!",'Success')  
+          this.ngxService.stop();
+        }
+
+      }) 
+      .catch((error)=>{
+        console.log('Error deleting post');
+        this.ngxService.stop();
+      });;
+
+      this.ngxService.stop(); 
+    }).catch((error) => {
+      console.log('Error deleting post!')
+      this.ngxService.stop();
+    });
+
+  }
+
+
   editPost(p:any):void{
     this.selectedPost = p;
-    this.isNewPost = true;
+    this.isNewPost = false;
+    this.isUpdatePost = true;
   }
 
 
   onClosed(res: any): void {
-    this.isNewPost = false;
-    if(res)
+    
+    if(res && this.isNewPost)
     {
       this.posts.push(res);
     }
+    else if(res){
+      this.selectedPost.title = res.title;
+      this.selectedPost.id=res.id;
+    }
+    this.isNewPost = false;
+    this.isUpdatePost=false;
    
   }
 

@@ -1,23 +1,24 @@
 <div class="container top-padding">
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <div class="row">
-          <div class="col-lg-2">
-              <img [src]="imageContent"  class="img-fluid img-post" alt="" *ngIf="imageContent">
-      
-          </div>
-          <div class="col-lg-10 header">
-            <h1>{{title}}</h1>
-              <label class="text-muted text-right font-weight-lighter header-content">{{date | date:'medium' }}</label>
-              <label class="text-muted text-right font-weight-lighter header-content-left"><span>By:</span> {{author}} </label>
-          </div>
+  <div *ngIf="!isMissingPost">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="row">
+            <div class="col-lg-2">
+                <img [src]="imageContent"  class="img-fluid img-post" alt="" *ngIf="imageContent">
+        
+            </div>
+            <div class="col-lg-10 header">
+              <h1>{{title}}</h1>
+                <label class="text-muted text-right font-weight-lighter header-content">{{date | date:'medium' }}</label>
+                <label class="text-muted text-right font-weight-lighter header-content-left"><span>By:</span> {{author}} </label>
+            </div>
+        </div>
       </div>
-    </div>
     
-  </div>
-  <br/>
+    </div>
+    <br/>
 
-  <div class="card shadow">
+    <div class="card shadow">
       <div class="card-body">
         <div [innerHTML]="content" class="text-capitalize"></div>
           <div class="float-md-right">
@@ -27,4 +28,10 @@
   
       </div>
     </div>
+  </div>
+  <div *ngIf='isMissingPost'>
+      <div class="align-middle">
+          <p class="alert alert-warning text-center" role="alert">The requested Post does not exist or is not published</p>
+       </div>
+  </div>
 </div>

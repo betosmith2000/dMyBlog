@@ -7,6 +7,9 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-inline';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { CustomUploaderAdapter } from './CKEditor/customUploaderAdapter';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Post } from './Post';
+import { ApiService } from '../share/data-service';
+import { NameValue } from '../share/name-value';
 
 
 
@@ -31,9 +34,11 @@ export class PostComponent implements OnInit {
   form :FormGroup;
   postTitle:FormControl;
   postContent:FormControl;
+  status:FormControl;
   
   editingPost:any;
-  
+  catStatus: NameValue[];
+
   public Editor = ClassicEditor;
   ckconfig = {
     extraPlugins: [ this.CustomUploadAdapterPlugin ]
@@ -57,11 +62,17 @@ export class PostComponent implements OnInit {
     };
   }
 
-  constructor(private toastr:ToastrService, private ngxService: NgxUiLoaderService) { 
+  constructor(private toastr:ToastrService, private ngxService: NgxUiLoaderService, private _api:ApiService) { 
   
   }
 
   ngOnInit() {
+    this.catStatus = [
+      new NameValue(0, 'Private'),
+      new NameValue(1, 'Public'),
+      new NameValue(2, 'Discoverable')
+    ];
+    this._api.setApi('Posts');
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     this.initializeForm();
@@ -75,6 +86,8 @@ export class PostComponent implements OnInit {
           this.editingPost = JSON.parse(fileContents);
           this.postTitle.setValue(this.editingPost.postTitle);
           this.postContent.setValue(this.editingPost.postContent);
+          let statusPost = this.editingPost.status?this.editingPost.status:0;
+          this.status.setValue(statusPost);
           this.ngxService.stop();
         })
         .catch((error) => {
@@ -88,10 +101,12 @@ export class PostComponent implements OnInit {
   initializeForm():void{
     this.postTitle = new FormControl('', [Validators.maxLength(128), Validators.required]);
     this.postContent = new FormControl('', [Validators.required]);
+    this.status = new FormControl('', [Validators.required]);
 
     this.form = new FormGroup({
       postTitle : this.postTitle,
-      postContent : this.postContent
+      postContent : this.postContent,
+      status:this.status
     });
 
     //Edit 
@@ -113,60 +128,46 @@ export class PostComponent implements OnInit {
     this.ngxService.start();
     if(this.editingPost == null){ //New post
       if(this.posts == null)
-      this.posts=new Array();
-
+        this.posts=new Array();
       
-      let p = Object.assign({},  this.form.value);
       let hash  = Md5.hashStr(new Date().toISOString(),false);
 
       let div = document.createElement("div");
       div.innerHTML = this.postContent.value.substring(0,130);
 
-      var postData = {
-        id: hash.toString(),
+      var postData:Post = {
+        id: '',
         date: new Date().toISOString(),
         title:this.postTitle.value,
         excerpt:div.textContent,
         author: this.userName,
         postFileName: this.postContentFileName.replace('ID',hash.toString()) ,
-        imageFileName:this.postImageFileName.replace('ID',hash.toString()) 
+        imageFileName:this.postImageFileName.replace('ID',hash.toString()) ,
+        status: this.status.value,
+        shareCode: hash.toString()
       };
       if(this.postImageContent == null || this.postImageContent == '')
         postData.imageFileName = null;
       this.posts.push(postData);
-      
-      let postContent = JSON.stringify(p);
-      let postsArray = JSON.stringify(this.posts);
-      this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
-      .then(() =>{
-        this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
-        .then(() =>{
-          if(postData.imageFileName != null){
-            this.userSession.putFile(postData.imageFileName,this.postImageContent, this.writeOptions)
-            .then(() =>{
-              this.toastr.success("The changes have been saved!",'Success');
-              this.ngxService.stop();
-              this.closed.emit(postData);  
 
-            });
-          }
-          else{
-            this.toastr.success("The changes have been saved!",'Success');
-            this.ngxService.stop();
+      if(this.status.value == 2){ //discoverable
+      //save to index
+        this._api.add(postData)
+          .subscribe(res => {
+            postData.id= res.id;
+            this.saveFiles(postData);
+            console.log('Post id:' + postData.id);
+          }, error =>{
+            console.log('Error to save post to index');
+          });
+      }
+      else{
+        postData.id= hash.toString();
+        this.saveFiles(postData);
+      }
 
-            this.closed.emit(postData);  
-          }
-
-        });
-      
-      })
-      .catch((error)=>{
-        console.log('Error saving changes');
-        this.ngxService.stop();
-      });
     }
     else{ //Edit post
-      let p = Object.assign({},  this.form.value);
       
       let postResume = this.posts.filter(e => e.postFileName == this._post.postFileName );
       let div = document.createElement("div");
@@ -174,36 +175,91 @@ export class PostComponent implements OnInit {
       if(postResume.length==1){
         postResume = postResume[0];
         postResume.excerpt=div.textContent;
-        postResume.title = p.postTitle;
+        postResume.title = this.postTitle.value;
+        postResume.status =  this.status.value;
       }
-      let postsArray = JSON.stringify(this.posts);
+      if(this.status.value == 2){ //discoverable
+        //save to index, if not created yet!
+        if(postResume.id.length != 24){
+          postResume.id="";
+          this._api.add(postResume)
+            .subscribe(res => {
+              postResume.id= res.id;
+              this.saveFiles(postResume);
+              console.log('Post id:' + postResume.id);
+            }, error =>{
+              console.log('Error to save post to index');
+              this.ngxService.stop();
 
-      this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
-      .then(() =>{
+            });
+          }
+          else{ //Update index
+            this._api.update(postResume.id, postResume)
+            .subscribe(res => {
+              this.saveFiles(postResume);
+              console.log('Post id:' + postResume.id);
+            }, error =>{
+              console.log('Error to save post to index');
+              this.ngxService.stop();
 
-      this.userSession.putFile(this._post.postFileName,  JSON.stringify(p), this.writeOptions)
+            });
+          }
+        }
+        else{
+          //Delete post from discoverable if apply
+          if(postResume.id.length == 24){
+          this._api.delete(postResume.id)
+            .subscribe(res => {
+              postResume.id=postResume.id +"d";
+              this.saveFiles(postResume);
+              console.log('Delete discoverable Post id:' + postResume.id);
+            }, error =>{
+              console.log('Error to save post to index');
+              this.ngxService.stop();
+
+            });
+          }
+          else{
+            this.saveFiles(postResume);
+          }
+        }
+   
+    }
+  }
+
+  saveFiles(postData:Post):void{
+    let p = Object.assign({},  this.form.value);
+
+    let postsArray = JSON.stringify(this.posts);
+    let postContent = JSON.stringify(p);
+
+    this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
+    .then(() =>{
+      this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
       .then(() =>{
-        if(this.postImageContent != null && this.postImageContent != ''){
-          this.userSession.putFile(this._post.imageFileName,this.postImageContent, this.writeOptions)
+        if(postData.imageFileName != null){
+          this.userSession.putFile(postData.imageFileName,this.postImageContent, this.writeOptions)
           .then(() =>{
             this.toastr.success("The changes have been saved!",'Success');
             this.ngxService.stop();
-            this.closed.emit(postResume);  
+            this.closed.emit(postData);  
+
           });
         }
         else{
           this.toastr.success("The changes have been saved!",'Success');
           this.ngxService.stop();
-          this.closed.emit(postResume);  
+
+          this.closed.emit(postData);  
         }
 
       });
+    
     })
     .catch((error)=>{
-      console.log('Error updating post');
+      console.log('Error saving changes');
       this.ngxService.stop();
     });
-    }
   }
 
   close():void{

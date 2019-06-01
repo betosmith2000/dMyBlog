@@ -3,6 +3,7 @@ import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { ApiService } from '../share/data-service';
 
 @Component({
   selector: 'app-blog',
@@ -29,9 +30,11 @@ export class BlogComponent implements OnInit {
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
   posts:any = new Array();
-  constructor(private toastr: ToastrService, private route:ActivatedRoute, private ngxService: NgxUiLoaderService) { }
+  constructor(private toastr: ToastrService, private route:ActivatedRoute, 
+    private ngxService: NgxUiLoaderService, private _api: ApiService) { }
 
   ngOnInit() {
+    this._api.setApi('Posts');
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     this.route.paramMap.subscribe(params => {
@@ -122,6 +125,7 @@ export class BlogComponent implements OnInit {
         postResume = postResume[0];
         postResume.excerpt=res.excerpt;
         postResume.title = res.title;
+        postResume.status = res.status;
         this.getPostImage(postResume);
       }else{
         res.imageFileContent = null;
@@ -141,49 +145,66 @@ export class BlogComponent implements OnInit {
 
     if(confirm('Are you sure you want to delete this post?')){
       this.ngxService.start(); 
-
       let idx = this.posts.findIndex(e=> e.id == p.id);
-
       this.posts.splice(idx,1);
-      let postsArray = JSON.stringify(this.posts);
-
-      this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
-      .then(() =>{
-        
-        //TODO:Uncomment when delete feature avaliable
-        //this.userSession.deleteFile(p.postFileName);
-        //if(p.imageFileName)
-        //  this.userSession.deleteFile(p.imageFileName);
-
-        //TODO: Comment when delete feature avaliable
-        this.userSession.putFile(p.postFileName,  'Deleted!', this.writeOptions)
-        .then(() =>{
-          if(p.imageFileName != null && p.imageFileName != ''){
-            this.userSession.putFile(p.imageFileName,'Deleted!', this.writeOptions)
-            .then(() =>{
-              this.toastr.success("The post was delete!",'Success')        
-              this.ngxService.stop();
-              
-            });
-          }
-          else{
-            this.toastr.success("The post was delete!",'Success')  
-            this.ngxService.stop();
-          }
-  
-        }) 
-        .catch((error)=>{
-          console.log('Error deleting post');
+      if(p.id.length == 24)
+      {
+        this._api.delete(p.id)
+        .subscribe(res => {
+          this.saveFiles(p);
+          console.log('Delete discoverable Post id:' + p.id);
+        }, error =>{
+          console.log('Error to save post to index');
           this.ngxService.stop();
-        });;
 
-        this.ngxService.stop(); 
-      }).catch((error) => {
-        console.log('Error deleting post!')
-        this.ngxService.stop();
-      });
+        });
+      }
+      else{
+        this.saveFiles(p);
+      }
     }
     
+  }
+
+  saveFiles(p:any):void{
+    let postsArray = JSON.stringify(this.posts);
+
+    this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
+    .then(() =>{
+      
+      //TODO:Uncomment when delete feature avaliable
+      //this.userSession.deleteFile(p.postFileName);
+      //if(p.imageFileName)
+      //  this.userSession.deleteFile(p.imageFileName);
+
+      //TODO: Comment when delete feature avaliable
+      this.userSession.putFile(p.postFileName,  'Deleted!', this.writeOptions)
+      .then(() =>{
+        if(p.imageFileName != null && p.imageFileName != ''){
+          this.userSession.putFile(p.imageFileName,'Deleted!', this.writeOptions)
+          .then(() =>{
+            this.toastr.success("The post was delete!",'Success')        
+            this.ngxService.stop();
+            
+          });
+        }
+        else{
+          this.toastr.success("The post was delete!",'Success')  
+          this.ngxService.stop();
+        }
+
+      }) 
+      .catch((error)=>{
+        console.log('Error deleting post');
+        this.ngxService.stop();
+      });;
+
+      this.ngxService.stop(); 
+    }).catch((error) => {
+      console.log('Error deleting post!')
+      this.ngxService.stop();
+    });
+
   }
 
   editPost(p:any):void{
@@ -199,7 +220,7 @@ export class BlogComponent implements OnInit {
   sharePost(event:Event, p:any){
     //event.stopPropagation();    
     this.shareTitle = "Share this Post!"
-    this.postId=p.id;
+    this.postId=p.shareCode?p.shareCode:p.id;
   }
 
 }

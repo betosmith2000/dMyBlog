@@ -1,4 +1,4 @@
-<div class="container top-padding" *ngIf="!isNewPost">
+<div class="container top-padding" *ngIf="!isNewPost && !isUpdatePost">
   <h2 class="display-4">{{userName}}</h2>
 
   <div class="card shadow-sm">
@@ -94,6 +94,6 @@
 </div>
 
 
-<div *ngIf="isNewPost" >
+<div *ngIf="isNewPost || isUpdatePost" >
   <app-post [Post]="selectedPost" (closed)="onClosed($event)"></app-post>
 </div>
