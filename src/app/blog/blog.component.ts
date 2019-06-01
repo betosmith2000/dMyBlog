@@ -193,13 +193,13 @@ export class BlogComponent implements OnInit {
 
   shareBlog():void {
     this.shareTitle = "Share this Blog!"
+    this.postId = null;
   }
 
   sharePost(event:Event, p:any){
     //event.stopPropagation();    
     this.shareTitle = "Share this Post!"
     this.postId=p.id;
-    alert(this.postId)
   }
 
 }
