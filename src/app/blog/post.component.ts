@@ -70,7 +70,7 @@ export class PostComponent implements OnInit {
     this.catStatus = [
       new NameValue(0, 'Private'),
       new NameValue(1, 'Public'),
-      new NameValue(2, 'Discoverable')
+      new NameValue(2, 'Browseable')
     ];
     this._api.setApi('Posts');
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])

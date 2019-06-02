@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: "settings", component: SettingsComponent},
   { path: "blog/:userBlog", component: BlogComponent},
   { path: "read/:userBlog/:postId", component: PostReaderComponent},
-  { path: "discover", component: DiscoverComponent},
+  { path: "browse", component: DiscoverComponent},
   { path: "", component: HomeComponent},
   { path: "*", component: HomeComponent}
 ];
