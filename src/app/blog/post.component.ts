@@ -159,10 +159,12 @@ export class PostComponent implements OnInit {
             console.log('Post id:' + postData.id);
           }, error =>{
             console.log('Error to save post to index');
+            this.ngxService.stop();
+
           });
       }
       else{
-        postData.id= hash.toString();
+       // postData.id= hash.toString();
         this.saveFiles(postData);
       }
 
@@ -219,9 +221,9 @@ export class PostComponent implements OnInit {
           if(postResume.id.length == 24){
           this._api.delete(postResume.id)
             .subscribe(res => {
-              postResume.id=postResume.id +"d";
-              this.saveFiles(postResume);
               console.log('Delete discoverable Post id:' + postResume.id);
+              postResume.id="";
+              this.saveFiles(postResume);
             }, error =>{
               console.log('Error to save post to index');
               this.ngxService.stop();
