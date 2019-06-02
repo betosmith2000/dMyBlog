@@ -147,7 +147,7 @@ export class BlogComponent implements OnInit {
       this.ngxService.start(); 
       let idx = this.posts.findIndex(e=> e.id == p.id);
       this.posts.splice(idx,1);
-      if(p.id.length == 24)
+      if(p.id && p.id.length == 24)
       {
         this._api.delete(p.id)
         .subscribe(res => {
