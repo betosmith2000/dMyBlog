@@ -218,9 +218,10 @@ export class BlogComponent implements OnInit {
   }
 
   sharePost(event:Event, p:any){
-    //event.stopPropagation();    
+      
     this.shareTitle = "Share this Post!"
     this.postId=p.shareCode?p.shareCode:p.id;
+   // event.stopPropagation();  
   }
 
 }

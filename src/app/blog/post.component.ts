@@ -172,12 +172,21 @@ export class PostComponent implements OnInit {
       let postResume = this.posts.filter(e => e.postFileName == this._post.postFileName );
       let div = document.createElement("div");
       div.innerHTML = this.postContent.value.substring(0,130);
+
+    
+
       if(postResume.length==1){
         postResume = postResume[0];
         postResume.excerpt=div.textContent;
         postResume.title = this.postTitle.value;
         postResume.status =  this.status.value;
       }
+
+      if(this.postImageContent == null && postResume.imageFileName != null)
+        postResume.imageFileName = null;
+      else if(this.postImageContent != null && postResume.imageFileName == null)
+        postResume.imageFileName = this.postImageFileName.replace('ID', postResume.shareCode) ;
+
       if(this.status.value == 2){ //discoverable
         //save to index, if not created yet!
         if(postResume.id.length != 24){
@@ -238,12 +247,17 @@ export class PostComponent implements OnInit {
       this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
       .then(() =>{
         if(postData.imageFileName != null){
+          
           this.userSession.putFile(postData.imageFileName,this.postImageContent, this.writeOptions)
           .then(() =>{
             this.toastr.success("The changes have been saved!",'Success');
             this.ngxService.stop();
             this.closed.emit(postData);  
 
+          })
+          .catch((error)=>{
+            console.log('Error saving image changes');
+            this.ngxService.stop();
           });
         }
         else{

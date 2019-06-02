@@ -4,7 +4,7 @@
         <div class="card-body">
           <form novalidate (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
             <div class="form-group row">
-              <label for="postTitle" class="col-sm-3 col-form-label">Title:</label>
+              <label for="postTitle" class="col-sm-3 col-form-label">*Title:</label>
               <div class="col-sm-9">
                   <input type="text" class="form-control" id="postTitle"  placeholder="Title" formControlName="postTitle"
                          [ngClass]="{'is-invalid':(postTitle.touched || postTitle.dirty) && !postTitle.valid}" />
@@ -44,16 +44,15 @@
             </div>
 
             <div class="form-group row">
-              <label for="status" class="col-sm-3 col-form-label">Status:</label>
+              <label for="status" class="col-sm-3 col-form-label">*Status:</label>
               <div class="col-sm-9">
                 <select class="custom-select" aria-describedby="estatusHelp" formControlName="status"
                       [ngClass]="{'is-invalid':(status.touched || status.dirty) && !status.valid}">
-                  <option value="" disabled>Seleccione</option>
                   <option *ngFor="let s of catStatus" [value]="s.value"> {{s.name}}</option>
                 </select>
                   <span class="invalid-feedback" *ngIf="status.invalid && (status.touched || status.dirty) ">
-                      <span *ngIf="status.errors.required">Title is required.</span>
-                      <span *ngIf="status.errors.maxlength">Max title length 128.</span>
+                      <span *ngIf="status.errors.required">Status is required.</span>
+                      
                   </span>
               </div>
             </div>

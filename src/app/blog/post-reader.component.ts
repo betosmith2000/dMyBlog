@@ -41,17 +41,23 @@ export class PostReaderComponent implements OnInit {
   constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
-    const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
-    this.userSession = new blockstack.UserSession({appConfig:appConfig});
+   
     this.route.paramMap.subscribe(params => {
+      const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
+      this.userSession = new blockstack.UserSession({appConfig:appConfig});
+
       this.ngxService.start();
 
       this.userName = params.get("userBlog");
       this.postId = params.get("postId");
-
-      if(this.userName==null || this.userName.trim() ==''){
-        const userData = this.userSession.loadUserData();
-        this.userName = userData.username;
+      if(this.userName && this.postId)
+        this.Post = null;
+      if((this.userName==null || this.userName.trim() =='') ){
+        //const userData = this.userSession.loadUserData();
+        this.userName = this.Post.author;
+      }
+      if(this.postId == null || this.postId.trim() == ''){
+        this.postId= this.Post.id;
       }
       this.readOptions.username = this.userName;
       if(this.Post==null){

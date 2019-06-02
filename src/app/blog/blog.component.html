@@ -72,11 +72,11 @@
     </div> -->
    
     <div class="col-lg-6 col-sm-12 mb-5" *ngFor="let p of posts">
-        <div class="card text-white manita card-height-res shadow"  >
-            <img [src]="p.imageFileContent" class="card-img" alt="..." *ngIf="p.imageFileContent">
-            <div class="card-img-overlay">
+        <div class="card text-white manita card-height-res shadow" (dblclick)="viewPost(p)" >
+            <img [src]="p.imageFileContent" class="card-img" alt="..." *ngIf="p.imageFileContent" >
+            <div class="card-img-overlay" >
               <div class="card-title  bg-dark transparency p-3" >
-                  <h5 class="card-title " >{{p.title}}</h5>
+                  <h5 class="card-title " > {{p.title}}</h5>
               </div>
             </div>
             <div class="h-100 d-flex flex-column justify-content-end mx-3 card-img-overlay">

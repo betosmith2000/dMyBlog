@@ -1,0 +1,60 @@
+.header-img {
+    height: 200px;
+    width: 100%;
+}
+
+.post-bottom {
+    margin-bottom: 15px;
+}
+
+.img-post{
+    min-width: 200px;
+    min-height: 200px;
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.card-height-res{
+    max-height: 400px;
+    min-height: 400px;
+   
+    background-color: white;
+}
+.card-height-res img{
+    text-align: center;
+    vertical-align: middle;
+    max-height: 480px;
+    margin: auto;
+    
+}
+
+
+
+.header{
+    position: relative;
+    min-height: 200px;
+}
+
+.header-content {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    right: 0;
+  }
+
+  .truncate {
+    width: 650px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .transparency{
+      opacity: 1;
+  }
+  .transparency-header{
+    opacity: .55;
+  }
+.card-img-overlay{
+    padding: 0!important;
+}
