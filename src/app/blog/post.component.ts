@@ -150,7 +150,7 @@ export class PostComponent implements OnInit {
         postData.imageFileName = null;
       this.posts.push(postData);
 
-      if(this.status.value == 2){ //discoverable
+      if(this.status.value != 0){ //discoverable
       //save to index
         this._api.add(postData)
           .subscribe(res => {
@@ -189,7 +189,7 @@ export class PostComponent implements OnInit {
       else if(this.postImageContent != null && postResume.imageFileName == null)
         postResume.imageFileName = this.postImageFileName.replace('ID', postResume.shareCode) ;
 
-      if(this.status.value == 2){ //discoverable
+      if(this.status.value == 2 || this.status.value ==1 ){ //discoverable
         //save to index, if not created yet!
         if(postResume.id.length != 24){
           postResume.id="";

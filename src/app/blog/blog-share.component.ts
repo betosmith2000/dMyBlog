@@ -8,7 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class BlogShareComponent implements OnInit {
   url:string;
-  
+  urlFB:string;
+  title:string;
+
   constructor(private toastr: ToastrService) { }
 
   
@@ -33,18 +35,34 @@ export class BlogShareComponent implements OnInit {
       return this._postId;
   }
 
+  
+  private _post: any = null;
+  @Input()
+  set Post(post: any) {
+      this._post = post;
+      this.Init();
+
+  }
+  get Post(): any {
+      return this._post;
+  }
+
+
 
   ngOnInit() {
-    
-  
   }
   
   Init() {
-    
-    if(this.PostId==null)
+    if(this.Post  ){
+      this.title = this.Post.title;
+      this.urlFB="https://www.dmyblog.co/#/read/" + this.UserBlog +"/" +  ( this.Post != null ? this.Post.shareCode: '');
+    }
+    if(this.PostId==null){
       this.url=window.location.origin+"/#/blog/" + this.UserBlog;
-    else
+    }
+    else{
       this.url=window.location.origin+"/#/read/" + this.UserBlog + "/" + this.PostId;
+    }
   }
 
   

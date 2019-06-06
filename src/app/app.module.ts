@@ -13,6 +13,7 @@ import { PostReaderComponent } from './blog/post-reader.component';
 import { BlogShareComponent } from './blog/blog-share.component';
 import { DiscoverComponent } from './blog/discover.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CeiboShare } from 'ng2-social-share';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { HttpClientModule } from '@angular/common/http';
     BlogComponent,
     PostReaderComponent,
     BlogShareComponent,
-    DiscoverComponent
+    DiscoverComponent,
+    CeiboShare
   ],
   imports: [
     BrowserAnimationsModule,
@@ -32,9 +34,10 @@ import { HttpClientModule } from '@angular/common/http';
     AdminModule,
     ToastrModule.forRoot(),
     HttpClientModule
-
-  ],
+    
+    ],
   providers: [],
   bootstrap: [AppComponent]
+  
 })
 export class AppModule { }

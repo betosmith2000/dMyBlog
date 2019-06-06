@@ -146,7 +146,7 @@ export class BlogComponent implements OnInit {
 
     if(confirm('Are you sure you want to delete this post?')){
       this.ngxService.start(); 
-      let idx = this.posts.findIndex(e=> e.id == p.id);
+      let idx = this.posts.findIndex(e=> e.shareCode == p.shareCode);
       this.posts.splice(idx,1);
       if(p.id && p.id.length == 24)
       {
@@ -219,6 +219,7 @@ export class BlogComponent implements OnInit {
   }
 
   sharePost(event:Event, p:any){
+    this.selectedPost = p;
       
     this.shareTitle = "Share this Post!"
     this.postId=p.shareCode?p.shareCode:p.id;

@@ -1,9 +1,26 @@
 <div class="container top-padding">
- 
+    <div class="row ">
+      <div class="col"></div>
+      <div class="col"></div>
+      <div class="col ">
+          <div class="input-group search-container mb-4">
+            <input type="text" class="form-control " placeholder="Filter posts by Title or Author" aria-describedby="inputGroupPrepend3" [(ngModel)]='searchTerm'  >
+            <div class="input-group-prepend  ">
+                <!-- <span class="input-group-text" id="inputGroupPrepend3">@</span> -->
+                <button title="Filter posts" class="btn btn-primary" (click)='performSearch()' type="button"><i class="fas fa-filter"></i></button>
+              </div>
+            <div class="input-group-prepend  ">
+                <!-- <span class="input-group-text" id="inputGroupPrepend3">@</span> -->
+                <button title="Clear filter" class="btn btn-primary" (click)='clearSearch()' type="button"><i class="fas fa-recycle"></i></button>
+              </div>
+          </div>
+      </div>
+    </div>
+
     
   <div class="row"  *ngIf="!isViewingPost">
-  <div class="col-lg-6 col-sm-12 mb-5" *ngFor="let p of posts">
-    <div class="card text-white manita card-height-res shadow" (dblclick)="viewPost(p)"   >
+    <div class="col-lg-6 col-sm-12 mb-5" *ngFor="let p of posts">
+      <div class="card text-white manita card-height-res shadow" (dblclick)="viewPost(p)"   >
         <img [src]="p.imageFileContent" class="card-img" alt="..." *ngIf="p.imageFileContent">
         <div class="card-img-overlay">
           <div class="card-title  bg-dark transparency p-3" >
@@ -24,19 +41,37 @@
           <div class="row">
             <div class="col-lg-12" style="margin-bottom:5px; " >
               <div class="btn-group-vertical mb-4 mr-1 float-right" role="group" aria-label="Basic example" >
-                  <button class="btn btn-primary btn-sm"  title="Share post" type="button" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)">
-                      <i class="fas fa-share-alt"></i>
-                  </button>
-                  <button class="btn btn-primary btn-sm"  title="View post" type="button"  (click)="viewPost(p)">
-                      <i class="far fa-eye"></i>
-                  </button>
-              </div>
+                <button class="btn btn-primary btn-sm"  title="Share post" type="button" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+                <button class="btn btn-primary btn-sm"  title="View post" type="button"  (click)="viewPost(p)">
+                    <i class="far fa-eye"></i>
+                </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+   
+  </div>
+  <div class="row" *ngIf="!isViewingPost">
+      <div class="col-lg-12">
+        <nav aria-label="Paginación" *ngIf="pagination.data?.length > 0">
+          <ul class="pagination justify-content-center">
+            <li class="page-item"><button class="page-link text-dark" (click)="firstPage()"><span class="fas fa-fast-backward"></span></button></li>
+            <li class="page-item"><button class="page-link text-dark" (click)="previousPage()"><span class="fas fa-backward"></span></button></li>
+            <li class="page-item"><span class="page-link text-dark" href="#">Page {{pagination.pageNumber + 1}}  of {{pagination.totalPages}} | {{pagination.totalRegs}} Posts</span></li>
+            <li class="page-item"><button class="page-link text-dark" (click)="nextPage()"><span class="fas fa-forward"></span></button></li>
+            <li class="page-item"><button class="page-link text-dark" (click)="lastPage()"><span class="fas fa-fast-forward"></span></button></li>
+            <li class="page-item">&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            <li class="page-item"><span class="page-link text-dark">Go to:</span></li>
+            <li class="page-item"><input type="number" class="form-control page-link cursor-text text-dark go-to" [(ngModel)]="page" /> </li>
+            <li class="page-item"><button type="button" class="page-link text-dark" (click)="toPage()"><span class="fas fa-search"></span></button></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
       
   <div class="col" *ngIf="posts?.length==0">
     <p class="alert alert-warning text-center" role="alert">No Posts have been published yet!</p>

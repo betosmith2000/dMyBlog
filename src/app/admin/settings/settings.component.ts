@@ -136,7 +136,7 @@ export class SettingsComponent implements OnInit {
   }
   
   deletePost(p:any):void{
-    let idx = this.posts.findIndex(e=> e.id == p.id);
+    let idx = this.posts.findIndex(e=> e.shareCode == p.shareCode);
     if(confirm('Are you sure you want to delete this post?')){
       this.ngxService.start();
       this.posts.splice(idx,1);
