@@ -41,7 +41,10 @@ export class PostComponent implements OnInit {
 
   public Editor = ClassicEditor;
   ckconfig = {
-    extraPlugins: [ this.CustomUploadAdapterPlugin ]
+    extraPlugins: [ this.CustomUploadAdapterPlugin ],
+    toolbar :{
+      viewportTopOffset : 90
+    }
   };
 
   private _post: any = null;
@@ -184,9 +187,10 @@ export class PostComponent implements OnInit {
         postResume.status =  this.status.value;
       }
 
-      if(this.postImageContent == null && postResume.imageFileName != null)
-        postResume.imageFileName = null;
-      else if(this.postImageContent != null && postResume.imageFileName == null)
+      // if(this.postImageContent == null && postResume.imageFileName != null)
+      //   postResume.imageFileName = null;
+      // else 
+      if(this.postImageContent != null && postResume.imageFileName == null)
         postResume.imageFileName = this.postImageFileName.replace('ID', postResume.shareCode) ;
 
       if(this.status.value == 2 || this.status.value ==1 ){ //discoverable
@@ -248,7 +252,7 @@ export class PostComponent implements OnInit {
     .then(() =>{
       this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
       .then(() =>{
-        if(postData.imageFileName != null){
+        if(postData.imageFileName != null && this.postImageContent){
           
           this.userSession.putFile(postData.imageFileName,this.postImageContent, this.writeOptions)
           .then(() =>{
