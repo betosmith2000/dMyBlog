@@ -13,7 +13,6 @@ import { PostReaderComponent } from './blog/post-reader.component';
 import { BlogShareComponent } from './blog/blog-share.component';
 import { DiscoverComponent } from './blog/discover.component';
 import { HttpClientModule } from '@angular/common/http';
-import { CeiboShare } from 'ng2-social-share';
 
 @NgModule({
   declarations: [
@@ -24,8 +23,7 @@ import { CeiboShare } from 'ng2-social-share';
     BlogComponent,
     PostReaderComponent,
     BlogShareComponent,
-    DiscoverComponent,
-    CeiboShare
+    DiscoverComponent
   ],
   imports: [
     BrowserAnimationsModule,

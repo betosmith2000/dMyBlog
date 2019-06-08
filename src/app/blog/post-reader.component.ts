@@ -66,7 +66,7 @@ export class PostReaderComponent implements OnInit {
           this.posts = JSON.parse(fileContents);
           if(this.posts == null)
             this.posts=new Array();
-          let post = this.posts.filter(e=> e.shareCode == this.postId && e.status != 0);
+          let post = this.posts.filter(e=> e.id == this.postId && e.status != 0);
           if(post.length > 0){
             this._post = post[0];
             this.isMissingPost  =false;

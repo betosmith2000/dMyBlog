@@ -15,9 +15,7 @@ export class DiscoverComponent implements OnInit {
   posts:any=new Array();
   isViewingPost : boolean = false;
   shareTitle : string = 'Share this ';
-  postId:string = null;
   userSession :any;
-  userName:string;
   readOptions : any = {decrypt: false, username: null};
   selectedPost: any;
   searchTerm : string='';
@@ -63,8 +61,8 @@ export class DiscoverComponent implements OnInit {
   sharePost(event:Event, p:any){
     //event.stopPropagation();    
     this.shareTitle = "Share this Post!"
-    this.postId=p.shareCode?p.shareCode:p.id;
-    this.userName = p.author;
+    this.selectedPost = p;
+
   }
 
   
