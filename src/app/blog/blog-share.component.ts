@@ -9,6 +9,7 @@ import { Post } from './Post';
 })
 export class BlogShareComponent implements OnInit {
   url:string;
+  urlSEO:string;
   shareWidth: string="600";
   shareHeight: string="480";
   title:string;
@@ -36,7 +37,8 @@ export class BlogShareComponent implements OnInit {
   Init() {
     if(this.Post  ){
       this.title = this.Post.title;
-      this.url="https://www.dmyblog.co/#/read/" + this.Post.author +"/" +  this.Post.id;
+      this.urlSEO="https://www.dmyblog.co/read/"+  this.Post.id;
+      this.url=window.location.origin +"/#/read/" +this.Post.author +"/" +  this.Post.id;
     }
     else{
       this.url=window.location.origin;
@@ -73,16 +75,16 @@ export class BlogShareComponent implements OnInit {
       var _sharer: any = {};
       if(type == 'facebook'){
           _sharer= this.sharers['facebook']
-          _sharer.params.u = this.url;
+          _sharer.params.u = this.urlSEO;
       }
       else if(type == 'twitter'){
           _sharer = this.sharers['twitter'];
           _sharer.params.text = this.Post.title;
-          _sharer.params.url = this.url;
+          _sharer.params.url = this.urlSEO;
       }
       else if(type == 'linkedIn'){
           _sharer = this.sharers['linkedin'];
-          _sharer.params.url = this.url;
+          _sharer.params.url = this.urlSEO;
       }
 
       return _sharer;

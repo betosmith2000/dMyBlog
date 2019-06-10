@@ -20,12 +20,10 @@
 
     <div class="card shadow">
       <div class="card-body">
-        <div [innerHTML]="content" class="text-capitalize"></div>
+        <div [innerHTML]="content" class="text-capitalize read-post"></div>
           <div class="float-md-right">
-            <button type="button small" class="btn btn-outline-secondary" (click)="close()"  >Return</button>&nbsp;
-            
+            <button type="button small" class="btn btn-outline-secondary" (click)="close()" *ngIf="!isShareURL" >Return</button>&nbsp;
           </div>
-  
       </div>
     </div>
   </div>
@@ -35,3 +33,11 @@
        </div>
   </div>
 </div>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>

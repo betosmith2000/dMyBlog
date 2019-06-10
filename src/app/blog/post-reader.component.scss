@@ -23,3 +23,12 @@
     left: 0;
     margin-left: 15px;
   }
+
+
+  .read-post{
+    max-width: 100%;
+  }
+
+  .read-post ::ng-deep blockquote figure img {
+    max-width: 100%!important;
+  }

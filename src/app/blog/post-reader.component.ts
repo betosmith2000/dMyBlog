@@ -17,6 +17,7 @@ export class PostReaderComponent implements OnInit {
   imageContent:string;
   author:string;
   date:Date;
+  isShareURL:boolean=false;
   private LOGO = require("../../assets/logo-header.png");
   readonly postsFileName:string = '/posts.txt';
 
@@ -50,8 +51,16 @@ export class PostReaderComponent implements OnInit {
 
       this.userName = params.get("userBlog");
       this.postId = params.get("postId");
-      if(this.userName && this.postId)
+      if(this.userName && this.postId){
         this.Post = null;
+        this.isShareURL = true;
+      }
+      else{
+        this.isShareURL = false;
+      }
+      
+
+
       if((this.userName==null || this.userName.trim() =='') ){
         //const userData = this.userSession.loadUserData();
         this.userName = this.Post.author;

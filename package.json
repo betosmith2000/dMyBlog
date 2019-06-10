@@ -1,6 +1,6 @@
 {
   "name": "d-my-blog",
-  "version": "0.4.9",
+  "version": "0.4.94",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4201",
