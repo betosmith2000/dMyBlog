@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 
+
 @Component({
   selector: 'app-post-reader',
   templateUrl: './post-reader.component.html',
@@ -131,6 +132,10 @@ export class PostReaderComponent implements OnInit {
       this.userSession.getFile(p.imageFileName,this.readOptions)
       .then((imageContent) => {
         this.imageContent= imageContent;
+      })
+      .catch((error)=>{
+        console.log('Error reading image');
+        this.ngxService.stop();        
       });
     }
   }

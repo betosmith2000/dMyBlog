@@ -23,13 +23,14 @@ export class PostComponent implements OnInit {
   readonly postsFileName:string = '/posts.txt';
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
-
+  title :string = "New Post";
   readOptions : any = {decrypt: false};
   writeOptions : any = {encrypt:false};
   userSession :any;
-  postImageContent: string;
+  postImageContent: string='';
   posts:any;
   userName :string;  
+  hasImageHeader:boolean=false;
 
   form :FormGroup;
   postTitle:FormControl;
@@ -70,6 +71,7 @@ export class PostComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.hasImageHeader=false;
     this.catStatus = [
       new NameValue(0, 'Private'),
       new NameValue(1, 'Public'),
@@ -82,7 +84,8 @@ export class PostComponent implements OnInit {
     const userData = this.userSession.loadUserData();
     this.userName = userData.username;
     if (this.userSession.isUserSignedIn() && this.Post!=null) {
-     this.ngxService.start();
+      this.title ="Update Post";
+      this.ngxService.start();
 
       this.userSession.getFile(this.Post.postFileName,this.readOptions)
         .then((fileContents) => {
@@ -91,7 +94,22 @@ export class PostComponent implements OnInit {
           this.postContent.setValue(this.editingPost.postContent);
           let statusPost = this.editingPost.status?this.editingPost.status:0;
           this.status.setValue(statusPost);
-          this.ngxService.stop();
+          if(this.Post.imageFileName){
+            this.hasImageHeader=true;
+
+            this.userSession.getFile(this.Post.imageFileName,this.readOptions)
+              .then((imagefileContents) => {
+                this.postImageContent = imagefileContents;
+                this.ngxService.stop();
+              })
+              .catch((error) => {
+                console.log('Error loading image header!');
+                this.ngxService.stop();
+              });
+          }
+          else{
+            this.ngxService.stop();
+          }
         })
         .catch((error) => {
           console.log('Error loading post!');
@@ -186,12 +204,11 @@ export class PostComponent implements OnInit {
         postResume.title = this.postTitle.value;
         postResume.status =  this.status.value;
       }
-
-      // if(this.postImageContent == null && postResume.imageFileName != null)
-      //   postResume.imageFileName = null;
-      // else 
+      
       if(this.postImageContent != null && postResume.imageFileName == null)
         postResume.imageFileName = this.postImageFileName.replace('ID', postResume.shareCode) ;
+      else 
+        postResume.imageFileName = null;
 
       if(this.status.value == 2 || this.status.value ==1 ){ //discoverable
         //save to index, if not created yet!
@@ -250,10 +267,10 @@ export class PostComponent implements OnInit {
 
     this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
     .then(() =>{
+      postContent = postContent.replace("img src","img style=\\\"max-width:100%\\\" src");
       this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
       .then(() =>{
-        if(postData.imageFileName != null && this.postImageContent){
-          
+        if(postData.imageFileName != null && this.postImageContent){          
           this.userSession.putFile(postData.imageFileName,this.postImageContent, this.writeOptions)
           .then(() =>{
             this.toastr.success("The changes have been saved!",'Success');
@@ -306,9 +323,24 @@ export class PostComponent implements OnInit {
   _handleReaderLoaded(e) {
     var reader = e.target;
     this.postImageContent =  reader.result;
+    this.hasImageHeader = true;
     
   }
 
+  removeImageHeader():void{
+    if(this.Post!= null && this.Post.imageFileName){
+      this.userSession.putFile(this.Post.imageFileName,'Deleted!', this.writeOptions)
+      .then(() =>{
+        this.Post.imageFileName=null;
+      })
+      .catch((error)=>{
+        console.log('Error saving image changes');
+      });
+    }
+    this.postImageContent=null;
+    this.hasImageHeader = false;
+
+  }
 
 }
 

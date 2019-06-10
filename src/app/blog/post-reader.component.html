@@ -20,7 +20,7 @@
 
     <div class="card shadow">
       <div class="card-body">
-        <div [innerHTML]="content" class="text-capitalize read-post"></div>
+        <div [innerHTML]="content|safeHtml" class="text-capitalize"></div>
           <div class="float-md-right">
             <button type="button small" class="btn btn-outline-secondary" (click)="close()" *ngIf="!isShareURL" >Return</button>&nbsp;
           </div>
@@ -28,7 +28,7 @@
     </div>
   </div>
   <div *ngIf='isMissingPost'>
-      <div class="align-middle">
+      <div class="align-middle mt-5" >
           <p class="alert alert-warning text-center" role="alert">The requested Post does not exist or is not published</p>
        </div>
   </div>
