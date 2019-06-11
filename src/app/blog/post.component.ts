@@ -207,7 +207,7 @@ export class PostComponent implements OnInit {
       
       if(this.postImageContent != null && postResume.imageFileName == null)
         postResume.imageFileName = this.postImageFileName.replace('ID', postResume.shareCode) ;
-      else 
+      else if(this.postImageContent==null || this.postImageContent=="")
         postResume.imageFileName = null;
 
       if(this.status.value == 2 || this.status.value ==1 ){ //discoverable
@@ -267,7 +267,7 @@ export class PostComponent implements OnInit {
 
     this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
     .then(() =>{
-      postContent = postContent.replace("img src","img style=\\\"max-width:100%\\\" src");
+      postContent = postContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
       this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
       .then(() =>{
         if(postData.imageFileName != null && this.postImageContent){          
@@ -329,13 +329,15 @@ export class PostComponent implements OnInit {
 
   removeImageHeader():void{
     if(this.Post!= null && this.Post.imageFileName){
-      this.userSession.putFile(this.Post.imageFileName,'Deleted!', this.writeOptions)
-      .then(() =>{
-        this.Post.imageFileName=null;
-      })
-      .catch((error)=>{
-        console.log('Error saving image changes');
-      });
+      this.Post.imageFileName=null;
+      this.postImageContent = null;
+      // this.userSession.putFile(this.Post.imageFileName,'Deleted!', this.writeOptions)
+      // .then(() =>{
+      //   this.Post.imageFileName=null;
+      // })
+      // .catch((error)=>{
+      //   console.log('Error saving image changes');
+      // });
     }
     this.postImageContent=null;
     this.hasImageHeader = false;
