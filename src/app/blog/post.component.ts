@@ -205,7 +205,7 @@ export class PostComponent implements OnInit {
         postResume.status =  this.status.value;
       }
       
-      if(this.postImageContent != null && postResume.imageFileName == null)
+      if(this.postImageContent != null && this.postImageContent != "" && postResume.imageFileName == null)
         postResume.imageFileName = this.postImageFileName.replace('ID', postResume.shareCode) ;
       else if(this.postImageContent==null || this.postImageContent=="")
         postResume.imageFileName = null;
@@ -213,7 +213,7 @@ export class PostComponent implements OnInit {
       if(this.status.value == 2 || this.status.value ==1 ){ //discoverable
         //save to index, if not created yet!
         if(postResume.id.length != 24){
-          postResume.id="";
+          //postResume.id="";
           this._api.add(postResume)
             .subscribe(res => {
               postResume.id= res.id;
@@ -243,7 +243,7 @@ export class PostComponent implements OnInit {
           this._api.delete(postResume.id)
             .subscribe(res => {
               console.log('Delete discoverable Post id:' + postResume.id);
-              postResume.id="";
+              //postResume.id="";
               this.saveFiles(postResume);
             }, error =>{
               console.log('Error to save post to index');

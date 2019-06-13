@@ -129,6 +129,7 @@ export class BlogComponent implements OnInit {
         postResume.id = res.id;
         postResume.imageFileName = res.imageFileName;
         this.getPostImage(postResume);
+        this.selectedPost = null;
       }else{
         res.imageFileContent = null;
         this.getPostImage(res);
