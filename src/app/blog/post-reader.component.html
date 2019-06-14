@@ -23,7 +23,7 @@
         <div [innerHTML]="content|safeHtml" ></div>
         <hr>
         <div class="text-center">
-            <app-post-interaction *ngIf="Post.status>0" [Post]="_post"></app-post-interaction>
+            <app-post-interaction *ngIf="Post?.status>0" [Post]="_post"></app-post-interaction>
           
         </div>
         <div class="float-md-right">

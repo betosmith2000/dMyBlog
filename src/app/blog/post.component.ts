@@ -166,7 +166,7 @@ export class PostComponent implements OnInit {
         imageFileName:this.postImageFileName.replace('ID',hash.toString()) ,
         status: this.status.value,
         shareCode: hash.toString(),
-        Interaction:null
+        interactions:null
       };
       if(this.postImageContent == null || this.postImageContent == '')
         postData.imageFileName = null;

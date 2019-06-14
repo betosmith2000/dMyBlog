@@ -11,7 +11,7 @@ export interface IPost {
     imageFileName:string;
     status:number;
     shareCode:string;
-    Interaction:InteractionTypeResult;
+    interactions:InteractionTypeResult;
 }
 
 export class Post implements IPost{
@@ -24,6 +24,6 @@ export class Post implements IPost{
     imageFileName: string;
     status:number;
     shareCode:string;
-    Interaction:InteractionTypeResult;
+    interactions:InteractionTypeResult;
 
 }

@@ -4,6 +4,7 @@ import { ApiService } from '../share/data-service';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { Pagination } from '../share/pagination';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { InteractionTypeResult } from './models/InteractionTypeResult';
 
 @Component({
   selector: 'app-discover',
@@ -19,6 +20,7 @@ export class DiscoverComponent implements OnInit {
   readOptions : any = {decrypt: false, username: null};
   selectedPost: any;
   searchTerm : string='';
+  userName :string  = '';
 
   private LOGO = require("../../assets/logo-header.png");
    //Paginacion
@@ -27,12 +29,18 @@ export class DiscoverComponent implements OnInit {
 
 
   constructor(private _api:ApiService, private ngxService: NgxUiLoaderService) { 
-    _api.setApi('Posts')
+    _api.setApi('Posts');
   }
 
   ngOnInit() {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
+    if(this.userSession.isUserSignedIn())
+    {
+      const userData = this.userSession.loadUserData();
+      this.userName = userData.username;
+    }
+
     this.getData();
   }
 
@@ -68,8 +76,24 @@ export class DiscoverComponent implements OnInit {
   
   onClosedViewer(res: any): void {
     this.isViewingPost = false;
+    this.getInteractions(this.selectedPost);
+
   }
 
+  getInteractions(post:any){
+    if(post.status>0){
+      let p = "postId=" + post.id + "&userId=" + this.userName;
+      this._api.setApi('Interactions');
+      this._api.getAll<InteractionTypeResult>(p).subscribe(d => {
+        post.interactions = d;
+        this.ngxService.stop();
+      }, err => {
+        this.ngxService.stop();
+        console.log('Error loading interactions');
+      });
+    }
+  }
+  
   
   viewPost(p:any){
     this.selectedPost = p;
@@ -122,6 +146,8 @@ export class DiscoverComponent implements OnInit {
   getData(){
     this.ngxService.start();
     let p = "pageSize=" + this.pagination.pageSize + "&pageNumber=" + this.pagination.pageNumber + "&searchTerm=" + this.searchTerm;
+    this._api.setApi('Posts');
+
     this._api.getAll<Pagination<Post>>(p).subscribe(d => {
       this.posts = d.data;
       this.pagination = d;

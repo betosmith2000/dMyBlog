@@ -23,7 +23,6 @@ export class PostInteractionComponent implements OnInit {
   @Input()
   set Post(post: Post) {
       this._post = post;
-      this.getInteractions();
   }
   get Post(): Post {
       return this._post;
@@ -41,6 +40,8 @@ export class PostInteractionComponent implements OnInit {
       this.canInteract = true;
       const userData = this.userSession.loadUserData();
       this.userName = userData.username;
+      this.getInteractions();
+
     }
     else{
       this.canInteract = false;
@@ -51,7 +52,7 @@ export class PostInteractionComponent implements OnInit {
     this.ngxService.start();
     
     if(this._post){
-      let p = "postId=" + this.Post.id + "&userId=" + this.Post.author;
+      let p = "postId=" + this.Post.id + "&userId=" + this.userName;
       this._api.getAll<InteractionTypeResult>(p).subscribe(d => {
         this.isInteractionsReady=true;
         this.interactions = d;
