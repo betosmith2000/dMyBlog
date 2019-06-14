@@ -58,3 +58,50 @@
 .card-img-overlay{
     padding: 0!important;
 }
+
+
+
+
+.unlike{
+    color: white;
+    margin: 0px;
+    padding: 0px;
+    cursor:context-menu;
+}
+
+.like{
+    color:white;
+    margin: 0px;
+    padding: 0px;
+    cursor: context-menu;
+
+}
+
+
+.stack-site{
+    font-size: 50%;
+    
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+
+.interactions{
+    position: absolute;
+    bottom: 10px;
+}
+
+.button-back{
+    background-color: white;
+    padding: 5px;
+    opacity: .85;
+}
+
+
+.interaction-back{
+    background-color: black;
+    padding: 5px;
+    opacity: .8;
+    cursor: context-menu;
+}

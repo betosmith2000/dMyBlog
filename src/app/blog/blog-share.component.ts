@@ -29,6 +29,17 @@ export class BlogShareComponent implements OnInit {
       return this._post;
   }
 
+  private _postUser: string = null;
+  @Input()
+  set PostUser(postUser: string) {
+      this._postUser = postUser;
+      this.Init();
+
+  }
+  get PostUser(): string {
+      return this._postUser;
+  }
+
 
 
   ngOnInit() {
@@ -41,7 +52,7 @@ export class BlogShareComponent implements OnInit {
       this.url=window.location.origin +"/#/read/" +this.Post.author +"/" +  this.Post.id;
     }
     else{
-      this.url=window.location.origin;
+      this.url=window.location.origin+"#/blog/" + this.PostUser;
     }
   }
 

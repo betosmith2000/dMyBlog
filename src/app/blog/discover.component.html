@@ -39,27 +39,24 @@
         </div>
         <div class="h-100 d-flex flex-column justify-content-end card-img-overlay">
           <div class="row">
-            <div class="col-lg-6 align-text-bottom" style="margin-top:40px" >
-              <div class="btn-group mb-4 mr-1 float-left " role="group" aria-label="Post options" >
-                
-                <span class="btn btn-link like">
-                    <span class="fa-stack">
-                        
-                        <i class="fas fa-heart fa-stack-2x "></i>
-                        <span class="badge badge-dark stack-site">{{p?.interactions?.likeCount}}</span>
+            <div class="col-lg-6 align-text-bottom interactions"  >
+                <div class="btn-group mb-4 mr-1 float-left interaction-back" role="group" aria-label="Post options" >
+                    <span class="btn btn-link unlike" [ngStyle]="{'color': p?.interactions?.unlikeCount > 0 ?'#EB0000':'#FFFFFF' }" >
+                      <span class="fa-stack">
+                        <i class="fas fa-frown-open fa-stack-2x"></i>
+                        <span class="badge badge-dark stack-site">{{p?.interactions?.unlikeCount}}</span>
                       </span>
-                </span>
-                <span class="btn btn-link unlike">
-                    <span class="fa-stack">
-                        
-                        <i class="fas fa-heart-broken fa-stack-2x"></i>
-                        <span class="badge badge-dark stack-site">{{p?.interactions?.likeCount}}</span>
-                      </span>
-                </span>
-            
-                </div>
+                  </span>
+              
+                  <span class="btn btn-link like" [ngStyle]="{'color': p?.interactions?.likeCount > 0 ?'#2CB426':'#FFFFFF' }" >
+                      <span class="fa-stack">
+                          <i class="fas fa-grin-hearts fa-stack-2x "></i>
+                          <span class="badge badge-dark stack-site">{{p?.interactions?.likeCount}}</span>
+                        </span>
+                  </span>
+                  </div>
               </div>
-            <div class="col-lg-6" style="margin-bottom:5px; " >
+            <div class="col-lg-12" style="margin-bottom:5px; " >
               <div class="btn-group-vertical mb-4 mr-1 float-right" role="group" aria-label="Post options" >
                  
                 <button class="btn btn-outline-primary .button-post"  title="Share post" type="button" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)">

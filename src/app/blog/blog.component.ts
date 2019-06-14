@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ApiService } from '../share/data-service';
+import { Post } from './models/Post';
+import { InteractionTypeResult } from './models/InteractionTypeResult';
 
 @Component({
   selector: 'app-blog',
@@ -31,7 +33,9 @@ export class BlogComponent implements OnInit {
   readonly postImageFileName:string = '/post-img-ID.txt';
   posts:any = new Array();
   constructor(private toastr: ToastrService, private route:ActivatedRoute, 
-    private ngxService: NgxUiLoaderService, private _api: ApiService) { }
+    private ngxService: NgxUiLoaderService, private _api: ApiService) { 
+     
+    }
 
   ngOnInit() {
     this._api.setApi('Posts');
@@ -74,6 +78,7 @@ export class BlogComponent implements OnInit {
             this.posts.forEach(p => {
               p.imageFileContent = null;
               this.getPostImage(p);
+              this.getInteractions(p);
             });
             this.ngxService.stop();
 
@@ -92,7 +97,19 @@ export class BlogComponent implements OnInit {
 
     
   }
-
+  getInteractions(post:any){
+    if(post.status>0){
+      let p = "postId=" + post.id + "&userId=" + post.author;
+      this._api.setApi('Interactions');
+      this._api.getAll<InteractionTypeResult>(p).subscribe(d => {
+        post.Interaction = d;
+        this.ngxService.stop();
+      }, err => {
+        this.ngxService.stop();
+        console.log('Error loading interactions');
+      });
+    }
+  }
   getPostImage(p:any):void {
     if(p.imageFileName== null || p.imageFileName=='')
       p.imageFileContent= this.LOGO;
@@ -140,11 +157,13 @@ export class BlogComponent implements OnInit {
 
   onClosedViewer(res: any): void {
     this.isViewingPost = false;
+    this.getInteractions(this.selectedPost);
   }
 
 
   deletePost(event:Event, p:any):void{
     event.stopPropagation();    
+    this._api.setApi('Posts');
 
     if(confirm('Are you sure you want to delete this post?')){
       this.ngxService.start(); 
@@ -217,6 +236,7 @@ export class BlogComponent implements OnInit {
 
   shareBlog():void {
     this.shareTitle = "Share this Blog!"
+    this.selectedPost = null;
     this.postId = null;
   }
 

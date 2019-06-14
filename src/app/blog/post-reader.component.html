@@ -20,10 +20,14 @@
 
     <div class="card shadow">
       <div class="card-body">
-        <div [innerHTML]="content|safeHtml" class="text-capitalize"></div>
+        <div [innerHTML]="content|safeHtml" ></div>
         <hr>
+        <div class="text-center">
+            <app-post-interaction *ngIf="Post.status>0" [Post]="_post"></app-post-interaction>
+          
+        </div>
         <div class="float-md-right">
-            <app-post-interaction *ngIf="isShareURL" [Post]="_post"></app-post-interaction>
+          
           <button type="button small" class="btn btn-outline-secondary" (click)="close()" *ngIf="!isShareURL" >Return</button>&nbsp;
         </div>
       </div>

@@ -92,3 +92,25 @@
 .button-post{
     background-color:red;
 }
+
+
+.interactions{
+    position: absolute;
+    bottom: 10px;
+}
+
+
+
+.button-back{
+    background-color: white;
+    padding: 5px;
+    opacity: .85;
+}
+
+
+.interaction-back{
+    background-color: black;
+    padding: 5px;
+    opacity: .8;
+    cursor: context-menu;
+}
