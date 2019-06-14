@@ -21,9 +21,11 @@
     <div class="card shadow">
       <div class="card-body">
         <div [innerHTML]="content|safeHtml" class="text-capitalize"></div>
-          <div class="float-md-right">
-            <button type="button small" class="btn btn-outline-secondary" (click)="close()" *ngIf="!isShareURL" >Return</button>&nbsp;
-          </div>
+        <hr>
+        <div class="float-md-right">
+            <app-post-interaction *ngIf="isShareURL" [Post]="_post"></app-post-interaction>
+          <button type="button small" class="btn btn-outline-secondary" (click)="close()" *ngIf="!isShareURL" >Return</button>&nbsp;
+        </div>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from './Post';
+import { Post } from './models/Post';
 import { ApiService } from '../share/data-service';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { Pagination } from '../share/pagination';

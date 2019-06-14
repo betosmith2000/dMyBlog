@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Post } from './Post';
+import { Post } from './models/Post';
 
 @Component({
   selector: 'app-blog-share',

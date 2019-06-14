@@ -1,0 +1,16 @@
+<div *ngIf="isInteractionsReady">
+  <button class="btn btn-link unlike" (click)="unlike()">
+    <span class="fa-stack fa-2x">
+      <i class="fas fa-square fa-stack-2x"></i>
+      <i class="fas fa-heart-broken fa-stack-1x fa-inverse"></i>
+      <span class="badge badge-dark stack-site">{{interactions?.unlikeCount}}</span>
+    </span>
+  </button>
+  <button class="btn btn-link like" (click)="like()">
+    <span class="fa-stack fa-2x">
+      <i class="fas fa-square fa-stack-2x"></i>
+      <i class="fas fa-heart fa-stack-1x fa-inverse"></i>
+      <span class="badge badge-dark stack-site">{{interactions?.likeCount}}</span>
+    </span>
+  </button>
+</div>

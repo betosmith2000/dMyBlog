@@ -1,0 +1,32 @@
+.float-bar{
+    position:fixed;
+	
+	top:180px;
+	right:40px;
+	background-color:#0C9;
+	color:#FFF;
+	
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+}
+
+.stack-site{
+    font-size: 30%;
+    
+    position: absolute;
+    top: 5px;
+    right: 13px;
+}
+
+.unlike{
+    color: red;
+    margin: 0px;
+    padding: 0px;
+
+}
+
+.like{
+    color: forestgreen;
+    margin: 0px;
+padding: 0px;
+}

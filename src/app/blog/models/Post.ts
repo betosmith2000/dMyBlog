@@ -1,3 +1,4 @@
+import { InteractionTypeResult } from './InteractionTypeResult';
 
 
 export interface IPost {
@@ -10,6 +11,7 @@ export interface IPost {
     imageFileName:string;
     status:number;
     shareCode:string;
+    Interaction:InteractionTypeResult;
 }
 
 export class Post implements IPost{
@@ -22,4 +24,6 @@ export class Post implements IPost{
     imageFileName: string;
     status:number;
     shareCode:string;
+    Interaction:InteractionTypeResult;
+
 }

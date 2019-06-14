@@ -7,9 +7,9 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-inline';
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { CustomUploaderAdapter } from './CKEditor/customUploaderAdapter';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { Post } from './Post';
 import { ApiService } from '../share/data-service';
 import { NameValue } from '../share/name-value';
+import { Post } from './models/Post';
 
 
 
@@ -165,7 +165,8 @@ export class PostComponent implements OnInit {
         postFileName: this.postContentFileName.replace('ID',hash.toString()) ,
         imageFileName:this.postImageFileName.replace('ID',hash.toString()) ,
         status: this.status.value,
-        shareCode: hash.toString()
+        shareCode: hash.toString(),
+        Interaction:null
       };
       if(this.postImageContent == null || this.postImageContent == '')
         postData.imageFileName = null;

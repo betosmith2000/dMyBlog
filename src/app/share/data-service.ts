@@ -51,7 +51,7 @@ import { environment } from 'src/environments/environment';
             );
     }
   
-    public update<T>(id: number, itemToUpdate: any): Observable<T> {
+    public update<T>(id: string, itemToUpdate: any): Observable<T> {
         return this._http
             .put<T>(this._url + '/' + id, itemToUpdate)
             .pipe(

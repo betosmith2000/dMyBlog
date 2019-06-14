@@ -63,3 +63,32 @@
     max-width: 60px;
 }
 
+
+
+.unlike{
+    color: red;
+    margin: 0px;
+    padding: 0px;
+    cursor:context-menu;
+}
+
+.like{
+    color: forestgreen;
+    margin: 0px;
+    padding: 0px;
+    cursor: context-menu;
+
+}
+
+
+.stack-site{
+    font-size: 50%;
+    
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.button-post{
+    background-color:red;
+}

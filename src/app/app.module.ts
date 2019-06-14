@@ -14,6 +14,7 @@ import { BlogShareComponent } from './blog/blog-share.component';
 import { DiscoverComponent } from './blog/discover.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SafeHtmlPipe } from './Pipes/safe-html';
+import { PostInteractionComponent } from './blog/post-interaction.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SafeHtmlPipe } from './Pipes/safe-html';
     PostReaderComponent,
     BlogShareComponent,
     DiscoverComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    PostInteractionComponent
   ],
   imports: [
     BrowserAnimationsModule,
