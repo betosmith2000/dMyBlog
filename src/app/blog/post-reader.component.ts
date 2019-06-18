@@ -19,6 +19,9 @@ export class PostReaderComponent implements OnInit {
   author:string;
   date:Date;
   isShareURL:boolean=false;
+  shareTitle:string;
+  showNewRootComment:boolean=false;
+  comments:any;
   private LOGO = require("../../assets/logo-header.png");
   readonly postsFileName:string = '/posts.txt';
 
@@ -43,7 +46,7 @@ export class PostReaderComponent implements OnInit {
   constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService) { }
 
   ngOnInit() {
-   
+    this.comments = new Array();
     this.route.paramMap.subscribe(params => {
       const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
       this.userSession = new blockstack.UserSession({appConfig:appConfig});
@@ -140,4 +143,24 @@ export class PostReaderComponent implements OnInit {
     }
   }
 
+
+  
+  sharePost(event:Event, p:any){
+    this.shareTitle = "Share this Post!"
+   // event.stopPropagation();  
+  }
+
+  commentPost(event:Event, p:any){
+    this.showNewRootComment = !this.showNewRootComment ;
+   // event.stopPropagation();  
+  }
+  closeComments(comment:any):void{
+    if(comment){
+      
+    }
+    else{
+
+    }
+    this.showNewRootComment = false;
+  }
 }

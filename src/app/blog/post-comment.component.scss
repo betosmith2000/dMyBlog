@@ -1,0 +1,6 @@
+:host ::ng-deep .ck-editor__editable {
+    min-height: 200px;
+    background-color: white;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.16), 0 2px 4px rgba(0,0,0,0.23);
+}

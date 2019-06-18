@@ -42,6 +42,7 @@ export class PostComponent implements OnInit {
 
   public Editor = ClassicEditor;
   ckconfig = {
+    placeholder: 'Type the content here!',
     extraPlugins: [ this.CustomUploadAdapterPlugin ],
     toolbar :{
       viewportTopOffset : 90
