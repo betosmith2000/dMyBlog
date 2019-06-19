@@ -1,0 +1,30 @@
+<div class="container">
+
+<div class="row">
+  <div class="col-lg-10 col-sm-12"  >
+    <div class="alert alert-dark" role="alert">
+        <div class="float-right">
+            <button class="btn btn-link text-danger btn-sm " title="Delete comment!" type="button" *ngIf="canEdit" (click)="delete(Comment)">
+                <i class="far fa-trash-alt"></i>
+            </button>&nbsp;
+            <button class="btn btn-link btn-sm " title="Edit comment!" type="button" *ngIf="canEdit">
+                <i class="far fa-edit"></i>
+            </button>&nbsp;
+            <button class="btn btn-link btn-sm " title="Reply comment!" type="button" *ngIf="canReply">
+                <i class="far fa-comment-dots"></i>
+            </button>&nbsp;
+          </div>
+      <div>
+        <span class="font-weight-bold small">{{Comment.userId}}</span>&nbsp;
+        <span class="font-weight-lighter small">{{Comment.date|date:'medium'}}</span>
+      </div>
+      <div>
+        <div [innerHTML]="Comment.content|safeHtml" class="small" ></div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="col-lg-2 col-sm-12">
+  </div>
+</div>
+</div>

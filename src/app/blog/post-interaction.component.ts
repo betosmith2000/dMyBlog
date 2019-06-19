@@ -52,6 +52,8 @@ export class PostInteractionComponent implements OnInit {
     this.ngxService.start();
     
     if(this._post){
+      this._api.setApi("interactions");
+
       let p = "postId=" + this.Post.id + "&userId=" + this.userName;
       this._api.getAll<InteractionTypeResult>(p).subscribe(d => {
         this.isInteractionsReady=true;
@@ -75,6 +77,8 @@ export class PostInteractionComponent implements OnInit {
       interaction.postId = this.Post.id;
       interaction.userId = this.userName;
       this.ngxService.start();
+      this._api.setApi("interactions");
+
       this._api.update(interaction.id, interaction)
       .subscribe(res => {
         this.interactions.isUserUnlike = true;
@@ -91,6 +95,7 @@ export class PostInteractionComponent implements OnInit {
     }
     else if(this.interactions.isUserUnlike){ 
       this.ngxService.start();
+      this._api.setApi("interactions");
       this._api.delete(this.interactions.userInteractionId)
         .subscribe(res => {
           this.interactions.userInteractionId = "";
@@ -121,6 +126,7 @@ export class PostInteractionComponent implements OnInit {
       interaction.postId = this.Post.id;
       interaction.userId = this.userName;
       this.ngxService.start();
+      this._api.setApi("interactions");
       this._api.update(interaction.id, interaction)
       .subscribe(res => {
         this.interactions.isUserUnlike = false;
@@ -138,6 +144,7 @@ export class PostInteractionComponent implements OnInit {
     }
     else if(this.interactions.isUserLike){ 
       this.ngxService.start();
+      this._api.setApi("interactions");
       this._api.delete(this.interactions.userInteractionId)
         .subscribe(res => {
           this.interactions.userInteractionId = "";
@@ -161,7 +168,7 @@ export class PostInteractionComponent implements OnInit {
     interaction.postId = this._post.id;
     interaction.userId = this.userName;
     this.ngxService.start();
-
+    this._api.setApi("interactions");
     this._api.add(interaction)
       .subscribe(res => {
         interaction.id= res.id;

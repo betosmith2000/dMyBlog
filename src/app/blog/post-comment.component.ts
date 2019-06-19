@@ -49,7 +49,7 @@ export class PostCommentComponent implements OnInit {
     if(this.canComment){
       let p = Object.assign({},  this.form.value);
       this.ngxService.start();
-      let fileContent = JSON.stringify(p.postContent);
+      let fileContent = p.postContent;
       fileContent = fileContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
       let hash  = Md5.hashStr(new Date().toISOString(),false);
 

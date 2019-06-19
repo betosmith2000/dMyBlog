@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SafeHtmlPipe } from './Pipes/safe-html';
 import { PostInteractionComponent } from './blog/post-interaction.component';
 import { PostCommentComponent } from './blog/post-comment.component';
+import { CommentReaderComponent } from './blog/comment-reader.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { PostCommentComponent } from './blog/post-comment.component';
     DiscoverComponent,
     SafeHtmlPipe,
     PostInteractionComponent,
-    PostCommentComponent
+    PostCommentComponent,
+    CommentReaderComponent
   ],
   imports: [
     BrowserAnimationsModule,

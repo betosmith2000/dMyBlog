@@ -5,7 +5,7 @@ export interface IPostComment{
     parentPostId:string;
     fileName:string;
     date: string;
-
+    content:string;
 }
 
 export class PostComment implements IPostComment{
@@ -15,6 +15,7 @@ export class PostComment implements IPostComment{
     parentPostId:string;
     fileName:string;
     date: string;
+    content:string;
 
     constructor(){}
 }
