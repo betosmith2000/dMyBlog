@@ -7,10 +7,10 @@
             <button class="btn btn-link text-danger btn-sm " title="Delete comment!" type="button" *ngIf="canEdit" (click)="delete(Comment)">
                 <i class="far fa-trash-alt"></i>
             </button>&nbsp;
-            <button class="btn btn-link btn-sm " title="Edit comment!" type="button" *ngIf="canEdit">
+            <button class="btn btn-link btn-sm " title="Edit comment!" type="button" *ngIf="canEdit" (click)="showUpdate(Comment)">
                 <i class="far fa-edit"></i>
             </button>&nbsp;
-            <button class="btn btn-link btn-sm " title="Reply comment!" type="button" *ngIf="canReply">
+            <button class="btn btn-link btn-sm " title="Reply comment!" type="button" *ngIf="canReply && false">
                 <i class="far fa-comment-dots"></i>
             </button>&nbsp;
           </div>
@@ -19,7 +19,11 @@
         <span class="font-weight-lighter small">{{Comment.date|date:'medium'}}</span>
       </div>
       <div>
-        <div [innerHTML]="Comment.content|safeHtml" class="small" ></div>
+        <div [innerHTML]="Comment.content|safeHtml" class="small" *ngIf="!isEditing" ></div>
+        <div  *ngIf="isEditing && canEdit">
+          <app-post-comment [Post]="_post" [Comment]="Comment" (closeComments)='closeEdition($event)'></app-post-comment>
+        </div>
+
       </div>
       
     </div>

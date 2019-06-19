@@ -42,7 +42,8 @@
       <br>
       <div class="container-fluid"   >
         <div class="row" >
-          <div class="col-lg-9 col-sm-12"  *ngIf="showNewRootComment"><app-post-comment [Post]="_post" (closeComments)='closeComments($event)'></app-post-comment></div>
+          <div class="col-lg-9 col-sm-12"  *ngIf="showNewRootComment">
+            <app-post-comment [Post]="_post" (closeComments)='closeComments($event)'></app-post-comment></div>
           <div class="col-lg-3 col-sm-12"></div>
         </div>
       </div>
@@ -54,7 +55,7 @@
       </div>
       <div  *ngIf="comments?.length > 0">
         <div *ngFor="let c of comments"  >
-          <app-comment-reader [Comment]="c" (deleteComment)="onDeleteComent($event)"></app-comment-reader>
+          <app-comment-reader [Comment]="c" (deleteComment)="onDeleteComent($event)" (updateComment)="onUpdateComment($event)"></app-comment-reader>
         </div>
       </div>
   </div>

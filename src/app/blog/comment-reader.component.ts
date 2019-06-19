@@ -17,8 +17,10 @@ export class CommentReaderComponent implements OnInit {
   userSession : any;
   readOptions : any = {decrypt: false, username: null};
   writeOptions : any = {encrypt:false};
+  isEditing :boolean=false;
 
   @Output() deleteComment = new EventEmitter();
+  @Output() updateComment = new EventEmitter();
 
   private _comment: PostComment = null;
   @Input()
@@ -94,6 +96,14 @@ export class CommentReaderComponent implements OnInit {
       });
 
     }
+    
+  }
+  showUpdate():void{
+    this.isEditing = true;
+  }
+  closeEdition(c:PostComment){
+    this.updateComment.emit(c);
+    this.isEditing = false;
     
   }
 }
