@@ -24,8 +24,8 @@ export class PostCommentComponent implements OnInit {
   canComment:boolean=false;
   public Editor = ClassicEditor;
   ckconfig = {
-    placeholder: 'Type the comment here!',
-    toolbar:  [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote','InsertTable','MediaEmbed','Undo', 'Redo' ]
+   // placeholder: 'Type the comment here!'//,
+    //toolbar:  [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote','InsertTable','MediaEmbed','Undo', 'Redo' ]
   };
   
   @Output() closeComments = new EventEmitter();
