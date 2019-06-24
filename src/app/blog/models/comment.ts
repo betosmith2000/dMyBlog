@@ -16,6 +16,5 @@ export class PostComment implements IPostComment{
     fileName:string;
     date: string;
     content:string;
-
     constructor(){}
 }

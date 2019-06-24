@@ -3,6 +3,7 @@ import { PostComment } from './models/comment';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { ApiService } from '../share/data-service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Post } from './models/Post';
 
 @Component({
   selector: 'app-comment-reader',
@@ -18,9 +19,12 @@ export class CommentReaderComponent implements OnInit {
   readOptions : any = {decrypt: false, username: null};
   writeOptions : any = {encrypt:false};
   isEditing :boolean=false;
+  isNewComment :boolean = false;
 
   @Output() deleteComment = new EventEmitter();
   @Output() updateComment = new EventEmitter();
+  @Output() cancelComment = new EventEmitter();
+
 
   private _comment: PostComment = null;
   @Input()
@@ -46,6 +50,15 @@ export class CommentReaderComponent implements OnInit {
       this.userLoggedIn = userData.username;
       this.canEdit = this.userLoggedIn === this.Comment.userId;
       this.canReply = true;
+      this.isNewComment =false;
+        
+      if(!this.Comment.id ){
+        this.isEditing = true;
+        this.canEdit = true;
+        this.isNewComment =true;
+        this.Comment.userId = userData.username;
+        return;
+      }
     }
     else{
       this.userLoggedIn = "-";
@@ -59,6 +72,7 @@ export class CommentReaderComponent implements OnInit {
 
   
   getCommentFile(comment :PostComment):void{
+    
     this.readOptions.username = comment.userId;
     this.userSession.getFile(comment.fileName,this.readOptions)
     .then((fileContent) => {
@@ -102,7 +116,10 @@ export class CommentReaderComponent implements OnInit {
     this.isEditing = true;
   }
   closeEdition(c:PostComment){
-    this.updateComment.emit(c);
+    if(!this.Comment.id)
+      this.cancelComment.emit(c);
+    else
+      this.updateComment.emit(c);
     this.isEditing = false;
     
   }

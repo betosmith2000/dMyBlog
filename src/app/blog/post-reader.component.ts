@@ -24,7 +24,6 @@ export class PostReaderComponent implements OnInit {
   date:Date;
   isShareURL:boolean=false;
   shareTitle:string;
-  showNewRootComment:boolean=false;
   comments:any;
   private LOGO = require("../../assets/logo-header.png");
   readonly postsFileName:string = '/posts.txt';
@@ -158,22 +157,24 @@ export class PostReaderComponent implements OnInit {
   
   sharePost(event:Event, p:any){
     this.shareTitle = "Share this Post!"
-   // event.stopPropagation();  
   }
 
   commentPost(event:Event, p:any){
-    this.showNewRootComment = !this.showNewRootComment ;
-   // event.stopPropagation();  
+    let idx = this.comments.findIndex(e=> e.id == "");
+
+    if(idx!==-1)
+      return;
+    let c  = new PostComment();    
+    c.postId = this.Post.id;
+    c.id="";
+    this.comments.push(c);
   }
+
   closeComments(comment:any):void{
     if(comment){
       this.content ='Loading content...';
       this.comments.push(comment);
     }
-    else{
-
-    }
-    this.showNewRootComment = false;
   }
 
 
@@ -216,6 +217,14 @@ export class PostReaderComponent implements OnInit {
     let comment = this.comments.filter(e=> e.id == c.id)[0];
     comment.content = c.content;
     comment.date = c.date;
-    this.toastr.success("The comment was update!",'Success')    
+  }
+
+  onCancelComment(c:PostComment){
+
+    if(!c){
+      let idx = this.comments.findIndex(e=> e.id == "");
+      if(idx!== -1)
+        this.comments.splice(idx,1);
+    }
   }
 }

@@ -10,7 +10,7 @@
             <button class="btn btn-link btn-sm " title="Edit comment!" type="button" *ngIf="canEdit" (click)="showUpdate(Comment)">
                 <i class="far fa-edit"></i>
             </button>&nbsp;
-            <button class="btn btn-link btn-sm " title="Reply comment!" type="button" *ngIf="canReply && false">
+            <button class="btn btn-link btn-sm " title="Reply comment!" type="button" *ngIf="canReply">
                 <i class="far fa-comment-dots"></i>
             </button>&nbsp;
           </div>
@@ -21,7 +21,7 @@
       <div>
         <div [innerHTML]="Comment.content|safeHtml" class="small" *ngIf="!isEditing" ></div>
         <div  *ngIf="isEditing && canEdit">
-          <app-post-comment [Post]="_post" [Comment]="Comment" (closeComments)='closeEdition($event)'></app-post-comment>
+          <app-post-comment [Comment]="Comment" (closeComments)='closeEdition($event)'></app-post-comment>
         </div>
 
       </div>

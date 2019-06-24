@@ -30,17 +30,6 @@ export class PostCommentComponent implements OnInit {
   
   @Output() closeComments = new EventEmitter();
 
-  private _post: Post = null;
-  
-  @Input()
-  set Post(post: Post) {
-      this._post = post;
-  }
-
-  get Post(): Post {
-      return this._post;
-  }
-
   private _comment: PostComment = null;
   @Input()
   set Comment(comment: PostComment) {
@@ -61,7 +50,7 @@ export class PostCommentComponent implements OnInit {
       let p = Object.assign({},  this.form.value);
       this.ngxService.start();
       let fileContent = p.postContent;
-      if(!this.Comment){
+      if(!this.Comment || this.Comment.id ==""){
         fileContent = fileContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
         fileContent = fileContent.replace(/<p>&nbsp;<\/p><p>&nbsp;<\/p><p>&nbsp;<\/p>/g,"" );
 
@@ -70,20 +59,21 @@ export class PostCommentComponent implements OnInit {
         let fileName = this.commentFileName.replace('ID', hash.toString());
         this.userSession.putFile(fileName,fileContent, this.writeOptions)
         .then(() =>{
-          let comment = new PostComment();
-          comment.fileName = fileName;
-          comment.parentPostId = '0';
-          comment.userId = this.userName;
-          comment.postId = this.Post.id;
-          comment.date= new Date().toISOString();
-          this._api.add(comment)
+          //let comment = new PostComment();
+         this.Comment.fileName = fileName;
+         this.Comment.parentPostId = '0';
+         this.Comment.userId = this.userName;
+         this.Comment.content = fileContent;
+         //this.Comment.postId = this.Comment.postId;
+         this.Comment.date= new Date().toISOString();
+          this._api.add(this.Comment)
           .subscribe(res => {
-            comment.id= res.id;
+            this.Comment.id= res.id;
             console.log('Comment id:' + res.id);
             this.ngxService.stop();
             this.toastr.success("Added comment!",'Success');      
 
-            this.closeComments.emit(comment);
+            this.closeComments.emit(this.Comment);
 
           }, error =>{
             console.log('Error to save comment to index');
@@ -109,7 +99,8 @@ export class PostCommentComponent implements OnInit {
             
             console.log('Update Comment id:' + this.Comment.id);
             this.ngxService.stop();
-            //this.toastr.success("Update comment!",'Success');   
+            this.toastr.success("The comment was update!",'Success');    
+
             this.closeComments.emit(this.Comment);
           }, error =>{
             console.log('Error to update comment to index');
