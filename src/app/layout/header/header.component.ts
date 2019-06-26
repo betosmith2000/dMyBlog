@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,9 @@ import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: Router) { }
+
+
   isSignIn : boolean = false;
   userName :string  = 'User name';
   LOGO = require("../../../assets/logo-header.png");
@@ -19,19 +22,20 @@ export class HeaderComponent implements OnInit {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     if (this.userSession.isSignInPending()) {
-        this.userSession.handlePendingSignIn()
-        .then(userData => {
-            //const profile = userData.profile;
-            this.isSignIn = true;
-            this.userName = userData.username;
-
-        })
+      this.userSession.handlePendingSignIn()
+      .then(userData => {
+        //const profile = userData.profile;
+        this.isSignIn = true;
+        this.userName = userData.username;
+        this.route.navigate(['blog/' +this.userName]);
+      })
     } else 
     
     if (this.userSession.isUserSignedIn()) {
       const userData = this.userSession.loadUserData();
-       this.isSignIn = true;
-       this.userName = userData.username;
+      this.isSignIn = true;
+      this.userName = userData.username;
+      this.route.navigate(['blog/' +this.userName]);
      } 
   }
 
@@ -40,9 +44,10 @@ export class HeaderComponent implements OnInit {
     if (this.userSession.isSignInPending()) {
         this.userSession.handlePendingSignIn()
         .then(userData => {
-            //const profile = userData.profile;
-            this.isSignIn = true;
-            this.userName = userData.username;
+          //const profile = userData.profile;
+          this.isSignIn = true;
+          this.userName = userData.username;
+          this.route.navigate(['blog/' +this.userName]);
         })
     }
   }

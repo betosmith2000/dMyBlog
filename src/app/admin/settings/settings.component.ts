@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ApiService } from 'src/app/share/data-service';
 
+import * as introJs from 'intro.js/intro.js';
+import { Post } from 'src/app/blog/models/Post';
 
 @Component({
   selector: 'app-settings',
@@ -13,6 +15,8 @@ import { ApiService } from 'src/app/share/data-service';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
+  introJS = introJs();
+
   userName :string  = 'User name';
   readonly settingsFileName:string = '/settings.txt';
   readonly postsFileName:string = '/posts.txt';
@@ -33,11 +37,69 @@ export class SettingsComponent implements OnInit {
   isNewPost : boolean = false;
   isUpdatePost :boolean = false;
   selectedPost: any;
+  shareablePost: any;
+  isShowingTour :boolean=false;
+  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, private _api: ApiService) {
+ 
+   }
+  startTour() {
+    this.isShowingTour=true;
+    if(this.posts.length==0){
+      let pEx = new Post();
+      pEx.id="example";
+      pEx.title="Example title post!";
+      pEx.date=new Date().toISOString();
+      this.posts.push(pEx);
+    }
+    this.introJS.setOptions({
+      steps: [
+        {
+          intro: "Welcome to the configuration section, let's take a tour!"
+        },
+        {
+          element: '#step0',
+          intro: "This is your username"
+        },
+        {
+          element: '#step1',
+          intro: "The name, description and image are part of the header of your blog, which is displayed when you share your blog or in the <strong>My Blog</strong> menu.",
+          disableInteraction:true
+        },
+        {
+          element: '#step2',
+          intro: "You need to save the changes to see them in the header of your blog.",
+          disableInteraction:true
+        },
+        {
+          element: "#step3",
+          intro: "You can add a new Post, just press the button!"
+        },
+        {
+          element: "#step4",
+          intro: "Here is the list of the posts that you have created. You can share<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button>, edit<button type='button' class='btn btn-link btn-sm'><i class='far fa-edit'></i></button> or delete<button type='button' class='btn btn-link btn-sm'><i class='far fa-trash-alt'></i></button> them. "
+          
+        },
+      ]
+    });
+ 
+    this.introJS.start();
+    this.introJS.onexit(x =>{
+      let idx = this.posts.findIndex(e=> e.id == "example");
+      if(idx!==-1)
+        this.posts.splice(idx,1);
+        
+      this.isShowingTour=false;
+    });
+  }
 
-  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, private _api: ApiService) { }
+  
+  
+  sharePost(event:Event, p:any){
+    this.shareablePost = p;
+  }
 
+  
   ngOnInit() {
-    
     this.initializeForm();
     this.userSession = new blockstack.UserSession()
     if (this.userSession.isUserSignedIn()) {
@@ -45,7 +107,7 @@ export class SettingsComponent implements OnInit {
 
       const userData = this.userSession.loadUserData();
       this.userName = userData.username;
-    
+
       this.userSession.getFile(this.settingsFileName,this.readOptions)
         .then((fileContents) => {
           let data = JSON.parse(fileContents);
@@ -54,15 +116,18 @@ export class SettingsComponent implements OnInit {
             this.blogDescription.setValue(data.blogDescription);
             this.blogHeaderImage.setValue(data.blogHeaderImage);
 
-            
+
           this.userSession.getFile(this.postsFileName,this.readOptions)
             .then((postContents) => {
               this.posts = JSON.parse(postContents);
               if(this.posts == null)
                 this.posts = new Array();
-              this.ngxService.stop();              
+              this.ngxService.stop();
+              
+              this.startTour();
+
             });
-          
+
           }
           else{
             this.ngxService.stop();
@@ -71,11 +136,10 @@ export class SettingsComponent implements OnInit {
         .catch((error)=>{
           console.log('Error reading settings');
           this.ngxService.stop();
-          
-        });
-     } 
 
-     
+        });
+     }
+
   }
 
   initializeForm():void{
@@ -97,7 +161,7 @@ export class SettingsComponent implements OnInit {
     this.userSession.putFile(this.settingsFileName,str, this.writeOptions)
       .then(() =>{
         this.ngxService.stop();
-        this.toastr.success("The changes have been saved!",'Success')  
+        this.toastr.success("The changes have been saved!",'Success')
     })
     .catch((error)=>{
       console.log('Errro updating settings');
@@ -120,13 +184,13 @@ export class SettingsComponent implements OnInit {
 
     reader.onload = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
-    
+
   }
 
   _handleReaderLoaded(e) {
     var reader = e.target;
     this.blogHeaderImage.setValue( reader.result);
-    
+
   }
 
   showNewPost():void{
@@ -134,13 +198,13 @@ export class SettingsComponent implements OnInit {
     this.isNewPost = true;
     this.isUpdatePost=false;
   }
-  
+
   deletePost(p:any):void{
     let idx = this.posts.findIndex(e=> e.shareCode == p.shareCode);
     if(confirm('Are you sure you want to delete this post?')){
       this.ngxService.start();
       this.posts.splice(idx,1);
-    
+
       if(p.id.length == 24)
       {
         this._api.delete(p.id)
@@ -160,13 +224,13 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  
+
   saveFiles(p:any):void{
     let postsArray = JSON.stringify(this.posts);
 
     this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
     .then(() =>{
-      
+
       //TODO:Uncomment when delete feature avaliable
       //this.userSession.deleteFile(p.postFileName);
       //if(p.imageFileName)
@@ -178,23 +242,23 @@ export class SettingsComponent implements OnInit {
         if(p.imageFileName != null && p.imageFileName != ''){
           this.userSession.putFile(p.imageFileName,'Deleted!', this.writeOptions)
           .then(() =>{
-            this.toastr.success("The post was delete!",'Success')        
+            this.toastr.success("The post was delete!",'Success')
             this.ngxService.stop();
-            
+
           });
         }
         else{
-          this.toastr.success("The post was delete!",'Success')  
+          this.toastr.success("The post was delete!",'Success')
           this.ngxService.stop();
         }
 
-      }) 
+      })
       .catch((error)=>{
         console.log('Error deleting post');
         this.ngxService.stop();
       });;
 
-      this.ngxService.stop(); 
+      this.ngxService.stop();
     }).catch((error) => {
       console.log('Error deleting post!')
       this.ngxService.stop();
@@ -211,7 +275,7 @@ export class SettingsComponent implements OnInit {
 
 
   onClosed(res: any): void {
-    
+
     if(res && this.isNewPost)
     {
       this.posts.push(res);
@@ -222,7 +286,7 @@ export class SettingsComponent implements OnInit {
     }
     this.isNewPost = false;
     this.isUpdatePost=false;
-   
+
   }
 
 

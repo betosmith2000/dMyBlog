@@ -5,11 +5,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { PostComponent } from '../blog/post.component';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, POSITION } from 'ngx-ui-loader';
+import { BlogShareComponent } from '../blog/blog-share.component';
 
 
 
 @NgModule({
-  declarations: [PostComponent],
+  declarations: [PostComponent,BlogShareComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -25,7 +26,7 @@ import { NgxUiLoaderModule, NgxUiLoaderConfig, POSITION } from 'ngx-ui-loader';
     BrowserModule,
     CKEditorModule, 
     PostComponent,
-    NgxUiLoaderModule
+    NgxUiLoaderModule,BlogShareComponent
   ]
 })
 export class ShareModule { }
