@@ -6,6 +6,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ApiService } from '../share/data-service';
 import { Post } from './models/Post';
 import { InteractionTypeResult } from './models/InteractionTypeResult';
+import * as introJs from 'intro.js/intro.js';
 
 @Component({
   selector: 'app-blog',
@@ -13,6 +14,9 @@ import { InteractionTypeResult } from './models/InteractionTypeResult';
   styleUrls: ['./blog.component.scss']
 })
 export class BlogComponent implements OnInit {
+  introJS = introJs();
+  isShowingTour :boolean=false;
+
   header :any;
   userSession :any;
   userName :string  = '';
@@ -35,7 +39,76 @@ export class BlogComponent implements OnInit {
   constructor(private toastr: ToastrService, private route:ActivatedRoute, 
     private ngxService: NgxUiLoaderService, private _api: ApiService) { 
      
+  }
+
+  
+  startTour(start:boolean) {
+    
+
+    var h = localStorage.getItem('dmyblog.myblogHelp');
+    if(h=="1" && !start)
+      return;
+
+    this.isShowingTour=true;
+    if(this.posts.length==0){
+      let pEx = new Post();
+      pEx.id="example";
+      pEx.title="Example title post!";
+      pEx.date=new Date().toISOString();
+      pEx.status =2;
+      this.getPostImage(pEx);
+      this.getInteractions(pEx);
+      this.posts.push(pEx);
     }
+    this.introJS.setOptions({    
+      steps: [
+        {
+          intro: "Welcome to <strong>My Blog</strong> section, let's take a tour!"
+        },
+        {
+          element: '#step1',
+          intro: "This is the header of your blog, you can customize it in the configuration section by clicking on the user name of the menu. This is how it will look when you share the link to your blog.",
+          disableInteraction:true
+        },
+        {
+          element: '#step2',
+          intro: "With this button you can share your blog through a link, twitter or facebook.",
+          disableInteraction:true
+        },
+        {
+          element: "#step3",
+          intro: "You can add a new Post, just press the button!",
+          disableInteraction:true
+
+        },
+        {
+          element: "#step4",
+          intro: "<p>Here is the list of the posts that you have created." +
+          " You can view<button type='button' class='btn btn-link btn-sm'><i class='far fa-eye'></i></button>,"+
+          " share<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button>,"+
+          " edit<button type='button' class='btn btn-link btn-sm'><i class='far fa-edit'></i></button> or"+
+          " delete<button type='button' class='btn btn-link btn-sm'><i class='far fa-trash-alt'></i></button> them.</p> "+
+          " <p>You can also see if your post has liked readers<button type='button' class='btn btn-link btn-sm'><i class='fas fa-frown-open'></i></button>"+
+          " or not<button type='button' class='btn btn-link btn-sm'><i class='fas fa-grin-hearts'></i></button>.</p>",
+          position:"top",
+          disableInteraction:true
+
+        }
+      ]
+    });
+ 
+    this.introJS.start();
+    this.introJS.onexit(x =>{
+      let idx = this.posts.findIndex(e=> e.id == "example");
+      if(idx!==-1)
+        this.posts.splice(idx,1);
+        
+      this.isShowingTour=false;
+      localStorage.setItem('dmyblog.myblogHelp',"1");
+
+    });
+  }
+
 
   ngOnInit() {
     this._api.setApi('Posts');
@@ -60,7 +133,6 @@ export class BlogComponent implements OnInit {
           this.isAdmin = true;
         else 
           this.isAdmin = false;
-        
       }
       
       this.readOptions.username = this.userName;
@@ -81,6 +153,7 @@ export class BlogComponent implements OnInit {
               this.getInteractions(p);
             });
             this.ngxService.stop();
+            this.startTour(false);
 
           })
           .catch((error) => {

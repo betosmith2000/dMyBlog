@@ -10,6 +10,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ApiService } from '../share/data-service';
 import { NameValue } from '../share/name-value';
 import { Post } from './models/Post';
+import * as introJs from 'intro.js/intro.js';
 
 
 
@@ -19,6 +20,8 @@ import { Post } from './models/Post';
   styleUrls: ['./post.component.scss']
 })
 export class PostComponent implements OnInit {
+  introJS = introJs();
+  isShowingTour :boolean=false;
   
   readonly postsFileName:string = '/posts.txt';
   readonly postContentFileName:string = '/post-ID.txt';
@@ -71,6 +74,65 @@ export class PostComponent implements OnInit {
   
   }
 
+  
+  
+  startTour(start:boolean) {
+    var h = localStorage.getItem('dmyblog.newPostHelp');
+    if(h=="1" && !start)
+      return;
+
+    this.isShowingTour=true;
+   
+    this.introJS.setOptions({
+      steps: [
+        {
+          intro: "Welcome to <strong>New Post</strong> section, let's take a tour!"
+        },
+        {
+          element: '#step1',
+          intro: "This is the title of your post, remember to be attractive!",
+          disableInteraction:true
+        },
+        {
+          element: '#step2',
+          intro: "This is the header image, recommended size 350x350 pixels.",
+          disableInteraction:true
+        },
+        {
+          element: "#step3",
+          intro: "<p>Here is the status of your post, select according to your needs: <br/>" +
+          "<strong>Private</strong>: Only you can see it, there is no link to share.<br/>"+
+          "<strong>Public</strong>: You can see it and the people that have the link of your post and it can be shared on twitter and facebook.<br/>"+
+          "<strong>Browseable</strong>: Like the Public status, it is also listed in the Browse menu.<br/>",
+          position:"top",
+          disableInteraction:true
+        },
+        {
+          element: '#step4',
+          intro: "Here is where to write the content of your post, use the editing tools: <strong>Paragraph, Bold, Italic, links, bulleted list, numbered list, images, tables and media</strong>.",
+          disableInteraction:true
+        },
+        {
+          element: "#step5",
+          intro: "Finally you can save or cancel the post changes!",
+          disableInteraction:true
+
+        },
+      ]
+    });
+ 
+    this.introJS.start();
+    this.introJS.onexit(x =>{
+    
+      this.isShowingTour=false;
+      localStorage.setItem('dmyblog.newPostHelp',"1");
+
+    });
+  }
+
+
+
+
   ngOnInit() {
     this.hasImageHeader=false;
     this.catStatus = [
@@ -117,7 +179,6 @@ export class PostComponent implements OnInit {
           this.ngxService.stop();
         });
      } 
-
   }
 
   initializeForm():void{
@@ -132,13 +193,15 @@ export class PostComponent implements OnInit {
     });
 
     //Edit 
-      this.ngxService.start();
+    this.ngxService.start();
     this.userSession.getFile(this.postsFileName,this.readOptions)
       .then((fileContents) => {
         this.posts = JSON.parse(fileContents);
         if(this.posts == null)
           this.posts=new Array();
           this.ngxService.stop();
+          this.startTour(false);
+
       })
       .catch((error)=>{
         console.log('Error loading post collection');

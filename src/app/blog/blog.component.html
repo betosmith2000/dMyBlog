@@ -1,3 +1,6 @@
+<button class="float-button" (click)="startTour(true)" *ngIf="!isNewPost && !isViewingPost" >
+  <i class="fas fa-question fa-2x"></i>
+</button>
 <div class="container top-padding" *ngIf="!isNewPost && !isViewingPost">
  
   <!-- <div class="card mb-3 shadow-sm shadow">
@@ -9,7 +12,7 @@
     </div>
   </div> -->
 
-  <div class="card mb-3 shadow-sm shadow">
+  <div class="card mb-3 shadow-sm shadow" id="step1">
     <img class="card-img-top header-img  transparency-header" [src]="header?.blogHeaderImage" alt="..." *ngIf="header?.blogHeaderImage">
     <div class="card-img-overlay">
       <div class="card-title p-3" >
@@ -24,7 +27,7 @@
         </div>
         <div class="col">
             <label class="small float-right font-weight-bold" >&nbsp;{{userName}}&nbsp; 
-            <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#share" (click)="shareBlog()">
+            <button id="step2" class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#share" (click)="shareBlog()">
                 <i class="fas fa-share-alt"></i>
             </button></label>
         </div>
@@ -33,9 +36,9 @@
   </div>
 
   <div class=" text-right">
-    <button class="btn btn-link " (click)="showNewPost()" *ngIf="isAdmin">New Post <i class="far fa-edit"></i></button>
+    <button id="step3" class="btn btn-link " (click)="showNewPost()" *ngIf="isAdmin">New Post <i class="far fa-edit"></i></button>
   </div>
-  <div class="row">
+  <div class="row" id="step4">
 
   <!-- <div class="col-lg-6 col-sm-12" *ngFor="let p of posts">
       <div class="card post-bottom shadow">

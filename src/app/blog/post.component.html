@@ -1,9 +1,12 @@
 <div class="container top-padding">
+    <button class="float-button" (click)="startTour(true)">
+        <i class="fas fa-question fa-2x"></i>
+      </button>
     <h2 class="display-4">{{title}}</h2>
     <div class="card ">
         <div class="card-body">
           <form novalidate (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
-            <div class="form-group row">
+            <div class="form-group row" id="step1">
               <label for="postTitle" class="col-sm-3 col-form-label">*Title:</label>
               <div class="col-sm-9">
                   <input type="text" class="form-control" id="postTitle"  placeholder="Title" formControlName="postTitle"
@@ -27,7 +30,7 @@
               </div>
             </div>-->
 
-            <div class="form-group row">
+            <div class="form-group row" id="step2">
                 <label for="file" class="col-sm-3 col-form-label">Header image:</label>
                 <div class="col-sm-9" *ngIf="!hasImageHeader">
                     <div class="input-group mb-3">
@@ -46,7 +49,7 @@
               </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" id="step3">
               <label for="status" class="col-sm-3 col-form-label">*Status:</label>
               <div class="col-sm-9">
                 <select class="custom-select" aria-describedby="estatusHelp" formControlName="status"
@@ -72,14 +75,14 @@
               </div>
             </div>-->
             <h6>Start to write great content below!</h6>
-            <div class="form-group row">
+            <div class="form-group row" id="step4">
               <div class="col-sm-12">
                 <ckeditor [editor]="Editor" formControlName="postContent"   [config]="ckconfig" ></ckeditor>
               </div>
             </div>
 
             
-            <div class="float-md-right">
+            <div class="float-md-right" id="step5">
               <button type="button" class="btn btn-outline-secondary" (click)="close()"  >Cancel</button>&nbsp;
               <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Save</button>
             </div>

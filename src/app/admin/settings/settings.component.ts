@@ -42,7 +42,12 @@ export class SettingsComponent implements OnInit {
   constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, private _api: ApiService) {
  
    }
-  startTour() {
+   
+   startTour(start:boolean) {
+    var h = localStorage.getItem('dmyblog.settingsHelp');
+    if(h=="1" && !start)
+      return;
+
     this.isShowingTour=true;
     if(this.posts.length==0){
       let pEx = new Post();
@@ -72,12 +77,14 @@ export class SettingsComponent implements OnInit {
         },
         {
           element: "#step3",
-          intro: "You can add a new Post, just press the button!"
+          intro: "You can add a new Post, just press the button!",
+          disableInteraction:true
+
         },
         {
           element: "#step4",
-          intro: "Here is the list of the posts that you have created. You can share<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button>, edit<button type='button' class='btn btn-link btn-sm'><i class='far fa-edit'></i></button> or delete<button type='button' class='btn btn-link btn-sm'><i class='far fa-trash-alt'></i></button> them. "
-          
+          intro: "Here is the list of the posts that you have created. You can share<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button>, edit<button type='button' class='btn btn-link btn-sm'><i class='far fa-edit'></i></button> or delete<button type='button' class='btn btn-link btn-sm'><i class='far fa-trash-alt'></i></button> them. ",
+          disableInteraction:true
         },
       ]
     });
@@ -89,6 +96,8 @@ export class SettingsComponent implements OnInit {
         this.posts.splice(idx,1);
         
       this.isShowingTour=false;
+      localStorage.setItem('dmyblog.settingsHelp',"1");
+
     });
   }
 
@@ -124,7 +133,7 @@ export class SettingsComponent implements OnInit {
                 this.posts = new Array();
               this.ngxService.stop();
               
-              this.startTour();
+              this.startTour(false);
 
             });
 

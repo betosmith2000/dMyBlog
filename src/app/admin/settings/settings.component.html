@@ -1,9 +1,8 @@
+<button class="float-button" (click)="startTour(true)" *ngIf="!isNewPost && !isUpdatePost">
+  <i class="fas fa-question fa-2x"></i>
+</button>
 <div class="container top-padding" *ngIf="!isNewPost && !isUpdatePost">
-  <h2 class="display-4 " id="step0">{{userName}} 
-    <button class="btn btn-link float-right pt-4" (click)="startTour()" >
-      <i class="fas fa-question-circle fa-2x"></i>
-    </button>
-  </h2>
+  <h2 class="display-4 " id="step0">{{userName}} </h2>
 
   <div class="card shadow-sm">
     <div class="card-body"  >

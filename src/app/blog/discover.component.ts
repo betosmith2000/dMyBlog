@@ -5,6 +5,7 @@ import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { Pagination } from '../share/pagination';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { InteractionTypeResult } from './models/InteractionTypeResult';
+import * as introJs from 'intro.js/intro.js';
 
 @Component({
   selector: 'app-discover',
@@ -12,7 +13,9 @@ import { InteractionTypeResult } from './models/InteractionTypeResult';
   styleUrls: ['./discover.component.scss']
 })
 export class DiscoverComponent implements OnInit {
-  
+  introJS = introJs();
+  isShowingTour :boolean=false;
+  isTourStared :boolean=false;
   posts:any=new Array();
   isViewingPost : boolean = false;
   shareTitle : string = 'Share this ';
@@ -21,6 +24,7 @@ export class DiscoverComponent implements OnInit {
   selectedPost: any;
   searchTerm : string='';
   userName :string  = '';
+  currentFilter:string='';
 
   private LOGO = require("../../assets/logo-header.png");
    //Paginacion
@@ -31,6 +35,70 @@ export class DiscoverComponent implements OnInit {
   constructor(private _api:ApiService, private ngxService: NgxUiLoaderService) { 
     _api.setApi('Posts');
   }
+
+  
+  
+  startTour(start:boolean) {
+    var h = localStorage.getItem('dmyblog.browseHelp');
+    if(h=="1" && !start)
+      return;
+
+    this.isShowingTour=true;
+    if(this.posts.length==0){
+      let pEx = new Post();
+      pEx.id="example";
+      pEx.title="Example title post!";
+      pEx.date=new Date().toISOString();
+      pEx.status =2;
+      this.getPostImage(pEx);
+      this.getInteractions(pEx);
+      this.posts.push(pEx);
+    }
+    this.introJS.setOptions({
+      steps: [
+        {
+          intro: "Welcome to <strong>Browse</strong> section. Here you can see the posts that users have created with the Browseable status, let's take a tour!"
+        },
+        {
+          element: '#step1',
+          intro: "Here you can filter the information either with the name of the author or with the title of the post.",
+          disableInteraction:true
+        },
+        {
+          element: '#step2',
+          intro: "This is the list of post, sorted by dates from the most recent to the oldest. "+
+          " You can view<button type='button' class='btn btn-link btn-sm'><i class='far fa-eye'></i></button>,"+
+          " share<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button> any post"+
+          " you can also double click on any to see the content." +
+          " <p>You can also see if your post has liked readers<button type='button' class='btn btn-link btn-sm'><i class='fas fa-frown-open'></i></button>"+
+          " or not<button type='button' class='btn btn-link btn-sm'><i class='fas fa-grin-hearts'></i></button>.</p>",
+          position:"top",
+          disableInteraction:true
+
+        },
+        {
+          element: "#step3",
+          intro: "Finally, you can navigate between pages, each page is 10 posts.",
+          disableInteraction:true
+
+
+        }
+        
+      ]
+    });
+ 
+    this.introJS.start();
+    this.introJS.onexit(x =>{
+      let idx = this.posts.findIndex(e=> e.id == "example");
+      if(idx!==-1)
+        this.posts.splice(idx,1);
+        
+      this.isShowingTour=false;
+      localStorage.setItem('dmyblog.browseHelp',"1");
+
+    });
+  }
+
 
   ngOnInit() {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
@@ -158,6 +226,11 @@ export class DiscoverComponent implements OnInit {
         
       });
       this.ngxService.stop();
+      this.currentFilter = this.searchTerm;
+      this.searchTerm="";
+      if(!this.isTourStared)
+        this.startTour(false);
+
     }, err => {
       this.ngxService.stop();
       console.log('Error loading posts');
