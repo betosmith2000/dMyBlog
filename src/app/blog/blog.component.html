@@ -1,17 +1,8 @@
-<button class="float-button" (click)="startTour(true)" *ngIf="!isNewPost && !isViewingPost" >
+<button class="btn btn-link float-button" (click)="startTour(true)" *ngIf="!isNewPost && !isViewingPost" >
   <i class="fas fa-question fa-2x"></i>
 </button>
-<div class="container top-padding" *ngIf="!isNewPost && !isViewingPost">
- 
-  <!-- <div class="card mb-3 shadow-sm shadow">
-    <img class="card-img-top header-img bg-transparent" [src]="header?.blogHeaderImage" alt="..." *ngIf="header?.blogHeaderImage">
-    <div class="card-body">
-      <h2 class="card-title display-4">{{header?.blogName}}</h2>
-      <p class="card-text">{{header?.blogDescription}}</p>
-      <p class="card-text text-right"><small class="text-muted">{{userName}}</small></p>
-    </div>
-  </div> -->
 
+<div class="container top-padding" *ngIf="!isNewPost && !isViewingPost">
   <div class="card mb-3 shadow-sm shadow" id="step1">
     <img class="card-img-top header-img  transparency-header" [src]="header?.blogHeaderImage" alt="..." *ngIf="header?.blogHeaderImage">
     <div class="card-img-overlay">
@@ -160,7 +151,6 @@
   <app-post-reader [Post]="selectedPost" (closed)="onClosedViewer($event)"></app-post-reader>
 </div>
 
-<div>
   
 <!-- Modal -->
 <div class="modal fade" id="share" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -181,4 +171,3 @@
       </div>
     </div>
   </div>
-</div>

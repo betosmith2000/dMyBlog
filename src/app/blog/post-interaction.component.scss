@@ -11,11 +11,10 @@
 }
 
 .stack-site{
-    font-size: 30%;
-    
+    font-size: 65%;
     position: absolute;
-    top: 5px;
-    right: 13px;
+    top: 0px;
+    right: 0px;
 }
 
 .unlike{
@@ -27,3 +26,36 @@
     margin: 0px;
     padding: 0px;
 }
+
+
+
+$primary: #B394DC !default;
+
+.float-like{
+    position:fixed;
+    width:60px;
+    height:60px;
+    top:270px;
+    right:20px;
+    background-color:$primary;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1001;
+  }
+  
+  .float-unlike{
+    position:fixed;
+    width:60px;
+    height:60px;
+    top:340px;
+    right:20px;
+    background-color:$primary;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1001;
+  }
+  

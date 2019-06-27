@@ -114,3 +114,20 @@
     opacity: .8;
     cursor: context-menu;
 }
+
+
+$primary: #B394DC !default;
+
+.float-button{
+    position: fixed;
+	width:60px;
+	height:60px;
+	top:100px;
+    right:20px;
+	background-color:$primary;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1001;
+}

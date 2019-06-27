@@ -1,6 +1,16 @@
+<button class="btn btn-link float-share" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)">
+    <i class="fas fa-share-alt fa-2x"></i>
+  </button>
+  <button class="btn btn-link float-comment" type="button" title="Reply post" data-toggle="modal" data-target="#comment" (click)="commentPost($event,p)">
+    <i class="far fa-comment-dots fa-2x"></i>
+  </button>
+  
 <div class="container top-padding">
+  
+  <app-post-interaction *ngIf="Post?.status>0" [Post]="_post"></app-post-interaction>
+
   <div *ngIf="!isMissingPost">
-    <div class="card shadow">
+    <div class="card shadow postReader">
       <div class="card-header">
           <div class="row">
               <div class="col-lg-2">
@@ -18,26 +28,14 @@
         
    
         <div [innerHTML]="content|safeHtml" ></div>
-        <div class="text-center">
-            <app-post-interaction *ngIf="Post?.status>0" [Post]="_post"></app-post-interaction>
-          
-        </div>
+     
         <div class="float-md-right">
-          
           <button type="button small" class="btn btn-outline-secondary" (click)="close()" *ngIf="!isShareURL" >Return</button>&nbsp;
         </div>
       </div>
       
   <div class="card-footer" *ngIf="Post?.status>0">
-      <div class="float-right">
-        <button class="btn btn-outline-primary" type="button" title="Reply post" data-toggle="modal" data-target="#comment" (click)="commentPost($event,p)">
-            <i class="far fa-comment-dots"></i>
-        </button>
-        &nbsp;
-        <button class="btn btn-outline-primary" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)">
-          <i class="fas fa-share-alt"></i>
-        </button>
-      </div>
+   
       <h3>Comments </h3>
       <br>
       <div *ngIf="comments?.length === 0" class="alert alert-warning pt-3" role="alert">
@@ -46,9 +44,12 @@
           </div>
   
       </div>
+      <!-- <div id="commentN-1"></div> -->
       <div  *ngIf="comments?.length > 0">
-        <div *ngFor="let c of comments"  >
-          <app-comment-reader  [Comment]="c" (deleteComment)="onDeleteComent($event)" (updateComment)="onUpdateComment($event)" (cancelComment)="onCancelComment($event)"></app-comment-reader>
+        <div *ngFor="let c of comments; let i= index"  >
+          <div id="{{'commentN'+i}}">
+          <app-comment-reader [Comment]="c" (deleteComment)="onDeleteComent($event)" (updateComment)="onUpdateComment($event)" (cancelComment)="onCancelComment($event)"></app-comment-reader>
+        </div>
         </div>
       </div>
   </div>
@@ -82,7 +83,7 @@
     </div>
   </div>
 
-  
+ 
 </div>
 
 <br/>

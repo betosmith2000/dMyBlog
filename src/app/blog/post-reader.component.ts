@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { ActivatedRoute } from '@angular/router';
@@ -49,7 +49,8 @@ export class PostReaderComponent implements OnInit {
   userName :string  = '';
   postId :string = '';
   posts:any;
-  constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService, private _api:ApiService, private toastr: ToastrService) {
+  constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService, private _api:ApiService,
+     private toastr: ToastrService, private cdRef:ChangeDetectorRef) {
    }
 
   ngOnInit() {
@@ -162,12 +163,17 @@ export class PostReaderComponent implements OnInit {
   commentPost(event:Event, p:any){
     let idx = this.comments.findIndex(e=> e.id == "");
 
-    if(idx!==-1)
+    if(idx!==-1){
+      document.getElementById('commentN'+(idx)).scrollIntoView({behavior: 'smooth'});
       return;
+    }
     let c  = new PostComment();    
     c.postId = this.Post.id;
     c.id="";
     this.comments.push(c);
+    this.cdRef.detectChanges();
+    let idComment = 'commentN'+(this.comments.length-1);
+    document.getElementById(idComment).scrollIntoView({behavior: 'smooth'});
   }
 
   closeComments(comment:any):void{

@@ -42,9 +42,7 @@ export class BlogComponent implements OnInit {
   }
 
   
-  startTour(start:boolean) {
-    
-
+  startTour(start:boolean) {    
     var h = localStorage.getItem('dmyblog.myblogHelp');
     if(h=="1" && !start)
       return;

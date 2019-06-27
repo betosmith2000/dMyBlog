@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@fortawesome/fontawesome-free/css/all.css";
 @import "~ngx-toastr/toastr.css";  
-$primary: #B394DC !default;
 
 body{
     background-color:#FAFAFA!important;
@@ -30,18 +29,3 @@ body{
 }
 
 
-
-
-.float-button{
-    position:fixed;
-	width:60px;
-	height:60px;
-	top:100px;
-	right:20px;
-	background-color:$primary;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
-    box-shadow: 2px 2px 3px #999;
-    z-index: 1001;
-}
