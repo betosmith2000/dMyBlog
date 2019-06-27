@@ -117,7 +117,33 @@ $primary: #B394DC !default;
 	height:60px;
 	top:100px;
 	right: 20px;
-	
+	background-color:$primary;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1001;
+}
+.float-new-post{
+    position: fixed;;
+	width:60px;
+	height:60px;
+	top:170px;
+	right: 20px;
+	background-color:$primary;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1001;
+}
+
+.float-share{
+    position: fixed;;
+	width:60px;
+	height:60px;
+	top:240px;
+	right: 20px;
 	background-color:$primary;
 	color:#FFF;
 	border-radius:50px;
