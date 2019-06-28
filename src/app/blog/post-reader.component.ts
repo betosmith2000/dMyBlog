@@ -7,6 +7,7 @@ import { Pagination } from '../share/pagination';
 import { ApiService } from '../share/data-service';
 import { PostComment } from './models/comment';
 import { ToastrService } from 'ngx-toastr';
+import * as introJs from 'intro.js/intro.js';
 
 
 
@@ -16,6 +17,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./post-reader.component.scss']
 })
 export class PostReaderComponent implements OnInit {
+  introJS = introJs();
+  isShowingTour :boolean=false;
 
   title:string;
   content:string;
@@ -49,9 +52,117 @@ export class PostReaderComponent implements OnInit {
   userName :string  = '';
   postId :string = '';
   posts:any;
+
   constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService, private _api:ApiService,
      private toastr: ToastrService, private cdRef:ChangeDetectorRef) {
    }
+
+
+   
+  startTour(start:boolean) {
+    var h = localStorage.getItem('dmyblog.readPostHelp');
+    if(h=="1" && !start)
+      return;
+
+    this.isShowingTour=true;
+   
+    this.introJS.setOptions({
+      steps: [
+        {
+          intro: "Welcome to <strong>Reading Post</strong> section, let's take a tour!"
+        },
+        {
+          element: '#step1',
+          intro: "This is the header of the Post, here you can find the Title, author and date in which the Post was published.",
+          disableInteraction:true
+        },
+        {
+          element: '#step2',
+          intro: "This is the body of the post, it is probably very interesting so let's read it!",
+          disableInteraction:true,
+          position:"top",
+          scrollTo:"tooltip"
+        },
+        {
+          element: "#step3",
+          intro: "Here are the comments of the users, you can read them to find some corrections, recommendations or extra information!",
+          position:"top",
+          disableInteraction:true
+        },
+        {
+          element: '#step4-read',
+          intro: "If you liked the Post and want to share it, this is the place to do it, you have link, facebook or twitter options!.",
+          disableInteraction:true,
+          position:"left",
+          tooltipPosition:'auto'
+        },
+        {
+          element: '#step5',
+          intro: "By the way, if you want to make a comment then here you have the option to do so.",
+          disableInteraction:true,
+          position:"left"
+        },
+        {
+          element: "#step6",
+          intro: "If you like the Post then you can indicate by pressing this button!",
+          disableInteraction:true,
+          position:"left"
+
+        },
+        {
+          element: "#step7",
+          intro: "Finally, If you don't like the Post then you can indicate by pressing this button!",
+          disableInteraction:true,
+          position:"left"
+
+        },
+      ]
+    });
+  this.introJS.onafterchange(function(targetElement) {
+      if(this._currentStep == 4){
+          let overlay:any = document.getElementsByClassName("introjs-fixedTooltip");
+          for(let i=0; i<overlay.length; i++) {
+            overlay[i].style.top = "165px";
+            overlay[i].style.right = "20px";
+            overlay[i].style.position = "fixed";
+          }
+      }
+      else if(this._currentStep == 5){
+        let overlay:any = document.getElementsByClassName("introjs-fixedTooltip");
+        for(let i=0; i<overlay.length; i++) {
+          overlay[i].style.top = "235px";
+          overlay[i].style.right = "20px";
+          overlay[i].style.position = "fixed";
+        }
+      }
+      else if(this._currentStep == 6){
+        let overlay:any = document.getElementsByClassName("introjs-fixedTooltip");
+        for(let i=0; i<overlay.length; i++) {
+          overlay[i].style.top = "335px";
+          overlay[i].style.right = "20px";
+          overlay[i].style.position = "fixed";
+        }
+      }
+      else if(this._currentStep == 7){
+        let overlay:any = document.getElementsByClassName("introjs-fixedTooltip");
+        for(let i=0; i<overlay.length; i++) {
+          overlay[i].style.top = "405px";
+          overlay[i].style.right = "20px";
+          overlay[i].style.position = "fixed";
+        }
+      }
+  });
+
+
+    this.introJS.start();
+    this.introJS.onexit(x =>{
+    
+      this.isShowingTour=false;
+      localStorage.setItem('dmyblog.readPostHelp',"1");
+
+    });
+  }
+
 
   ngOnInit() {
     this.comments = new Array();
@@ -204,6 +315,7 @@ export class PostReaderComponent implements OnInit {
       this.pagination = d;
       this.page = d.pageNumber + 1;
       this.ngxService.stop();
+      this.startTour(false);
     }, err => {
       this.ngxService.stop();
       console.log('Error loading comments');

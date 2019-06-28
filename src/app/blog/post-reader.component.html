@@ -1,17 +1,20 @@
-<button  title="Help" class="btn btn-link float-share" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost()">
-    <i class="fas fa-share-alt fa-2x"></i>
-  </button>
-  <button class="btn btn-link float-comment" type="button" title="Reply post" data-toggle="modal" data-target="#comment" (click)="commentPost()">
-    <i class="far fa-comment-dots fa-2x"></i>
-  </button>
+<button  title="Help" class="btn btn-link float-button" (click)="startTour(true)">
+  <i class="fas fa-question fa-2x"></i>
+</button>
+<button id="step4-read" title="Help" class="btn btn-link float-share" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost()">
+  <i class="fas fa-share-alt fa-2x"></i>
+</button>
+<button id="step5" class="btn btn-link float-comment" type="button" title="Reply post" data-toggle="modal" data-target="#comment" (click)="commentPost()">
+  <i class="far fa-comment-dots fa-2x"></i>
+</button>
   
 <div class="container top-padding">
-  
-  <app-post-interaction *ngIf="Post?.status>0" [Post]="_post"></app-post-interaction>
-
+  <div >
+    <app-post-interaction  *ngIf="Post?.status>0" [Post]="_post"></app-post-interaction>
+  </div>
   <div *ngIf="!isMissingPost">
     <div class="card shadow postReader">
-      <div class="card-header">
+      <div class="card-header" id="step1">
           <div class="row">
               <div class="col-lg-2">
                   <img [src]="imageContent"  class="img-fluid img-post" alt="" *ngIf="imageContent">
@@ -25,16 +28,13 @@
           </div>
       </div>
       <div class="card-body">
-        
-   
-        <div [innerHTML]="content|safeHtml" ></div>
-     
+        <div id="step2" [innerHTML]="content|safeHtml"></div>
         <div class="float-md-right">
           <button type="button small" class="btn btn-outline-secondary" (click)="close()" *ngIf="!isShareURL" >Return</button>&nbsp;
         </div>
       </div>
       
-  <div class="card-footer" *ngIf="Post?.status>0">
+  <div class="card-footer" *ngIf="Post?.status>0" id="step3">
    
       <h3>Comments </h3>
       <br>

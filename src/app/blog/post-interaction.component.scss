@@ -32,10 +32,10 @@
 $primary: #B394DC !default;
 
 .float-like{
-    position:fixed;
+    position: fixed;
     width:60px;
     height:60px;
-    top:270px;
+    top:340px;
     right:20px;
     background-color:$primary;
     color:#FFF;
@@ -46,10 +46,10 @@ $primary: #B394DC !default;
   }
   
   .float-unlike{
-    position:fixed;
+    position: fixed;
     width:60px;
     height:60px;
-    top:340px;
+    top:410px;
     right:20px;
     background-color:$primary;
     color:#FFF;
