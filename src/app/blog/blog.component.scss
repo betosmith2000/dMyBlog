@@ -14,12 +14,6 @@
     max-height: 200px;
 }
 
-.card-height-res{
-    max-height: 400px;
-    min-height: 400px;
-   
-    background-color: white;
-}
 .card-height-res img{
     text-align: center;
     vertical-align: middle;
@@ -49,15 +43,10 @@
     text-overflow: ellipsis;
   }
 
-  .transparency{
-      opacity: 1;
-  }
+
   .transparency-header{
     opacity: .55;
   }
-.card-img-overlay{
-    padding: 0!important;
-}
 
 
 
@@ -151,3 +140,65 @@ $primary: #B394DC !default;
     box-shadow: 2px 2px 3px #999;
     z-index: 1001;
 }
+
+
+
+.post-size{
+    max-height: 400px;
+    min-height: 400px;
+    height: 400px;
+   
+    overflow: hidden;
+  position: relative;
+}
+
+.button-bar{
+    background-color: white;
+	border-radius:.25rem;
+
+}
+
+.card-img-overlay{
+    padding: 0px!important;
+    margin: 0px!important;
+}
+
+.transparency{
+    opacity: .75
+}
+
+.footer-post{
+    background-color: blueviolet;
+    padding: 10px;
+}
+
+
+.stack-site{
+    font-size: 45%;
+    position: relative;
+    top: -42px;
+    right: -17px;
+}
+
+.float-like{
+    color:#FFF;
+    background-color:$primary;
+    border-radius:25px;
+    height:37px;
+    width:40px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1002;
+    margin-left: 5px;
+  }
+  
+  .float-unlike{
+    color:#FFF;
+    background-color:$primary;
+    border-radius:25px;
+    height:37px;
+    width:40px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1002;
+    z-index: 1002;
+  }
+  

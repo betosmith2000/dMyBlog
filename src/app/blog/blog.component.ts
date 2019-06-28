@@ -311,12 +311,14 @@ export class BlogComponent implements OnInit {
     this.postId = null;
   }
 
-  sharePost(event:Event, p:any){
+  sharePost(event:Event, p:any):void{
+
     this.selectedPost = p;
       
     this.shareTitle = "Share this Post!"
     this.postId=p.shareCode?p.shareCode:p.id;
-   // event.stopPropagation();  
+   // event.stopPropagation(); 
+    // event.stopPropagation();  
   }
 
 }
