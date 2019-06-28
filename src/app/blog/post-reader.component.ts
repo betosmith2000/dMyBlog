@@ -156,11 +156,11 @@ export class PostReaderComponent implements OnInit {
 
 
   
-  sharePost(event:Event, p:any){
+  sharePost(){
     this.shareTitle = "Share this Post!"
   }
 
-  commentPost(event:Event, p:any){
+  commentPost(){
     let idx = this.comments.findIndex(e=> e.id == "");
 
     if(idx!==-1){
