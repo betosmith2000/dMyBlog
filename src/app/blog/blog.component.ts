@@ -139,6 +139,10 @@ export class BlogComponent implements OnInit {
         .then((fileContents) => {
           this.header = JSON.parse(fileContents);
           this.image = this.header ? this.header.blogHeaderImage: null;
+          if(this.header){
+            this.header.blogName =  this.header.blogName!=null && this.header.blogName!= ""?  this.header.blogName : "Sample blog name";
+            this.header.blogDescription = this.header.blogDescription!= null &&  this.header.blogDescription!= ""? this.header.blogDescription :"Sample blog description";
+          }
           
           this.userSession.getFile(this.postsFileName,this.readOptions)
           .then((postContents) => {

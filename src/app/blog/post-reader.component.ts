@@ -272,6 +272,10 @@ export class PostReaderComponent implements OnInit {
   }
 
   commentPost(){
+    if(!this.userSession.isUserSignedIn()){
+      this.toastr.info("You need to login to add a comment!","Information")
+      return;
+    }
     let idx = this.comments.findIndex(e=> e.id == "");
 
     if(idx!==-1){

@@ -396,13 +396,7 @@ export class PostComponent implements OnInit {
     if(this.Post!= null && this.Post.imageFileName){
       this.Post.imageFileName=null;
       this.postImageContent = null;
-      // this.userSession.putFile(this.Post.imageFileName,'Deleted!', this.writeOptions)
-      // .then(() =>{
-      //   this.Post.imageFileName=null;
-      // })
-      // .catch((error)=>{
-      //   console.log('Error saving image changes');
-      // });
+     
     }
     this.postImageContent=null;
     this.hasImageHeader = false;

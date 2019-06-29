@@ -3,6 +3,9 @@
     width: 100%;
 }
 
+.header-card{
+    min-height: 200px;
+}
 .post-bottom {
     margin-bottom: 15px;
 }
@@ -149,7 +152,7 @@ $primary: #B394DC !default;
     height: 400px;
    
     overflow: hidden;
-  position: relative;
+    position: relative;
 }
 
 .button-bar{

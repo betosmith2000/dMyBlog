@@ -9,7 +9,7 @@
 </button>
 
 <div class="container top-padding" *ngIf="!isNewPost && !isViewingPost">
-  <div class="card mb-3 shadow-sm shadow" id="step1">
+  <div class="card mb-3 shadow-sm shadow header-card" id="step1">
     <img class="card-img-top header-img  transparency-header" [src]="header?.blogHeaderImage" alt="..." *ngIf="header?.blogHeaderImage">
     <div class="card-img-overlay">
       <div class="card-title p-3" >
@@ -34,10 +34,10 @@
 
 <!-- aca esta el nuevo diseño -->
   <div class="row" id="step4">
-    <div class="col-lg-6 col-sm-12" *ngFor="let p of posts">
+    <div class="col-lg-6 col-sm-12" *ngFor="let p of posts"  >
       <div class="border border-secondary shadow mb-5 post-size rounded"
-      [ngStyle]="{background: ' url('+p.imageFileContent+') no-repeat center center'}" (dblclick)="viewPost(p)" >
-     
+       (dblclick)="viewPost(p)" style="background-color: white" >
+     <div class="w-100 h-100"  [ngStyle]="{background: ' url('+p.imageFileContent+') no-repeat center center'}">
         <!-- Footer o header del post -->
         <div class="h-100 d-flex flex-column justify-content-end ">
           <div  class="d-flex  bd-highlight m-2">
@@ -78,6 +78,7 @@
             </div>
           </div>
         </div>
+      </div>
          <!-- barra de herramientas del post -->
          <div class="h-100 d-flex flex-column justify-content-end ">
           

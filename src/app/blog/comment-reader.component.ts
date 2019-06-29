@@ -72,7 +72,6 @@ export class CommentReaderComponent implements OnInit {
 
   
   getCommentFile(comment :PostComment):void{
-    
     this.readOptions.username = comment.userId;
     this.userSession.getFile(comment.fileName,this.readOptions)
     .then((fileContent) => {

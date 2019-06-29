@@ -31,6 +31,8 @@ export class SettingsComponent implements OnInit {
   blogName : FormControl;
   blogDescription: FormControl;
   blogHeaderImage : FormControl;
+  postImageContent: string='';
+  hasImageHeader:boolean=false;
 
   posts:Array<any> = new Array();
 
@@ -120,11 +122,15 @@ export class SettingsComponent implements OnInit {
       this.userSession.getFile(this.settingsFileName,this.readOptions)
         .then((fileContents) => {
           let data = JSON.parse(fileContents);
-          if(data!= null && data.blogName){
+          if(data!= null ){
             this.blogName.setValue(data.blogName);
             this.blogDescription.setValue(data.blogDescription);
             this.blogHeaderImage.setValue(data.blogHeaderImage);
-
+            if(data.blogHeaderImage)
+            {
+              this.hasImageHeader=true;
+              this.postImageContent =   data.blogHeaderImage;
+            }
 
           this.userSession.getFile(this.postsFileName,this.readOptions)
             .then((postContents) => {
@@ -199,8 +205,19 @@ export class SettingsComponent implements OnInit {
   _handleReaderLoaded(e) {
     var reader = e.target;
     this.blogHeaderImage.setValue( reader.result);
+    this.postImageContent=reader.result;
+    this.hasImageHeader = true;
+  }
+
+  
+  removeImageHeader():void{
+    this.blogHeaderImage.setValue("");
+    this.postImageContent=null;
+    this.hasImageHeader = false;
 
   }
+
+
 
   showNewPost():void{
     this.selectedPost = null;

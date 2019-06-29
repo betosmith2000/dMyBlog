@@ -31,9 +31,10 @@
               </span>
           </div>
         </div>
+
         <div class="form-group row">
             <label for="file" class="col-sm-3 col-form-label">Blog header image:</label>
-            <div class="col-sm-9">
+            <div class="col-sm-9" *ngIf="!hasImageHeader">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text">Upload</span>
@@ -44,7 +45,13 @@
                     </div>
                   </div>
             </div>
+            <div class="col-sm-9" *ngIf="hasImageHeader">
+              <img [src]="postImageContent" class="img-tumb inline" alt="Current image header"> &nbsp;
+              <button class="btn btn-outline-danger align-top inline" type="button" (click)="removeImageHeader()"><i class="far fa-times-circle" title="Remove image header"></i></button>
+            </div>
+              
         </div>
+
       </div>
 
         <div class="float-md-right" id="step2">
