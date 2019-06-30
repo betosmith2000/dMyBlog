@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
         //const profile = userData.profile;
         this.isSignIn = true;
         this.userName = userData.username;
-        this.route.navigate(['blog/' +this.userName]);
+       // this.route.navigate(['blog/' +this.userName]);
       })
     } else 
     
@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
       const userData = this.userSession.loadUserData();
       this.isSignIn = true;
       this.userName = userData.username;
-      this.route.navigate(['blog/' +this.userName]);
+      //this.route.navigate(['blog/' +this.userName]);
      } 
   }
 
