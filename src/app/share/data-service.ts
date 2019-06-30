@@ -68,6 +68,15 @@ import { environment } from 'src/environments/environment';
               catchError(this.handleError)
               );
     }
+
+    public deleteComment<T>(id: string, rootId:string): Observable<T> {
+      return this._http
+          .delete<T>(this._url + '/' + id+"?rootId=" + rootId)
+          .pipe(
+            tap(data => console.log('Datos: ' + JSON.stringify(data))),
+            catchError(this.handleError)
+            );
+  }
   
     private handleError(err: HttpErrorResponse){
       let errorMessage = '';

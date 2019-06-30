@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { PostComment } from './models/comment';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { ApiService } from '../share/data-service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Post } from './models/Post';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-comment-reader',
@@ -36,7 +37,8 @@ export class CommentReaderComponent implements OnInit {
       return this._comment;
   }
 
-  constructor(private _api:ApiService, private ngxService: NgxUiLoaderService) {
+  constructor(private _api:ApiService, private ngxService: NgxUiLoaderService,  
+    private cdRef:ChangeDetectorRef,  private toastr: ToastrService) {
 
    }
 
@@ -88,7 +90,7 @@ export class CommentReaderComponent implements OnInit {
 
     if(confirm('Are you sure you want to delete this comment?')){
       this.ngxService.start(); 
-      this._api.delete(c.id)
+      this._api.deleteComment(c.id, c.rootId)
       .subscribe(res => {
         this.userSession.putFile(c.fileName,'Deleted!', this.writeOptions)
         .then(() =>{
@@ -103,6 +105,7 @@ export class CommentReaderComponent implements OnInit {
         this.ngxService.stop();
         console.log('Delete comment, id:' + c.id);
       }, error =>{
+        this.toastr.error("The comment can not be deleted because it contains some answers already!");
         console.log('Error to save comment to index');
         this.ngxService.stop();
 
@@ -117,9 +120,40 @@ export class CommentReaderComponent implements OnInit {
   closeEdition(c:PostComment){
     if(!this.Comment.id)
       this.cancelComment.emit(c);
-    else
+    else{
+      this.isNewComment=false;
       this.updateComment.emit(c);
+    }
     this.isEditing = false;
+    
+  }
+
+  responseComment(comment:PostComment){
+    // let idx = comment.comments.findIndex(e=> e.id == "");
+
+    // if(idx!==-1){
+    //   document.getElementById('commentN'+(comment.id)+ "_" +(idx)).scrollIntoView({behavior: 'smooth'});
+    //   return;
+    // }
+    let c  = new PostComment();    
+    c.postId = comment.postId;
+    c.rootId = comment.rootId!= null && comment.rootId!=""?comment.rootId:comment.id;
+    c.parentId=this._comment.id;
+    
+    c.id="";
+    if(!comment.comments)
+      comment.comments = new Array<PostComment>()
+    comment.comments.push(c);
+    this.cdRef.detectChanges();
+    
+  }
+
+  
+  onDeleteComent(c:PostComment){
+    let idx = this.Comment.comments.findIndex(e=> e.id == c.id);
+    this.Comment.comments.splice(idx,1);
+    this.toastr.success("The comment was delete!",'Success')        
+
     
   }
 }

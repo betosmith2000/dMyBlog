@@ -338,6 +338,7 @@ export class PostReaderComponent implements OnInit {
   onUpdateComment(c:PostComment){
     let comment = this.comments.filter(e=> e.id == c.id)[0];
     comment.content = c.content;
+    comment.id=c.id;
     comment.date = c.date;
   }
 

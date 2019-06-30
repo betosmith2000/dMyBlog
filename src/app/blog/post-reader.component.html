@@ -48,7 +48,8 @@
       <div  *ngIf="comments?.length > 0">
         <div *ngFor="let c of comments; let i= index"  >
           <div id="{{'commentN'+i}}">
-          <app-comment-reader [Comment]="c" (deleteComment)="onDeleteComent($event)" (updateComment)="onUpdateComment($event)" (cancelComment)="onCancelComment($event)"></app-comment-reader>
+          <app-comment-reader [Comment]="c" (deleteComment)="onDeleteComent($event)" (updateComment)="onUpdateComment($event)" 
+          (cancelComment)="onCancelComment($event)"></app-comment-reader>
         </div>
         </div>
       </div>

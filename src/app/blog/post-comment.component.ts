@@ -61,7 +61,7 @@ export class PostCommentComponent implements OnInit {
         .then(() =>{
           //let comment = new PostComment();
          this.Comment.fileName = fileName;
-         this.Comment.parentPostId = '0';
+       //  this.Comment.parentPostId = '0';
          this.Comment.userId = this.userName;
          this.Comment.content = fileContent;
          //this.Comment.postId = this.Comment.postId;
@@ -76,6 +76,8 @@ export class PostCommentComponent implements OnInit {
             this.closeComments.emit(this.Comment);
 
           }, error =>{
+            if(error.error="Previous comment removed!")
+            this.toastr.error(error.error);
             console.log('Error to save comment to index');
             this.ngxService.stop();
 
@@ -94,18 +96,22 @@ export class PostCommentComponent implements OnInit {
         let fileName = this.Comment.fileName;
         this.userSession.putFile(fileName,fileContent, this.writeOptions)
         .then(() =>{
-          this._api.update(this.Comment.id,this.Comment)
-          .subscribe(res => {
-            
-            console.log('Update Comment id:' + this.Comment.id);
-            this.ngxService.stop();
-            this.toastr.success("The comment was update!",'Success');    
 
-            this.closeComments.emit(this.Comment);
-          }, error =>{
-            console.log('Error to update comment to index');
-            this.ngxService.stop();
-          });
+          this.ngxService.stop();
+          this.toastr.success("The comment was update!",'Success');    
+          this.closeComments.emit(this.Comment);
+          // this._api.update(this.Comment.id,this.Comment)
+          // .subscribe(res => {
+            
+          //   console.log('Update Comment id:' + this.Comment.id);
+          //   this.ngxService.stop();
+          //   this.toastr.success("The comment was update!",'Success');    
+
+          //   this.closeComments.emit(this.Comment);
+          // }, error =>{
+          //   console.log('Error to update comment to index');
+          //   this.ngxService.stop();
+          // });
 
         })
         .catch((error)=>{
