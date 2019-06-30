@@ -1,12 +1,12 @@
 
 <div *ngIf="isInteractionsReady" >
-    <button id="step7" class="btn btn-link float-unlike" (click)="unlike()" title="I don't like it!">
+    <button id="step7" class="btn btn-link float-unlike" (click)="unlike()" title="I don't like it!" [disabled]="Post.status=='0'" >
         <span class="fa-layers fa-fw" >
           <i class="fas fa-frown-open fa-2x"></i>
           <span class="badge badge-dark stack-site">{{interactions?.unlikeCount}}</span>
         </span>
       </button>
-      <button id="step6" class="btn btn-link float-like" (click)="like()" title="I like it!">
+      <button id="step6" class="btn btn-link float-like" (click)="like()" title="I like it!" [disabled]="Post.status=='0'" >
         <span class="fa-layers fa-fw" >
           <i class="fas fa-grin-hearts fa-2x"></i>
           <span class="badge badge-dark stack-site">{{interactions?.likeCount}}</span>

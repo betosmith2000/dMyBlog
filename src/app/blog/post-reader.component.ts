@@ -32,7 +32,7 @@ export class PostReaderComponent implements OnInit {
   readonly postsFileName:string = '/posts.txt';
    //Paginacion
    page: number = 0;
-   pagination: Pagination<PostComment> = new Pagination(10, 0);
+   pagination: Pagination<PostComment> = new Pagination(1000, 0);
 
   userSession : any;
   readOptions : any = {decrypt: false, username: null};
@@ -91,27 +91,27 @@ export class PostReaderComponent implements OnInit {
         },
         {
           element: '#step4-read',
-          intro: "If you liked the Post and want to share it, this is the place to do it, you have link, facebook or twitter options!.",
+          intro: "If you liked the Post and want to share it, this is the place to do it, you have link, facebook or twitter options!<br/><strong>Only in posts with Public and Browseable status does this feature work</strong>",
           disableInteraction:true,
           position:"left",
           tooltipPosition:'auto'
         },
         {
           element: '#step5',
-          intro: "By the way, if you want to make a comment then here you have the option to do so.",
+          intro: "By the way, if you want to make a comment then here you have the option to do so. <br/><strong>Only in posts with Public and Browseable status does this feature work</strong>",
           disableInteraction:true,
           position:"left"
         },
         {
           element: "#step6",
-          intro: "If you like the Post then you can indicate by pressing this button!",
+          intro: "If you like the Post then you can indicate by pressing this button!<br/><strong>Only in posts with Public and Browseable status does this feature work</strong>",
           disableInteraction:true,
           position:"left"
 
         },
         {
           element: "#step7",
-          intro: "Finally, If you don't like the Post then you can indicate by pressing this button!",
+          intro: "Finally, If you don't like the Post then you can indicate by pressing this button!<br/><strong>Only in posts with Public and Browseable status does this feature work</strong>",
           disableInteraction:true,
           position:"left"
 
@@ -267,11 +267,11 @@ export class PostReaderComponent implements OnInit {
 
 
   
-  sharePost(){
+  sharePost(){   
     this.shareTitle = "Share this Post!"
   }
 
-  commentPost(){
+  commentPost(){    
     if(!this.userSession.isUserSignedIn()){
       this.toastr.info("You need to login to add a comment!","Information")
       return;
@@ -309,7 +309,7 @@ export class PostReaderComponent implements OnInit {
 
   
   getData(){
-    this.ngxService.start();
+  //  this.ngxService.start();
     let p = "pageSize=" + this.pagination.pageSize + "&pageNumber=" + this.pagination.pageNumber + "&postId=" + this.Post.id;
     this._api.setApi('comments');
 
@@ -318,10 +318,10 @@ export class PostReaderComponent implements OnInit {
       this.comments = d.data;
       this.pagination = d;
       this.page = d.pageNumber + 1;
-      this.ngxService.stop();
+      //this.ngxService.stop();
       this.startTour(false);
     }, err => {
-      this.ngxService.stop();
+      //this.ngxService.stop();
       console.log('Error loading comments');
     });
     

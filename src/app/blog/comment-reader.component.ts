@@ -129,23 +129,30 @@ export class CommentReaderComponent implements OnInit {
   }
 
   responseComment(comment:PostComment){
-    // let idx = comment.comments.findIndex(e=> e.id == "");
+    if(!this.userSession.isUserSignedIn()){
+      this.toastr.info("You need to login to add a comment!","Information")
+      return;
+    }
+    let idx = comment.comments!=null? comment.comments.findIndex(e=> e.id == ""): -1;
 
-    // if(idx!==-1){
-    //   document.getElementById('commentN'+(comment.id)+ "_" +(idx)).scrollIntoView({behavior: 'smooth'});
-    //   return;
-    // }
+    if(idx!==-1){
+      let idComment = 'commentZ'+(comment.comments.length-1);
+
+       document.getElementById(idComment).scrollIntoView({behavior: 'smooth'});
+       return;
+     }
     let c  = new PostComment();    
     c.postId = comment.postId;
+    c.id="";
     c.rootId = comment.rootId!= null && comment.rootId!=""?comment.rootId:comment.id;
     c.parentId=this._comment.id;
     
-    c.id="";
     if(!comment.comments)
       comment.comments = new Array<PostComment>()
     comment.comments.push(c);
     this.cdRef.detectChanges();
-    
+    let idComment = 'commentZ'+(comment.comments.length-1);
+    document.getElementById(idComment).scrollIntoView({behavior: 'smooth'});
   }
 
   
@@ -155,5 +162,15 @@ export class CommentReaderComponent implements OnInit {
     this.toastr.success("The comment was delete!",'Success')        
 
     
+  }
+
+  
+  onCancelComment(c:PostComment){
+
+    if(!c){
+      let idx = this.Comment.comments.findIndex(e=> e.id == "");
+      if(idx!== -1)
+      this.Comment.comments.splice(idx,1);
+    }
   }
 }

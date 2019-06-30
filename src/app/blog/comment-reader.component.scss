@@ -1,0 +1,15 @@
+.comment{
+    padding-left: 20px;
+  }
+$primary: #B394DC !default;
+
+hr{
+    display: block; 
+    content: ""; 
+    height: 30px; 
+    margin-top: -31px; 
+    border-style: solid; 
+    border-color: $primary; 
+    border-width: 0 0 1px 0; 
+    border-radius: 20px; 
+}

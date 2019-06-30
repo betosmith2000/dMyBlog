@@ -1,42 +1,36 @@
-<div class="container">
+<div class="border-left comment">
+  <div class="w-100 d-inline-flex">
+    <span class="font-weight-bold small">{{Comment.userId}}</span>&nbsp;
+    <span class="font-weight-lighter small">{{Comment.date|date:'medium'}}</span>
 
-<div class="row">
-  <div class="col-lg-10 col-sm-12"  >
-    <div class="alert alert-dark" role="alert">
-        <div class="float-right" *ngIf="!isNewComment">
-            <button class="btn btn-link text-danger btn-sm " title="Delete comment!" type="button" *ngIf="canEdit" (click)="delete(Comment)">
-                <i class="far fa-trash-alt"></i>
-            </button>&nbsp;
-            <button class="btn btn-link btn-sm " title="Edit comment!" type="button" *ngIf="canEdit" (click)="showUpdate(Comment)">
-                <i class="far fa-edit"></i>
-            </button>&nbsp;
-            <button class="btn btn-link btn-sm " title="Reply comment!" type="button" *ngIf="canReply" (click)="responseComment(Comment)">
-                <i class="far fa-comment-dots"></i>
-            </button>&nbsp;
-          </div>
-      <div>
-        <span class="font-weight-bold small">{{Comment.userId}}</span>&nbsp;
-        <span class="font-weight-lighter small">{{Comment.date|date:'medium'}}</span>
-
-        <div  *ngIf="Comment.comments?.length > 0">
-            <div *ngFor="let c of Comment.comments; let i= index"  >
-              <div id="{{'commentN'+i}}">
-              <app-comment-reader [Comment]="c" (deleteComment)="onDeleteComent($event)"></app-comment-reader>
-            </div>
-            </div>
-          </div>
-      </div>
-      <div>
-        <div [innerHTML]="Comment.content|safeHtml" class="small" *ngIf="!isEditing" ></div>
-        <div  *ngIf="isEditing && canEdit">
-          <app-post-comment [Comment]="Comment" (closeComments)='closeEdition($event)'></app-post-comment>
-        </div>
-
-      </div>
-      
+    <span class="ml-3"  *ngIf="!isNewComment">
+      <button class="btn btn-link text-danger btn-sm " title="Delete comment!" type="button" *ngIf="canEdit" (click)="delete(Comment)">
+        <i class="far fa-trash-alt"></i>
+      </button>&nbsp;
+      <button class="btn btn-link btn-sm " title="Edit comment!" type="button" *ngIf="canEdit" (click)="showUpdate(Comment)">
+        <i class="far fa-edit"></i>
+      </button>&nbsp;
+      <button class="btn btn-link btn-sm " title="Reply comment!" type="button" *ngIf="canReply" (click)="responseComment(Comment)">
+        <i class="far fa-comment-dots"></i>
+      </button>&nbsp;
+    </span>
+  </div>
+  
+  <div class="w-100 ">
+    <div [innerHTML]="Comment.content|safeHtml" class="small" *ngIf="!isEditing" ></div>
+    <div  *ngIf="isEditing && canEdit">
+      <app-post-comment [Comment]="Comment" (closeComments)='closeEdition($event)' ></app-post-comment>
     </div>
   </div>
-  <div class="col-lg-2 col-sm-12">
-  </div>
+
+  <div class="w-100"  *ngIf="Comment.comments?.length > 0">
+    <div *ngFor="let c of Comment.comments; let i= index"  >
+        <div id="{{'commentZ'+i}}">
+      <app-comment-reader [Comment]="c"   (deleteComment)="onDeleteComent($event)"  (cancelComment)="onCancelComment($event)"></app-comment-reader>
+    </div>
+  </div> 
+    
 </div>
+
+
 </div>
