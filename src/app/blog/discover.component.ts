@@ -57,7 +57,7 @@ export class DiscoverComponent implements OnInit {
     this.introJS.setOptions({
       steps: [
         {
-          intro: "Welcome to <strong>Browse</strong> section. Here you can see the posts that users have created with the Browseable status, let's take a tour!"
+          intro: "Welcome to <strong>Browse</strong> section. Here you can see the posts that users have created with the Public status, let's take a tour!"
         },
         {
           element: '#step1',
@@ -70,8 +70,8 @@ export class DiscoverComponent implements OnInit {
           " You can view<button type='button' class='btn btn-link btn-sm'><i class='far fa-eye'></i></button>,"+
           " share<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button> any post"+
           " you can also double click on any to see the content." +
-          " <p>You can also see if your post has liked readers<button type='button' class='btn btn-link btn-sm'><i class='fas fa-frown-open'></i></button>"+
-          " or not<button type='button' class='btn btn-link btn-sm'><i class='fas fa-grin-hearts'></i></button>.</p>",
+          " <p>You can also see if your post has liked to readers<button type='button' class='btn btn-link btn-sm'><i class='far fa-thumbs-up'></i></button></p>",
+          //" or not<button type='button' class='btn btn-link btn-sm'><i class='fas fa-grin-hearts'></i></button>.</p>",
           position:"top",
           disableInteraction:true
 

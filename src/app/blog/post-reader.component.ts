@@ -91,31 +91,31 @@ export class PostReaderComponent implements OnInit {
         },
         {
           element: '#step4-read',
-          intro: "If you liked the Post and want to share it, this is the place to do it, you have link, facebook or twitter options!<br/><strong>Only in posts with Public and Browseable status does this feature work</strong>",
+          intro: "If you liked the Post and want to share it, this is the place to do it, you have link, facebook or twitter options!<br/><strong>Only posts with public status can be shared!</strong>",
           disableInteraction:true,
           position:"left",
           tooltipPosition:'auto'
         },
         {
           element: '#step5',
-          intro: "By the way, if you want to make a comment then here you have the option to do so. <br/><strong>Only in posts with Public and Browseable status does this feature work</strong>",
+          intro: "By the way, if you want to make a comment then here you have the option to do so. <br/><strong>Only posts with public status can be commented!</strong>",
           disableInteraction:true,
           position:"left"
         },
         {
           element: "#step6",
-          intro: "If you like the Post then you can indicate by pressing this button!<br/><strong>Only in posts with Public and Browseable status does this feature work</strong>",
+          intro: "If you like the Post then you can indicate by pressing this button!<br/><strong>Only publications with public status can be marked as I like it!</strong>",
           disableInteraction:true,
           position:"left"
 
         },
-        {
-          element: "#step7",
-          intro: "Finally, If you don't like the Post then you can indicate by pressing this button!<br/><strong>Only in posts with Public and Browseable status does this feature work</strong>",
-          disableInteraction:true,
-          position:"left"
+        // {
+        //   element: "#step7",
+        //   intro: "Finally, If you don't like the Post then you can indicate by pressing this button!<br/><strong>Only in posts with Public and Browseable status does this feature work</strong>",
+        //   disableInteraction:true,
+        //   position:"left"
 
-        },
+        // },
       ]
     });
   this.introJS.onafterchange(function(targetElement) {

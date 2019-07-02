@@ -101,9 +101,9 @@ export class PostComponent implements OnInit {
         {
           element: "#step3",
           intro: "<p>Here is the status of your post, select according to your needs: <br/>" +
-          "<strong>Private</strong>: Only you can see it, there is no link to share.<br/>"+
-          "<strong>Public</strong>: You can see it and the people that have the link of your post and it can be shared on twitter and facebook.<br/>"+
-          "<strong>Browseable</strong>: Like the Public status, it is also listed in the Browse menu.<br/>",
+          "<strong>Private</strong>: Only you can see it, you can not share it of course.<br/>"+
+          "<strong>Public</strong>: You can see it and the people that have the link of your post and it can be shared on twitter and facebook.<br/>",
+          //"<strong>Browseable</strong>: Like the Public status, it is also listed in the Browse menu.<br/>",
           position:"top",
           disableInteraction:true
         },
@@ -137,8 +137,8 @@ export class PostComponent implements OnInit {
     this.hasImageHeader=false;
     this.catStatus = [
       new NameValue(0, 'Private'),
-      new NameValue(1, 'Public'),
-      new NameValue(2, 'Browseable')
+      //new NameValue(1, 'Public'),
+      new NameValue(2, 'Public')
     ];
     this._api.setApi('Posts');
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])

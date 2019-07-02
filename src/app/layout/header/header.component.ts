@@ -12,6 +12,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(private route: Router) { }
 
+  readonly settingsFileName:string = '/settings.txt';
+  readOptions : any = {decrypt: false};
 
   isSignIn : boolean = false;
   userName :string  = 'User name';
@@ -27,7 +29,20 @@ export class HeaderComponent implements OnInit {
         //const profile = userData.profile;
         this.isSignIn = true;
         this.userName = userData.username;
-       // this.route.navigate(['blog/' +this.userName]);
+        this.userSession.getFile(this.settingsFileName,this.readOptions)
+        .then((fileContents) => {
+          let data = JSON.parse(fileContents);
+
+          if(data.blogName== null || data.blogName =='')
+            this.route.navigate(['settings/']);
+          else
+          this.route.navigate(['blog/' +this.userName]);
+        })
+        .catch((error)=>{
+          console.log('Error reading settings');
+        });
+
+        
       })
     } else 
     
@@ -47,7 +62,7 @@ export class HeaderComponent implements OnInit {
           //const profile = userData.profile;
           this.isSignIn = true;
           this.userName = userData.username;
-          this.route.navigate(['blog/' +this.userName]);
+         // this.route.navigate(['blog/' +this.userName]);
         })
     }
   }

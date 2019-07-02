@@ -8,6 +8,7 @@ import { ApiService } from 'src/app/share/data-service';
 
 import * as introJs from 'intro.js/intro.js';
 import { Post } from 'src/app/blog/models/Post';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -41,11 +42,9 @@ export class SettingsComponent implements OnInit {
   selectedPost: any;
   shareablePost: any;
   isShowingTour :boolean=false;
-  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, private _api: ApiService) {
- 
-   }
+  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, private _api: ApiService, private route: Router) {}
    
-   startTour(start:boolean) {
+  startTour(start:boolean) {
     var h = localStorage.getItem('dmyblog.settingsHelp');
     if(h=="1" && !start)
       return;
@@ -177,6 +176,8 @@ export class SettingsComponent implements OnInit {
       .then(() =>{
         this.ngxService.stop();
         this.toastr.success("The changes have been saved!",'Success')
+        this.route.navigate(['blog/' +this.userName]);
+
     })
     .catch((error)=>{
       console.log('Errro updating settings');

@@ -86,8 +86,8 @@ export class BlogComponent implements OnInit {
           " share<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button>,"+
           " edit<button type='button' class='btn btn-link btn-sm'><i class='far fa-edit'></i></button> or"+
           " delete<button type='button' class='btn btn-link btn-sm'><i class='far fa-trash-alt'></i></button> them.</p> "+
-          " <p>You can also see if your post has liked readers<button type='button' class='btn btn-link btn-sm'><i class='fas fa-frown-open'></i></button>"+
-          " or not<button type='button' class='btn btn-link btn-sm'><i class='fas fa-grin-hearts'></i></button>.</p>",
+          " <p>You can also see if your post has liked to readers<button type='button' class='btn btn-link btn-sm'><i class='far fa-thumbs-up'></i></button></p>",
+          //" or not<button type='button' class='btn btn-link btn-sm'><i class='fas fa-grin-hearts'></i></button>.</p>",
           position:"top",
           disableInteraction:true
 
