@@ -3,14 +3,13 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { Md5 } from 'ts-md5/dist/md5';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-inline';
-import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { CustomUploaderAdapter } from './CKEditor/customUploaderAdapter';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ApiService } from '../share/data-service';
 import { NameValue } from '../share/name-value';
 import { Post } from './models/Post';
 import * as introJs from 'intro.js/intro.js';
+import * as ClassicEditor from './CKEditor/ckeditor.js';
 
 
 
@@ -332,7 +331,7 @@ export class PostComponent implements OnInit {
 
     this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
     .then(() =>{
-      postContent = postContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
+     // postContent = postContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
       this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
       .then(() =>{
         if(postData.imageFileName != null && this.postImageContent){          

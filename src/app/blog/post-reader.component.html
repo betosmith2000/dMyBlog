@@ -1,10 +1,10 @@
 <button  title="Help" class="btn btn-link float-button" (click)="startTour(true)">
   <i class="fas fa-question fa-2x"></i>
 </button>
-<button id="step4-read" title="Help" class="btn btn-link float-share" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost()" [disabled]="(Post.status=='0')">
+<button id="step4-read" title="Help" class="btn btn-link float-share" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost()" [disabled]="(Post?.status=='0')">
   <i class="fas fa-share-alt fa-2x"></i>
 </button>
-<button id="step5" class="btn btn-link float-comment" type="button" title="Reply post" data-toggle="modal" data-target="#comment" (click)="commentPost()" [disabled]="Post.status=='0'" >
+<button id="step5" class="btn btn-link float-comment" type="button" title="Reply post" data-toggle="modal" data-target="#comment" (click)="commentPost()" [disabled]="Post?.status=='0'" >
   <i class="far fa-comment-dots fa-2x"></i>
 </button>
   
@@ -28,7 +28,13 @@
           </div>
       </div>
       <div class="card-body">
-        <div id="step2" [innerHTML]="content|safeHtml"></div>
+        <div class="row">
+          <div class="col">
+              <div id="step2" [innerHTML]="content|safeHtml"></div>
+          </div>
+            
+        </div>
+        
         <div class="float-md-right">
           <button type="button small" class="btn btn-outline-secondary" (click)="close()" *ngIf="!isShareURL" >Return</button>&nbsp;
         </div>

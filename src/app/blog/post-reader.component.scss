@@ -83,3 +83,130 @@ $primary: #B394DC !default;
   box-shadow: 2px 2px 3px #999;
   z-index: 1001;
 }
+
+
+.ck-content .image {
+	clear: both;
+	text-align: center;
+
+	/* Make sure there is some space between the content and the image. */
+	margin: 1em 0;
+
+	& > img {
+		/* Prevent unnecessary margins caused by line-height (see #44). */
+		display: block;
+
+		/* Center the image if its width is smaller than the content's width. */
+		margin: 0 auto;
+
+		/* Make sure the image never exceeds the size of the parent container (ckeditor/ckeditor5-ui#67). */
+		max-width: 100%;
+	}
+}
+
+.image-style-side {
+  float: right;
+  margin-left: var(--ck-image-style-spacing);
+}
+
+ .image-style-align-left {
+  float: left;
+  margin-right: var(--ck-image-style-spacing);
+}
+
+ .image-style-align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ .image-style-align-right {
+  float: right;
+  margin-left: var(--ck-image-style-spacing);
+}
+
+
+.text-tiny {
+	font-size: .7em;
+}
+
+.text-small {
+	font-size: .85em;
+}
+
+.text-big {
+	font-size: 1.4em;
+}
+
+.text-huge {
+	font-size: 1.8em;
+}
+
+
+figcaption{
+  color: hsl(0, 0%, 20%);
+	background-color: hsl(0, 0%, 97%);
+	padding: .6em;
+	font-size: .75em;
+  outline-offset: -1px;
+  text-align: center;
+}
+
+code {
+	background-color: hsla(0, 0%, 78%, 0.3);
+	padding: .15em;
+	border-radius: 2px;
+}
+
+
+ blockquote {
+	/* See #12 */
+	overflow: hidden;
+
+	/* https://github.com/ckeditor/ckeditor5-block-quote/issues/15 */
+	padding-right: 1.5em;
+
+	padding-left: 1.5em;
+	margin-left: 0;
+	font-style: italic;
+	border-left: solid 5px hsl(0, 0%, 80%);
+}
+
+
+table {
+	/* Give the table widget some air and center it horizontally */
+	margin: 1em auto;
+	display: table;
+
+	& table {
+		/* The table cells should have slight borders */
+		border-collapse: collapse;
+		border-spacing: 0;
+
+		/* The outer border of the table should be slightly darker than the inner lines.
+		Also see https://github.com/ckeditor/ckeditor5-table/issues/50. */
+		border: 1px double hsl(0, 0%, 70%);
+
+		& td,
+		& th {
+			min-width: 2em;
+			padding: .4em;
+			border-color: hsl(0, 0%, 85%);
+		}
+
+		& th {
+			font-weight: bold;
+			background: hsl(0, 0%, 98%);
+		}
+	}
+}
+
+
+.media {
+	clear: both;
+	margin: auto;
+  display: block;
+  width: 840px;
+  height: 472px;
+  max-width: 100%;
+  
+}

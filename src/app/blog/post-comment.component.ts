@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Post } from './models/Post';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-inline';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { ApiService } from '../share/data-service';
@@ -8,6 +6,9 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ToastrService } from 'ngx-toastr';
 import { Md5 } from 'ts-md5/dist/md5';
 import { PostComment } from './models/comment';
+
+import * as ClassicEditor from './CKEditor/ckeditor.js';
+import { CustomUploaderAdapter } from './CKEditor/customUploaderAdapter';
 
 @Component({
   selector: 'app-post-comment',
@@ -24,9 +25,18 @@ export class PostCommentComponent implements OnInit {
   canComment:boolean=false;
   public Editor = ClassicEditor;
   ckconfig = {
+    extraPlugins: [ this.CustomUploadAdapterPlugin ]
+
    // placeholder: 'Type the comment here!'//,
     //toolbar:  [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote','InsertTable','MediaEmbed','Undo', 'Redo' ]
   };
+  
+  CustomUploadAdapterPlugin(editor){
+    editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+      // Configure the URL to the upload script in your back-end here!
+      return new CustomUploaderAdapter( loader );
+    };
+  }
   
   @Output() closeComments = new EventEmitter();
 
@@ -51,7 +61,7 @@ export class PostCommentComponent implements OnInit {
       this.ngxService.start();
       let fileContent = p.postContent;
       if(!this.Comment || this.Comment.id ==""){
-        fileContent = fileContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
+        // fileContent = fileContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
         fileContent = fileContent.replace(/<p>&nbsp;<\/p><p>&nbsp;<\/p><p>&nbsp;<\/p>/g,"" );
 
         let hash  = Md5.hashStr(new Date().toISOString(),false);
@@ -149,7 +159,7 @@ export class PostCommentComponent implements OnInit {
 
   initializeForm():void{
     let content = this.Comment? this.Comment.content:'';
-    this.postContent = new FormControl(content, [Validators.required, Validators.maxLength(4000)]);
+    this.postContent = new FormControl(content, [Validators.required]);
 
     this.form = new FormGroup({
       postContent : this.postContent

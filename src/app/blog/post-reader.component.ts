@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +14,8 @@ import * as introJs from 'intro.js/intro.js';
 @Component({
   selector: 'app-post-reader',
   templateUrl: './post-reader.component.html',
-  styleUrls: ['./post-reader.component.scss']
+  styleUrls: ['./post-reader.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class PostReaderComponent implements OnInit {
   introJS = introJs();
@@ -236,7 +237,8 @@ export class PostReaderComponent implements OnInit {
       this.author = this.Post.author;
       this.date = this.Post.date;
       this.getPostImage(this.Post);
-      this.ngxService.stop();
+      this.ngxService.stop();  
+      this.getMediaEmbed();
       this.getData();
     })
     .catch((error)=>{
@@ -248,7 +250,28 @@ export class PostReaderComponent implements OnInit {
     this.closed.emit(null);
   }
 
+  getMediaEmbed(){
+    this.cdRef.detectChanges();
+    document.querySelectorAll( 'oembed[url]' ).forEach( element => {
+      //iframely.load( element, element.attributes.url.value );
+
+      element.insertAdjacentHTML("afterend", this.getMediaHTML(element));
+      } );
+  }
   
+  getMediaHTML(url:any):string{
+    debugger
+    let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.attributes.url.value.match(regExp);
+    if (match && match[2].length == 11) {
+      return '<iframe class="media" src="//www.youtube.com/embed/'+ match[2]+'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    } else {
+      return 'Failed to preview the video!';
+    }
+  
+    
+  }
+
   getPostImage(p:any):void {
     if(p.imageFileName== null || p.imageFileName=='')
       this.imageContent= this.LOGO;
