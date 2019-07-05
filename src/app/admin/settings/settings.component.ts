@@ -42,7 +42,9 @@ export class SettingsComponent implements OnInit {
   selectedPost: any;
   shareablePost: any;
   isShowingTour :boolean=false;
-  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, private _api: ApiService, private route: Router) {}
+  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, private _api: ApiService, private route: Router) {
+    this._api.setApi('posts')
+  }
    
   startTour(start:boolean) {
     var h = localStorage.getItem('dmyblog.settingsHelp');
@@ -258,33 +260,16 @@ export class SettingsComponent implements OnInit {
     this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
     .then(() =>{
 
-      //TODO:Uncomment when delete feature avaliable
-      //this.userSession.deleteFile(p.postFileName);
-      //if(p.imageFileName)
-      //  this.userSession.deleteFile(p.imageFileName);
-
-      //TODO: Comment when delete feature avaliable
-      this.userSession.putFile(p.postFileName,  'Deleted!', this.writeOptions)
-      .then(() =>{
-        if(p.imageFileName != null && p.imageFileName != ''){
-          this.userSession.putFile(p.imageFileName,'Deleted!', this.writeOptions)
-          .then(() =>{
-            this.toastr.success("The post was delete!",'Success')
-            this.ngxService.stop();
-
+      this.userSession.deleteFile(p.postFileName);
+      if(p.imageFileName){
+        this.userSession.deleteFile(p.imageFileName).
+          then(()=>{
+            this.toastr.success("The post was delete!",'Success')    
           });
-        }
-        else{
-          this.toastr.success("The post was delete!",'Success')
-          this.ngxService.stop();
-        }
-
-      })
-      .catch((error)=>{
-        console.log('Error deleting post');
-        this.ngxService.stop();
-      });;
-
+      }
+      else{
+        this.toastr.success("The post was delete!",'Success')
+      }
       this.ngxService.stop();
     }).catch((error) => {
       console.log('Error deleting post!')
@@ -309,6 +294,7 @@ export class SettingsComponent implements OnInit {
     }
     else if(res){
       this.selectedPost.title = res.title;
+      this.selectedPost.status = res.status;
       this.selectedPost.id=res.id;
     }
     this.isNewPost = false;

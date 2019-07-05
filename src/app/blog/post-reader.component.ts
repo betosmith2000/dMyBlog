@@ -229,6 +229,14 @@ export class PostReaderComponent implements OnInit {
   }
 
   readPost():void{
+    if(this.Post.status=="0")
+    {
+      this.readOptions.decrypt=true;
+    }
+    else{
+      this.readOptions.decrypt=false;
+    }
+
     this.userSession.getFile(this.Post.postFileName,this.readOptions)
     .then((fileContents) => {
       this.viewingPost = JSON.parse(fileContents);

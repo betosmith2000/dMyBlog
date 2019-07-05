@@ -180,3 +180,18 @@ $primary: #B394DC !default;
     z-index: 1002;
     z-index: 1002;
   }
+
+  
+.float-search{
+    position: fixed;
+	width:200px;
+	height:60px;
+	top:100px;
+    right:200px;
+	background-color:$primary;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1001;
+}

@@ -146,7 +146,11 @@ export class BlogComponent implements OnInit {
           
           this.userSession.getFile(this.postsFileName,this.readOptions)
           .then((postContents) => {
-            this.posts = JSON.parse(postContents);
+            let allPosts = JSON.parse(postContents);
+            if(!this.isAdmin)
+              this.posts = allPosts.filter(e=> e.status != "0");
+            else
+              this.posts=allPosts;
             if(this.posts == null)
               this.posts = new Array();
             this.posts.forEach(p => {
@@ -186,6 +190,11 @@ export class BlogComponent implements OnInit {
     }
   }
   getPostImage(p:any):void {
+    if(p.status=="0")
+      this.readOptions.decrypt=true;
+    else
+      this.readOptions.decrypt=false;
+
     if(p.imageFileName== null || p.imageFileName=='')
       p.imageFileContent= this.LOGO;
     else 
@@ -265,36 +274,16 @@ export class BlogComponent implements OnInit {
 
   saveFiles(p:any):void{
     let postsArray = JSON.stringify(this.posts);
-
+    this.writeOptions.encrypt = false;
     this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
     .then(() =>{
       
-      //TODO:Uncomment when delete feature avaliable
-      //this.userSession.deleteFile(p.postFileName);
-      //if(p.imageFileName)
-      //  this.userSession.deleteFile(p.imageFileName);
+      
+      this.userSession.deleteFile(p.postFileName);
+      if(p.imageFileName)
+        this.userSession.deleteFile(p.imageFileName);
 
-      //TODO: Comment when delete feature avaliable
-      this.userSession.putFile(p.postFileName,  'Deleted!', this.writeOptions)
-      .then(() =>{
-        if(p.imageFileName != null && p.imageFileName != ''){
-          this.userSession.putFile(p.imageFileName,'Deleted!', this.writeOptions)
-          .then(() =>{
-            this.toastr.success("The post was delete!",'Success')        
-            this.ngxService.stop();
-            
-          });
-        }
-        else{
-          this.toastr.success("The post was delete!",'Success')  
-          this.ngxService.stop();
-        }
-
-      }) 
-      .catch((error)=>{
-        console.log('Error deleting post');
-        this.ngxService.stop();
-      });;
+ 
 
       this.ngxService.stop(); 
     }).catch((error) => {
