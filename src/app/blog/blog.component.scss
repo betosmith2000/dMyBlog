@@ -101,18 +101,18 @@
 
 
 
-$primary: #B394DC !default;
+$primary: blueviolet !default;
 
 .float-button{
-    position: fixed;;
-	width:60px;
-	height:60px;
-	top:100px;
-	right: 20px;
-	background-color:$primary;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
+    position: fixed;
+    width:60px;
+    height:60px;
+    top:100px;
+    right:20px;    
+    background-color:$primary;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
     box-shadow: 2px 2px 3px #999;
     z-index: 1001;
 }
@@ -156,9 +156,9 @@ $primary: #B394DC !default;
 }
 
 .button-bar{
-    background-color: white;
+    background-color: $primary;
 	border-radius:.25rem;
-
+    
 }
 
 .card-img-overlay{
@@ -167,11 +167,11 @@ $primary: #B394DC !default;
 }
 
 .transparency{
-    opacity: .75
+    opacity: .9
 }
 
 .footer-post{
-    background-color: blueviolet;
+    background-color: $primary;
     padding: 10px;
 }
 

@@ -2,7 +2,8 @@
   <i class="fas fa-question fa-2x"></i>
 </button>
 <div class="container top-padding" *ngIf="!isNewPost && !isUpdatePost">    
-  <h2 class="display-4 " id="step0">{{userName}} </h2>
+  <h2 class="display-4 d-none d-sm-block" id="step0">{{userName}} </h2>
+  <h4 class="d-block d-sm-none" id="step0">{{userName}} </h4>
 
   <div class="card shadow-sm">
     <div class="card-body"  >
@@ -62,8 +63,9 @@
     </div>
   </div>
   
-  <h2 class="display-4">My Posts</h2>
-    
+  
+  <h2 class="display-4 d-none d-sm-block" id="step0">My Posts</h2>
+  <h4 class="d-block d-sm-none" id="step0">My Posts</h4>
   
   
   <div class="card shadow-sm">

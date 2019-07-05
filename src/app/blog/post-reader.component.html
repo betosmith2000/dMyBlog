@@ -7,7 +7,10 @@
 <button id="step5" class="btn btn-link float-comment" type="button" title="Reply post" data-toggle="modal" data-target="#comment" (click)="commentPost()" [disabled]="Post?.status=='0'" >
   <i class="far fa-comment-dots fa-2x"></i>
 </button>
-  
+<button title="Return" type="button small" class="btn btn-link float-return" (click)="close()" *ngIf="!isShareURL" >
+  <i class="fas fa-arrow-left fa-2x"></i>
+</button>  
+
 <div class="container top-padding">
   <div >
     <app-post-interaction   [Post]="Post"></app-post-interaction>
@@ -35,8 +38,8 @@
             
         </div>
         
-        <div class="float-md-right">
-          <button type="button small" class="btn btn-outline-secondary" (click)="close()" *ngIf="!isShareURL" >Return</button>&nbsp;
+        <div class="pt-3">
+          &nbsp;
         </div>
       </div>
       

@@ -37,21 +37,20 @@
 }
 
 
-$primary: #B394DC !default;
-
+$primary: blueviolet !default;
 
 .float-button{
-  position: fixed;
-  width:60px;
-  height:60px;
-  top:100px;
-  right:20px;    
-  background-color:$primary;
-  color:#FFF;
-  border-radius:50px;
-  text-align:center;
-  box-shadow: 2px 2px 3px #999;
-  z-index: 1001;
+    position: fixed;
+    width:60px;
+    height:60px;
+    top:100px;
+    right:20px;    
+    background-color:$primary;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1001;
 }
 
 
@@ -83,8 +82,20 @@ $primary: #B394DC !default;
   box-shadow: 2px 2px 3px #999;
   z-index: 1001;
 }
-
-
+.float-return
+{
+  position: fixed;
+  width:60px;
+  height:60px;
+  top:410px;
+  right:20px;
+  background-color:blueviolet;
+  color:#FFF;
+  border-radius:50px;
+  text-align:center;
+  box-shadow: 2px 2px 3px #999;
+  z-index: 1001;
+}
 .ck-content .image {
 	clear: both;
 	text-align: center;

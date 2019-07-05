@@ -102,7 +102,7 @@
 }
 
 
-$primary: #B394DC !default;
+$primary: blueviolet !default;
 
 .float-button{
     position: fixed;
@@ -132,7 +132,7 @@ $primary: #B394DC !default;
 }
 
 .button-bar{
-    background-color: white;
+    background-color: $primary;
 	border-radius:.25rem;
 
 }
@@ -147,7 +147,7 @@ $primary: #B394DC !default;
 }
 
 .footer-post{
-    background-color: blueviolet;
+    background-color: $primary;
     padding: 10px;
 }
 

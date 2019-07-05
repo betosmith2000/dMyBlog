@@ -57,11 +57,11 @@
                     </div>
               </div>
               <div class="btn-group button-bar"  role="group" aria-label="Basic example" >
-                  <button class="btn btn-outline-primary" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"
+                  <button class="btn btn-outline-info text-white" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"
                     *ngIf="p.status == 1 || p.status == 2">
                       <i class="fas fa-share-alt"></i>
                   </button>
-                  <button class="btn btn-outline-primary" type="button"  title="View post" (click)="viewPost(p)">
+                  <button class="btn btn-outline-info text-white" type="button"  title="View post" (click)="viewPost(p)">
                       <i class="far fa-eye"></i>
                   </button>
               </div>
