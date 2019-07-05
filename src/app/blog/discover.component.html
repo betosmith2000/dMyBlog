@@ -98,7 +98,8 @@
           <ul class="pagination justify-content-center">
             <li class="page-item"><button class="page-link text-dark" (click)="firstPage()"><span class="fas fa-fast-backward"></span></button></li>
             <li class="page-item"><button class="page-link text-dark" (click)="previousPage()"><span class="fas fa-backward"></span></button></li>
-            <li class="page-item"><span class="page-link text-dark" href="#">Page {{pagination.pageNumber + 1}}  of {{pagination.totalPages}} | {{pagination.totalRegs}} Posts</span></li>
+            <li class="page-item d-none d-sm-block"><span class="page-link text-dark" href="#">Page {{pagination.pageNumber + 1}} of {{pagination.totalPages}} | {{pagination.totalRegs}} Posts</span></li>
+            <li class="page-item d-block d-sm-none"><span class="page-link text-dark" href="#">P. {{pagination.pageNumber + 1}} of {{pagination.totalPages}}</span></li>
             <li class="page-item"><button class="page-link text-dark" (click)="nextPage()"><span class="fas fa-forward"></span></button></li>
             <li class="page-item"><button class="page-link text-dark" (click)="lastPage()"><span class="fas fa-fast-forward"></span></button></li>
             <li class="page-item">&nbsp;&nbsp;&nbsp;&nbsp;</li>
