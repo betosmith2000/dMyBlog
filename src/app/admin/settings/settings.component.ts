@@ -295,6 +295,7 @@ export class SettingsComponent implements OnInit {
     else if(res){
       this.selectedPost.title = res.title;
       this.selectedPost.status = res.status;
+      this.selectedPost.encrypt = res.encrypt;
       this.selectedPost.id=res.id;
     }
     this.isNewPost = false;

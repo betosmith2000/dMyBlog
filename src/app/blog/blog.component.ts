@@ -29,7 +29,7 @@ export class BlogComponent implements OnInit {
   isNewPost : boolean = false;
   isViewingPost : boolean = false;
   private LOGO = require("../../assets/logo-header.png");
-  selectedPost: any;
+  selectedPost: Post;
   shareTitle : string = 'Share this ';
 
   readonly postsFileName:string = '/posts.txt';
@@ -190,11 +190,9 @@ export class BlogComponent implements OnInit {
     }
   }
   getPostImage(p:any):void {
-    if(p.status=="0")
-      this.readOptions.decrypt=true;
-    else
-      this.readOptions.decrypt=false;
-
+    
+      this.readOptions.decrypt=p.encrypt;
+    
     if(p.imageFileName== null || p.imageFileName=='')
       p.imageFileContent= this.LOGO;
     else 
@@ -229,6 +227,7 @@ export class BlogComponent implements OnInit {
         postResume.status = res.status;
         postResume.id = res.id;
         postResume.imageFileName = res.imageFileName;
+        postResume.encrypt = res.encrypt;
         this.getPostImage(postResume);
         this.selectedPost = null;
       }else{

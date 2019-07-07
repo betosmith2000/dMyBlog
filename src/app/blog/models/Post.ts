@@ -12,6 +12,7 @@ export interface IPost {
     status:number;
     shareCode:string;
     interactions:InteractionTypeResult;
+    encrypt:boolean;
 }
 
 export class Post implements IPost{
@@ -25,5 +26,5 @@ export class Post implements IPost{
     status:number;
     shareCode:string;
     interactions:InteractionTypeResult;
-
+    encrypt:boolean;
 }

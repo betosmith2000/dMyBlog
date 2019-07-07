@@ -149,14 +149,10 @@ export class PostComponent implements OnInit {
       this.title ="Update Post";
       this.ngxService.start();
 
-      if(this.Post.status =="0"){ //porivate
-        this.writeOptions.encrypt=true;
-        this.readOptions.decrypt=true;
-      }
-      else{
-        this.writeOptions.encrypt=false;
-        this.readOptions.decrypt=false;
-      }
+     
+        this.writeOptions.encrypt=this.Post.encrypt;
+        this.readOptions.decrypt=this.Post.encrypt;
+     
       this.userSession.getFile(this.Post.postFileName,this.readOptions)
         .then((fileContents) => {
           this.editingPost = JSON.parse(fileContents);
@@ -237,7 +233,8 @@ export class PostComponent implements OnInit {
         imageFileName:this.postImageFileName.replace('ID',hash.toString()) ,
         status: this.status.value,
         shareCode: hash.toString(),
-        interactions:null
+        interactions:null,
+        encrypt:this.status.value == "0"
       };
       if(this.postImageContent == null || this.postImageContent == '')
         postData.imageFileName = null;
@@ -275,6 +272,7 @@ export class PostComponent implements OnInit {
         postResume.excerpt=div.textContent;
         postResume.title = this.postTitle.value;
         postResume.status =  this.status.value;
+        postResume.encrypt =  this.status.value == "0";
       }
       
       if(this.postImageContent != null && this.postImageContent != "" && postResume.imageFileName == null)
@@ -340,12 +338,9 @@ export class PostComponent implements OnInit {
     this.writeOptions.encrypt=false;
     this.userSession.putFile(this.postsFileName,postsArray, this.writeOptions)
     .then(() =>{
-      if(p.status =="0"){ //porivate
-        this.writeOptions.encrypt=true;
-      }
-      else{
-        this.writeOptions.encrypt=false;
-      }
+      
+      this.writeOptions.encrypt=postData.encrypt;
+      
      // postContent = postContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
       this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
       .then(() =>{

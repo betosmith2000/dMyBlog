@@ -229,13 +229,7 @@ export class PostReaderComponent implements OnInit {
   }
 
   readPost():void{
-    if(this.Post.status=="0")
-    {
-      this.readOptions.decrypt=true;
-    }
-    else{
-      this.readOptions.decrypt=false;
-    }
+      this.readOptions.decrypt=this.Post.encrypt;
 
     this.userSession.getFile(this.Post.postFileName,this.readOptions)
     .then((fileContents) => {
