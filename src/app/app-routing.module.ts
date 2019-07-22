@@ -5,14 +5,18 @@ import { HomeComponent } from './home/home.component';
 import { BlogComponent } from './blog/blog.component';
 import { PostReaderComponent } from './blog/post-reader.component';
 import { DiscoverComponent } from './blog/discover.component';
+import { dMyblogGoHome } from './share/dMyblogGoHome';
+import { FaqComponent } from './admin/faq/faq.component';
 
 const routes: Routes = [
   { path: "settings", component: SettingsComponent},
+  { path: "faq", component:FaqComponent},
   { path: "blog/:userBlog", component: BlogComponent},
   { path: "read/:userBlog/:postId", component: PostReaderComponent},
   { path: "browse", component: DiscoverComponent},
-  { path: "", component: HomeComponent},
-  { path: "*", component: HomeComponent}
+  { path: "home", component: HomeComponent, canActivate:[ dMyblogGoHome]},
+  { path: "", component: HomeComponent, canActivate:[ dMyblogGoHome]},
+  { path: "*", component: HomeComponent, canActivate:[ dMyblogGoHome]}
 ];
 
 @NgModule({

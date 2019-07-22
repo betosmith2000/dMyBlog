@@ -10,7 +10,7 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   public ngOnInit() {
-    this.loadScript('assets/js/agency.js');           
+    //this.loadScript('assets/js/agency.js');           
     
   }
   

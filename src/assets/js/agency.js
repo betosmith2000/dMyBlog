@@ -10,7 +10,7 @@
     $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function(event) {
       if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
         var t = this.hash;
-        if(t.indexOf('page-top')== -1 && t.indexOf('services') == -1)
+        if(t.indexOf('page-top')== -1 && t.indexOf('features') == -1 && t.indexOf('faq') == -1 && t.indexOf('howto') == -1)
         return false;
         var target = $(t);
         target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
