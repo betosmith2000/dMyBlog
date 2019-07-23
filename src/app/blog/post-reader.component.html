@@ -12,7 +12,7 @@
 </button>  
 
 <div class="container top-padding">
-  <div >
+  <div class="like-lateral" >
     <app-post-interaction *ngIf="Post"  [Post]="Post"></app-post-interaction>
   </div>
   <div *ngIf="!isMissingPost">
@@ -49,7 +49,8 @@
       <br>
       <div *ngIf="comments?.length === 0" class="alert alert-warning pt-3" role="alert">
           <div class="align-middle">
-            <label >No comments yet!</label> 
+            <label >No comments yet!</label>&nbsp;<label *ngIf="!isSignIn"> You need to login to comment on this post.</label>
+            <a class="btn btn-link manita text-primary mb-1" (click)="commentPost(true)">Reply</a>
           </div>
   
       </div>
@@ -57,8 +58,10 @@
       <div  *ngIf="comments?.length > 0">
         <div *ngFor="let c of comments; let i= index"  >
           <div id="{{'commentN'+i}}">
-          <app-comment-reader [Comment]="c" (deleteComment)="onDeleteComent($event)" (updateComment)="onUpdateComment($event)" 
-          (cancelComment)="onCancelComment($event)"></app-comment-reader>
+          <app-comment-reader [Comment]="c" (deleteComment)="onDeleteComent($event)" 
+          (updateComment)="onUpdateComment($event)" 
+          (cancelComment)="onCancelComment($event)"
+          (closeComments)="onCloseComments($event)"></app-comment-reader>
         </div>
         </div>
       </div>

@@ -26,7 +26,8 @@
   <div class="w-100"  *ngIf="Comment.comments?.length > 0">
     <div *ngFor="let c of Comment.comments; let i= index"  >
         <div id="{{'commentZ'+i}}">
-      <app-comment-reader [Comment]="c"   (deleteComment)="onDeleteComent($event)"  (cancelComment)="onCancelComment($event)"></app-comment-reader>
+      <app-comment-reader [Comment]="c"   (deleteComment)="onDeleteComent($event)"  
+      (cancelComment)="onCancelComment($event)"></app-comment-reader>
     </div>
   </div> 
     

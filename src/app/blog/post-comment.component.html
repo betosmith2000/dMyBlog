@@ -1,11 +1,12 @@
-
+<div class="editor-width">
 <form class="py-4" novalidate (ngSubmit)="saveComment()" [formGroup]="form" autocomplete="off">
     <ckeditor [editor]="Editor" formControlName="postContent"   [config]="ckconfig" ></ckeditor>
     <br>
     <div class="row">
         <div class="col ">
-            <button class="btn btn-primary float-right mx-2"  [disabled]="!form.valid">Post</button>
+            <button class="btn btn-primary float-right mx-2"  [disabled]="!form.valid">Reply</button>
             <button class="btn btn-secondary float-right mx-2" (click)="cancelComment()">Cancel</button> 
         </div>
     </div>
 </form>
+</div>

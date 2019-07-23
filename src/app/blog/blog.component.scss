@@ -175,25 +175,6 @@ $primary: blueviolet !default;
     padding: 10px;
 }
 
-:host /deep/ .float-like{
-    color:#FFF;
-    background-color:$primary;
-    border-radius:25px;
-    height:37px;
-    width:40px;
-    box-shadow: 2px 2px 3px #999;
-    margin-left: 5px;
-    z-index: 1001;
-    
-}
-
-:host /deep/ .stack-site{
-    font-size: 45%;
-    position: relative;
-    top: -12px;
-    right: -17px;
-}
-
 .float-unlike{
     color:#FFF;
     background-color:$primary;

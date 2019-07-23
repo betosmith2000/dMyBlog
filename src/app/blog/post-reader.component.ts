@@ -38,6 +38,7 @@ export class PostReaderComponent implements OnInit {
   userSession : any;
   readOptions : any = {decrypt: false, username: null};
   viewingPost : any;
+  
   private _post: any = null;
   @Input()
   set Post(post: any) {
@@ -53,6 +54,7 @@ export class PostReaderComponent implements OnInit {
   userName :string  = '';
   postId :string = '';
   posts:any;
+  isSignIn:boolean = false;
 
   constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService, private _api:ApiService,
      private toastr: ToastrService, private cdRef:ChangeDetectorRef) {
@@ -170,7 +172,9 @@ export class PostReaderComponent implements OnInit {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
    
-
+    if (this.userSession.isUserSignedIn()) {
+      this.isSignIn = true;
+    }
 
     this.route.paramMap.subscribe(params => {
 
@@ -296,7 +300,7 @@ export class PostReaderComponent implements OnInit {
     this.shareTitle = "Share this Post!"
   }
 
-  commentPost(){    
+  commentPost(scroll:boolean=true){    
     if(!this.userSession.isUserSignedIn()){
       this.toastr.info("You need to login to add a comment!","Information")
       return;
@@ -313,14 +317,17 @@ export class PostReaderComponent implements OnInit {
     this.comments.push(c);
     this.cdRef.detectChanges();
     let idComment = 'commentN'+(this.comments.length-1);
-    document.getElementById(idComment).scrollIntoView({behavior: 'smooth'});
+    if(scroll)
+      document.getElementById(idComment).scrollIntoView({behavior: 'smooth'});
   }
 
-  closeComments(comment:any):void{
+  onCloseComments(comment:any):void{
+    debugger
     if(comment){
       this.content ='Loading content...';
       this.comments.push(comment);
     }
+
   }
 
 
@@ -344,6 +351,8 @@ export class PostReaderComponent implements OnInit {
       this.pagination = d;
       this.page = d.pageNumber + 1;
       //this.ngxService.stop();
+      if(this.isSignIn)
+        this.commentPost(false);
       this.startTour(false);
     }, err => {
       //this.ngxService.stop();
@@ -361,10 +370,13 @@ export class PostReaderComponent implements OnInit {
   }
 
   onUpdateComment(c:PostComment){
+    debugger
     let comment = this.comments.filter(e=> e.id == c.id)[0];
     comment.content = c.content;
     comment.id=c.id;
     comment.date = c.date;
+    this.commentPost(false);
+
   }
 
   onCancelComment(c:PostComment){

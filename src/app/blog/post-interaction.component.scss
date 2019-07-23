@@ -10,7 +10,7 @@
 	box-shadow: 2px 2px 3px #999;
 }
 
-.stack-site{
+:host-context(.like-lateral) .stack-site{
     position: absolute;
     top: 0px;
 	right: 0px;
@@ -30,8 +30,7 @@
 
 
 $primary: blueviolet !default;
-
-.float-like{
+:host-context(.like-lateral) .float-like{
     position: fixed;
     width:60px;
     height:60px;
@@ -46,7 +45,7 @@ $primary: blueviolet !default;
 	font-size: 2rem;
   }
   
-  .float-unlike{
+  :host-context(.like-lateral) .float-unlike{
     position: fixed;
     width:60px;
     height:60px;
@@ -60,3 +59,23 @@ $primary: blueviolet !default;
     z-index: 1001;
   }
   
+
+  :host-context(.like-inline) .float-like{
+    color:#FFF;
+    background-color:$primary;
+    border-radius:25px;
+    height:37px;
+    width:40px;
+    box-shadow: 2px 2px 3px #999;
+    margin-left: 5px;
+    z-index: 1001;
+    font-size: 1rem;
+    
+}
+
+:host-context(.like-inline)  .stack-site{
+    font-size: .65rem;
+    position: relative;
+    top: -40px;
+    right: -17px;
+}
