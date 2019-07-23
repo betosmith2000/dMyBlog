@@ -12,7 +12,7 @@
 }
 
 
-$primary: #B394DC !default;
+$primary: blueviolet !default;
 
 .float-button{
     position: fixed;
@@ -27,3 +27,18 @@ $primary: #B394DC !default;
     box-shadow: 2px 2px 3px #999;
     z-index: 1001;
 }
+
+
+// .float-like{
+//     position: fixed;
+//     width:60px;
+//     height:60px;
+//     top:340px;
+//     right:20px;
+//     background-color:$primary;
+//     color:#FFF;
+//     border-radius:50px;
+//     text-align:center;
+//     box-shadow: 2px 2px 3px #999;
+//     z-index: 1001;
+//   }

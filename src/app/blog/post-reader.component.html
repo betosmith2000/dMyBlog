@@ -13,7 +13,7 @@
 
 <div class="container top-padding">
   <div >
-    <app-post-interaction   [Post]="Post"></app-post-interaction>
+    <app-post-interaction *ngIf="Post"  [Post]="Post"></app-post-interaction>
   </div>
   <div *ngIf="!isMissingPost">
     <div class="card shadow postReader">

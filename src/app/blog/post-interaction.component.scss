@@ -11,10 +11,10 @@
 }
 
 .stack-site{
-    font-size: 65%;
     position: absolute;
     top: 0px;
-    right: 0px;
+	right: 0px;
+	font-size: .65rem;
 }
 
 .unlike{
@@ -29,7 +29,7 @@
 
 
 
-$primary: #B394DC !default;
+$primary: blueviolet !default;
 
 .float-like{
     position: fixed;
@@ -42,7 +42,8 @@ $primary: #B394DC !default;
     border-radius:50px;
     text-align:center;
     box-shadow: 2px 2px 3px #999;
-    z-index: 1001;
+	z-index: 1001;
+	font-size: 2rem;
   }
   
   .float-unlike{

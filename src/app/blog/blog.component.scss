@@ -175,26 +175,26 @@ $primary: blueviolet !default;
     padding: 10px;
 }
 
+:host /deep/ .float-like{
+    color:#FFF;
+    background-color:$primary;
+    border-radius:25px;
+    height:37px;
+    width:40px;
+    box-shadow: 2px 2px 3px #999;
+    margin-left: 5px;
+    z-index: 1001;
+    
+}
 
-.stack-site{
+:host /deep/ .stack-site{
     font-size: 45%;
     position: relative;
-    top: -42px;
+    top: -12px;
     right: -17px;
 }
 
-.float-like{
-    color:#FFF;
-    background-color:$primary;
-    border-radius:25px;
-    height:37px;
-    width:40px;
-    box-shadow: 2px 2px 3px #999;
-    z-index: 1002;
-    margin-left: 5px;
-  }
-  
-  .float-unlike{
+.float-unlike{
     color:#FFF;
     background-color:$primary;
     border-radius:25px;
@@ -203,5 +203,4 @@ $primary: blueviolet !default;
     box-shadow: 2px 2px 3px #999;
     z-index: 1002;
     z-index: 1002;
-  }
-  
+}

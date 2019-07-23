@@ -115,7 +115,8 @@ export class BlogShareComponent implements OnInit {
         shareUrl: 'https://www.linkedin.com/shareArticle',
         params: {
             url:'',
-            mini: true
+            mini: true,
+            shareMediaCategory:'ARTICLE'
         }
     },
     twitter: {

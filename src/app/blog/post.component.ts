@@ -100,7 +100,7 @@ export class PostComponent implements OnInit {
         {
           element: "#step3",
           intro: "<p>Here is the status of your post, select according to your needs: <br/>" +
-          "<strong>Private</strong>: Only you can see it, it is saved encrypted so it cannot be shared.<br/>"+
+          "<strong>Private</strong>: The post is saved encrypted, nobody but you can access it!<br/>"+
           "<strong>Public</strong>: You can see it and the people that have the link of your post and it can be shared on twitter and facebook.<br/>",
           //"<strong>Browseable</strong>: Like the Public status, it is also listed in the Browse menu.<br/>",
           position:"top",
