@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../share/data-service';
+import { IPostStatistics, PostStatistics } from '../blog/models/PostStatistics';
 
 @Component({
   selector: 'app-home',
@@ -6,12 +8,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
-  constructor() { }
+  statistics:IPostStatistics;
+  constructor(private _api:ApiService) { 
+    this._api.setApi("Statistics");
+  }
 
   public ngOnInit() {
     //this.loadScript('assets/js/agency.js');           
-    
+    this.getData();
   }
   
   public loadScript(url) {
@@ -31,4 +35,17 @@ export class HomeComponent implements OnInit {
     
   }
   
+
+  
+  getData(){
+    let p = "";
+    this._api.getAll<PostStatistics>(p).subscribe(d => {
+      this.statistics = d;
+    }, err => {
+      
+      console.log('Error loading statistics');
+    });
+    
+  }
+
 }
