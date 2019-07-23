@@ -43,18 +43,19 @@
           <div class="h-100 d-flex flex-column justify-content-end ">
             <div  class="d-flex  bd-highlight m-2">
                 <div class="flex-grow-1">
-                    <div class="interaction-bar " disabled>
-                      <!-- <button  class="btn btn-link  float-unlike"  title="I don't like it!">
-                        <i class="fas fa-frown-open"></i>
-                        <span class="badge badge-dark stack-site">{{p?.interactions?.unlikeCount}}</span>
-                      </button> -->
-                      <button class="btn btn-link float-like" (click)="like()" title="I like it!">
-                          <span class="fa-layers fa-fw" >
-                            <i class="far fa-thumbs-up"></i>
-                            <span class="badge badge-dark stack-site">{{p?.interactions?.likeCount}}</span>
-                          </span>
-                        </button>
-                    </div>
+                    <div class="like-inline" >
+                        <!-- <button  class="btn btn-link  float-unlike"  title="I don't like it!">
+                          <i class="fas fa-frown-open"></i>
+                          <span class="badge badge-dark stack-site">{{p?.Interaction?.unlikeCount}}</span>
+                        </button> -->
+                        <!-- <button class="btn btn-link float-like" (click)="like()" title="I like it!" *ngIf="p.status!='0'">
+                            <span class="fa-layers fa-fw" >
+                              <i class="far fa-thumbs-up"></i>
+                              <span class="badge badge-dark stack-site">{{p?.Interaction?.likeCount}}</span>
+                            </span>
+                          </button> -->
+                          <app-post-interaction   [Post]="p"></app-post-interaction>
+                      </div>
               </div>
               <div class="btn-group button-bar"  role="group" aria-label="Basic example" >
                   <button class="btn btn-outline-info text-white" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"
