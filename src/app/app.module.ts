@@ -17,6 +17,7 @@ import { PostInteractionComponent } from './blog/post-interaction.component';
 import { PostCommentComponent } from './blog/post-comment.component';
 import { CommentReaderComponent } from './blog/comment-reader.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +30,7 @@ import { CommentReaderComponent } from './blog/comment-reader.component';
     SafeHtmlPipe,
     PostInteractionComponent,
     PostCommentComponent,
-    CommentReaderComponent
+    CommentReaderComponent,
   ],
   imports: [
     BrowserAnimationsModule,
