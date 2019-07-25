@@ -38,6 +38,8 @@ export class HomeComponent implements OnInit {
 
   
   getData(){
+    this._api.setApi("Statistics");
+
     let p = "";
     this._api.getAll<PostStatistics>(p).subscribe(d => {
       this.statistics = d;
