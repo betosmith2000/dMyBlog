@@ -76,7 +76,7 @@ export class PostComponent implements OnInit {
   
   
   startTour(start:boolean) {
-    var h = localStorage.getItem('dmyblog.newPostHelp');
+    var h = localStorage.getItem('dmyblog.globalHelp');
     if(h=="1" && !start)
       return;
 
@@ -85,7 +85,8 @@ export class PostComponent implements OnInit {
     this.introJS.setOptions({
       steps: [
         {
-          intro: "Welcome to <strong>New Post</strong> section, let's take a tour!"
+          intro: "Welcome to <strong>New Post</strong> section, let's take a tour!"+
+          "<br /><br />You can leave this tour at any time by clicking on the Skip button or outside this message box, you can also start it by clicking on the '?' Button."
         },
         {
           element: '#step1',
@@ -124,7 +125,7 @@ export class PostComponent implements OnInit {
     this.introJS.onexit(x =>{
     
       this.isShowingTour=false;
-      localStorage.setItem('dmyblog.newPostHelp',"1");
+      localStorage.setItem('dmyblog.globalHelp',"1");
 
     });
   }

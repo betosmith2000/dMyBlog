@@ -10,25 +10,25 @@
             <a class="nav-link" [routerLink]="['']" fragment="headSite" (click)="scrollToAnchor('headSite',100)" >Home</a>
           </li>
           <li class="nav-item"  *ngIf="!isSignIn">
-              <a class="nav-link" [routerLink]="['']" fragment="features" (click)="scrollToAnchor('features',100)">Features</a>
+              <a class="nav-link"  [routerLink]="['']" fragment="features" (click)="scrollToAnchor('features',100)">Features</a>
           </li>
           <li class="nav-item"  *ngIf="!isSignIn">
-              <a class="nav-link" [routerLink]="['']"  fragment="howto" (click)="scrollToAnchor('howto',100)">How-to</a>
+              <a class="nav-link"  [routerLink]="['']"  fragment="howto" (click)="scrollToAnchor('howto',100)">How-to</a>
           </li>
           
           <li class="nav-item" *ngIf="isSignIn">
-            <a class="nav-link " [routerLink]="['/blog/'+ userName]" >My Blog</a>
+            <a class="nav-link " [routerLinkActive]="['active']" [routerLink]="['/blog/'+ userName]" >My Blog</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " [routerLink]="['/browse']">Browse</a>
+            <a class="nav-link " [routerLinkActive]="['active']" [routerLink]="['/browse']">Browse</a>
           </li>
           <li class="nav-item"  >
-              <a class="nav-link" [routerLink]="['/faq']" >FAQ</a>
+              <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/faq']" >FAQ</a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <a class="text-info "   [routerLink]="['/settings']" *ngIf="isSignIn">{{userName}} <i class="fas fa-cog"></i> </a>&nbsp;&nbsp;
-          <button class="btn btn-primary my-2 my-sm-0" type="button" (click)="signIn()" *ngIf="!isSignIn">Sign In with Blockstack</button>
+          <button class="btn btn-primary my-2 my-sm-0" type="button" (click)="signIn()" *ngIf="!isSignIn" id="stepLogIn">Sign In with Blockstack</button>
           <button class="btn btn-primary my-2 my-sm-0" type="button" (click)="signOut()" *ngIf="isSignIn">Sign Out</button>
       </form>
       </div>

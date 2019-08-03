@@ -29,7 +29,7 @@ export class PostReaderComponent implements OnInit {
   isShareURL:boolean=false;
   shareTitle:string;
   comments:any;
-  private LOGO = require("../../assets/logo-header.png");
+  private LOGO = require("../../assets/post-head.jpg");
   readonly postsFileName:string = '/posts.txt';
    //Paginacion
    page: number = 0;
@@ -63,7 +63,7 @@ export class PostReaderComponent implements OnInit {
 
    
   startTour(start:boolean) {
-    var h = localStorage.getItem('dmyblog.readPostHelp');
+    var h = localStorage.getItem('dmyblog.globalHelp');
     if(h=="1" && !start)
       return;
 
@@ -72,7 +72,8 @@ export class PostReaderComponent implements OnInit {
     this.introJS.setOptions({
       steps: [
         {
-          intro: "Welcome to <strong>Reading Post</strong> section, let's take a tour!"
+          intro: "Welcome to <strong>Reading Post</strong> section, let's take a tour!"+
+          "<br /><br />You can leave this tour at any time by clicking on the Skip button or outside this message box, you can also start it by clicking on the '?' Button."
         },
         {
           element: '#step1',
@@ -161,7 +162,7 @@ export class PostReaderComponent implements OnInit {
     this.introJS.onexit(x =>{
     
       this.isShowingTour=false;
-      localStorage.setItem('dmyblog.readPostHelp',"1");
+      localStorage.setItem('dmyblog.globalHelp',"1");
 
     });
   }

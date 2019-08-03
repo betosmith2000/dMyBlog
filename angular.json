@@ -33,7 +33,8 @@
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/css/agency.scss",
-              "node_modules/intro.js/introjs.css"              
+              "node_modules/intro.js/introjs.css",              
+              "node_modules/intro.js/themes/introjs-modern.css"              
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

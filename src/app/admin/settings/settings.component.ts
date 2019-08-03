@@ -47,7 +47,7 @@ export class SettingsComponent implements OnInit {
   }
    
   startTour(start:boolean) {
-    var h = localStorage.getItem('dmyblog.settingsHelp');
+    var h = localStorage.getItem('dmyblog.globalHelp');
     if(h=="1" && !start)
       return;
 
@@ -62,7 +62,8 @@ export class SettingsComponent implements OnInit {
     this.introJS.setOptions({
       steps: [
         {
-          intro: "Welcome to the configuration section, let's take a tour!"
+          intro: "Welcome to the configuration section, let's take a tour!"+
+          "<br /><br />You can leave this tour at any time by clicking on the Skip button or outside this message box, you can also start it by clicking on the '?' Button."
         },
         {
           element: '#step0',
@@ -99,7 +100,7 @@ export class SettingsComponent implements OnInit {
         this.posts.splice(idx,1);
         
       this.isShowingTour=false;
-      localStorage.setItem('dmyblog.settingsHelp',"1");
+      localStorage.setItem('dmyblog.globalHelp',"1");
 
     });
   }

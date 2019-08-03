@@ -35,17 +35,19 @@ export class PostInteractionComponent implements OnInit {
   ngOnInit() {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
+    
     if(this.userSession.isUserSignedIn())
     {
-      this.canInteract = true;
       const userData = this.userSession.loadUserData();
       this.userName = userData.username;
-      this.getInteractions();
+      this.canInteract = true;
 
     }
     else{
       this.canInteract = false;
     }
+    
+    this.getInteractions();
   }
 
   getInteractions():void{

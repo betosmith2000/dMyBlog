@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Post } from './models/Post';
 import { ApiService } from '../share/data-service';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
@@ -10,7 +10,8 @@ import * as introJs from 'intro.js/intro.js';
 @Component({
   selector: 'app-discover',
   templateUrl: './discover.component.html',
-  styleUrls: ['./discover.component.scss']
+  styleUrls: ['./discover.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DiscoverComponent implements OnInit {
   introJS = introJs();
@@ -25,8 +26,9 @@ export class DiscoverComponent implements OnInit {
   searchTerm : string='';
   userName :string  = '';
   currentFilter:string='';
+  isSignIn:boolean=false;
 
-  private LOGO = require("../../assets/logo-header.png");
+  private LOGO = require("../../assets/post-head.jpg");
    //Paginacion
    page: number = 0;
    pagination: Pagination<Post> = new Pagination(10, 0);
@@ -39,7 +41,7 @@ export class DiscoverComponent implements OnInit {
   
   
   startTour(start:boolean) {
-    var h = localStorage.getItem('dmyblog.browseHelp');
+    var h = localStorage.getItem('dmyblog.globalHelp');
     if(h=="1" && !start)
       return;
 
@@ -54,37 +56,45 @@ export class DiscoverComponent implements OnInit {
       this.getInteractions(pEx);
       this.posts.push(pEx);
     }
+
+    let _steps= [
+      {
+        intro: "Welcome to <strong>Browse</strong> section. Here you can see the posts that users have created with the Public status, let's take a tour!"+
+        "<br /><br />You can leave this tour at any time by clicking on the Skip button or outside this message box, you can also start it by clicking on the '?' Button."
+      },
+      {
+        element: '#step1',
+        intro: "Here you can filter the information either with the name of the author or with the title of the post.",
+        disableInteraction:true
+      },
+      {
+        element: '#step2',
+        intro: "This is the list of post, sorted by dates from the most recent to the oldest. "+
+        " You can view<button type='button' class='btn btn-link btn-sm'><i class='far fa-eye'></i></button>,"+
+        " share<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button> any post"+
+        " you can also double click on any to see the content." +
+        " <p>You can also see if your post has liked to readers<button type='button' class='btn btn-link btn-sm'><i class='far fa-thumbs-up'></i></button></p>",
+        //" or not<button type='button' class='btn btn-link btn-sm'><i class='fas fa-grin-hearts'></i></button>.</p>",
+        position:"top",
+        disableInteraction:true
+
+      },
+      {
+        element: "#step3",
+        intro: "Finally, you can navigate between pages, each page is 10 posts.",
+        disableInteraction:true
+
+
+      }
+      
+    ];
+
+    if(!this.isSignIn)
+    _steps.push({
+      intro: "If you are not a user yet you can access the platform by clicking on 'Sign In with Blockstack' button, it is very easy to start your own blog and write your first Post."
+    });
     this.introJS.setOptions({
-      steps: [
-        {
-          intro: "Welcome to <strong>Browse</strong> section. Here you can see the posts that users have created with the Public status, let's take a tour!"
-        },
-        {
-          element: '#step1',
-          intro: "Here you can filter the information either with the name of the author or with the title of the post.",
-          disableInteraction:true
-        },
-        {
-          element: '#step2',
-          intro: "This is the list of post, sorted by dates from the most recent to the oldest. "+
-          " You can view<button type='button' class='btn btn-link btn-sm'><i class='far fa-eye'></i></button>,"+
-          " share<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button> any post"+
-          " you can also double click on any to see the content." +
-          " <p>You can also see if your post has liked to readers<button type='button' class='btn btn-link btn-sm'><i class='far fa-thumbs-up'></i></button></p>",
-          //" or not<button type='button' class='btn btn-link btn-sm'><i class='fas fa-grin-hearts'></i></button>.</p>",
-          position:"top",
-          disableInteraction:true
-
-        },
-        {
-          element: "#step3",
-          intro: "Finally, you can navigate between pages, each page is 10 posts.",
-          disableInteraction:true
-
-
-        }
-        
-      ]
+      steps :  _steps
     });
  
     this.introJS.start();
@@ -94,7 +104,7 @@ export class DiscoverComponent implements OnInit {
         this.posts.splice(idx,1);
         
       this.isShowingTour=false;
-      localStorage.setItem('dmyblog.browseHelp',"1");
+      localStorage.setItem('dmyblog.globalHelp',"1");
 
     });
   }
@@ -105,6 +115,7 @@ export class DiscoverComponent implements OnInit {
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     if(this.userSession.isUserSignedIn())
     {
+      this.isSignIn = true;
       const userData = this.userSession.loadUserData();
       this.userName = userData.username;
     }

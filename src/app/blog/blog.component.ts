@@ -28,7 +28,7 @@ export class BlogComponent implements OnInit {
   isAdmin : boolean = false;
   isNewPost : boolean = false;
   isViewingPost : boolean = false;
-  private LOGO = require("../../assets/logo-header.png");
+  private LOGO = require("../../assets/post-head.jpg");
   selectedPost: Post;
   shareTitle : string = 'Share this ';
 
@@ -43,7 +43,7 @@ export class BlogComponent implements OnInit {
 
   
   startTour(start:boolean) {    
-    var h = localStorage.getItem('dmyblog.myblogHelp');
+    var h = localStorage.getItem('dmyblog.globalHelp');
     if(h=="1" && !start)
       return;
 
@@ -61,7 +61,8 @@ export class BlogComponent implements OnInit {
     this.introJS.setOptions({    
       steps: [
         {
-          intro: "Welcome to <strong>My Blog</strong> section, let's take a tour!"
+          intro: "Welcome to <strong>My Blog</strong> section, let's take a tour!" +
+          "<br /><br />You can leave this tour at any time by clicking on the Skip button or outside this message box, you can also start it by clicking on the '?' Button."
         },
         {
           element: '#step1',
@@ -102,7 +103,7 @@ export class BlogComponent implements OnInit {
         this.posts.splice(idx,1);
         
       this.isShowingTour=false;
-      localStorage.setItem('dmyblog.myblogHelp',"1");
+      localStorage.setItem('dmyblog.globalHelp',"1");
 
     });
   }
