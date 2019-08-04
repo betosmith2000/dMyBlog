@@ -1,7 +1,24 @@
 <footer>
-  <nav class="navbar navbar-dark bg-dark fixed-bottom noPadding " >
-      <div class="container text-center">
-          <div class="col-md-12 col-sm-12 col-xs-12"><label class="text-light small font-weight-bold">&#9400;2019 dMy Blog <span class="font-weight-light small"> v.{{version}}</span></label></div>
+  <nav class="navbar fixed-bottom noPadding shadow"
+  [ngClass]="{
+    'navbar-light':selectedTheme=='light',
+    'bg-light':selectedTheme=='light',
+    'navbar-dark':selectedTheme=='dark',
+    'bg-dark':selectedTheme=='dark'
+  }" >
+      <div class="container text-center" [ngClass]="{
+        'text-dark':selectedTheme=='light',
+        'text-light':selectedTheme=='dark'
+      }">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+             <label class="small font-weight-bold">&#9400;2019 dMy Blog 
+               <span class="small"
+               [ngClass]="{
+                'font-weight-dark':selectedTheme=='light',
+                'font-weight-light':selectedTheme=='dark'
+              }"
+                
+               > v.{{version}}</span></label></div>
       </div>
   </nav>
 </footer>

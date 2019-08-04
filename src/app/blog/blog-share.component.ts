@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Post } from './models/Post';
+import { GlobalsService } from '../share/globals.service';
 
 @Component({
   selector: 'app-blog-share',
@@ -13,9 +14,10 @@ export class BlogShareComponent implements OnInit {
   shareWidth: string="600";
   shareHeight: string="480";
   title:string;
+  selectedTheme:string ='dark';
 
 
-  constructor(private toastr: ToastrService) { }
+  constructor(private toastr: ToastrService, private globals: GlobalsService) { }
 
   
   private _post: Post = null;
@@ -43,6 +45,11 @@ export class BlogShareComponent implements OnInit {
 
 
   ngOnInit() {
+    this.selectedTheme= this.globals.getCurrentTheme();
+    this.globals.getTheme().subscribe(theme=>{
+      this.selectedTheme = theme;
+    });
+
   }
   
   Init() {

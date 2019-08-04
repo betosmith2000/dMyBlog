@@ -8,6 +8,7 @@ import { ApiService } from '../share/data-service';
 import { PostComment } from './models/comment';
 import { ToastrService } from 'ngx-toastr';
 import * as introJs from 'intro.js/intro.js';
+import { GlobalsService } from '../share/globals.service';
 
 
 
@@ -55,9 +56,11 @@ export class PostReaderComponent implements OnInit {
   postId :string = '';
   posts:any;
   isSignIn:boolean = false;
+  selectedTheme:string ='dark';
 
-  constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService, private _api:ApiService,
-     private toastr: ToastrService, private cdRef:ChangeDetectorRef) {
+  constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService, 
+    private _api:ApiService, private toastr: ToastrService, 
+    private cdRef:ChangeDetectorRef, private globals: GlobalsService) {
    }
 
 
@@ -169,6 +172,12 @@ export class PostReaderComponent implements OnInit {
 
 
   ngOnInit() {
+    this.selectedTheme= this.globals.getCurrentTheme();
+    this.globals.getTheme().subscribe(theme=>{
+      this.selectedTheme = theme;
+    });
+
+
     this.comments = new Array();
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});

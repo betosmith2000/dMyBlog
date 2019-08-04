@@ -5,7 +5,12 @@
   <h2 class="display-4 d-none d-sm-block" id="step0">{{userName}} </h2>
   <h4 class="d-block d-sm-none" id="step0">{{userName}} </h4>
 
-  <div class="card shadow-sm">
+  <div class="card shadow-sm"  [ngClass]="{
+    'bg-dark':selectedTheme=='dark',
+    'bg-light':selectedTheme=='light',
+    'text-light':selectedTheme=='dark',
+    'text-dark':selectedTheme=='light'
+  }">
     <div class="card-body"  >
       <form novalidate (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
         <div id="step1">
@@ -68,7 +73,12 @@
   <h4 class="d-block d-sm-none" id="step0">My Posts</h4>
   
   
-  <div class="card shadow-sm">
+  <div class="card shadow-sm"  [ngClass]="{
+    'bg-dark':selectedTheme=='dark',
+    'bg-light':selectedTheme=='light',
+    'text-light':selectedTheme=='dark',
+    'text-dark':selectedTheme=='light'
+  }">
     <div class="card-body">
         <div >
             <div >
@@ -79,7 +89,10 @@
 
         
       <div id="step4">
-        <table class="table table-borderless table-hover" *ngIf="(posts.length > 0)"   >
+        <table class="table table-striped table-hover" *ngIf="(posts.length > 0)"  
+          [ngClass]="{
+            'table-dark':selectedTheme=='dark'
+          }"   >
           <thead>
             <tr>
               <th scope="col">Title</th>

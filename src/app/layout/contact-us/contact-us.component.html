@@ -1,5 +1,11 @@
 
-<div class="card border-dark p-1 bg-dark text-white  shadow ">
+<div class="card p-1 shadow" 
+[ngClass]="{
+  'bg-dark':selectedTheme=='dark',
+  'bg-light':selectedTheme=='light',
+  'text-white':selectedTheme=='dark',
+  'text-dark':selectedTheme=='light'
+}">
   <div class="card-body">
     
     <form novalidate (ngSubmit)="sendMessage()" [formGroup]="form" autocomplete="off">

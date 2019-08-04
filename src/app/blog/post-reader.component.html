@@ -16,7 +16,12 @@
     <app-post-interaction *ngIf="Post"  [Post]="Post"></app-post-interaction>
   </div>
   <div *ngIf="!isMissingPost">
-    <div class="card shadow postReader">
+    <div class="card shadow postReader"   [ngClass]="{
+      'bg-dark':selectedTheme=='dark',
+      'bg-light':selectedTheme=='light',
+      'text-light':selectedTheme=='dark',
+      'text-dark':selectedTheme=='light'
+    }">
       <div class="card-header" id="step1">
           <div class="row">
               <div class="col-lg-2">
@@ -25,12 +30,12 @@
               </div>
               <div class="col-lg-10 header">
                 <h1>{{title}}</h1>
-                  <label class="text-muted text-right font-weight-lighter header-content">{{date | date:'medium' }}</label>
-                  <label class="text-muted text-right font-weight-lighter header-content-left"><span>By:</span> {{author}} </label>
+                  <label class="text-muted text-right font-weight header-content">{{date | date:'medium' }}</label>
+                  <label class="text-muted text-right font-weight header-content-left"><span>By:</span> {{author}} </label>
               </div>
           </div>
       </div>
-      <div class="card-body">
+      <div class="card-body  ">
         <div class="row">
           <div class="col">
               <div id="step2" [innerHTML]="content|safeHtml"></div>
@@ -57,7 +62,7 @@
       <!-- <div id="commentN-1"></div> -->
       <div  *ngIf="comments?.length > 0">
         <div *ngFor="let c of comments; let i= index"  >
-          <div id="{{'commentN'+i}}">
+          <div id="{{'commentN'+i}}" class="text-dark">
           <app-comment-reader [Comment]="c" (deleteComment)="onDeleteComent($event)" 
           (updateComment)="onUpdateComment($event)" 
           (cancelComment)="onCancelComment($event)"

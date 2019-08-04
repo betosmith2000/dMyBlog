@@ -4,10 +4,19 @@
   
   <div class="accordion" id="accordionExample">
        
-    <div class="card">
+    <div class="card"  [ngClass]="{
+      'bg-dark':selectedTheme=='dark',
+      'bg-light':selectedTheme=='light',
+      'text-light':selectedTheme=='dark',
+      'text-dark':selectedTheme=='light'
+    }">
       <div class="card-header" id="h01">
         <h2 class="mb-0">
-          <button class="btn btn-link collapsed  text-primary" type="button" data-toggle="collapse" data-target="#c01" aria-expanded="false" aria-controls="collapseThree">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#c01" aria-expanded="false" aria-controls="collapseThree"
+          [ngClass]="{
+            'text-light':selectedTheme=='dark',
+            'text-dark':selectedTheme=='light'
+          }">
             What is dMy Blog?
           </button>
         </h2>
@@ -19,10 +28,19 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card"  [ngClass]="{
+      'bg-dark':selectedTheme=='dark',
+      'bg-light':selectedTheme=='light',
+      'text-light':selectedTheme=='dark',
+      'text-dark':selectedTheme=='light'
+    }">
       <div class="card-header" id="h05">
         <h2 class="mb-0">
-          <button class="btn btn-link collapsed  text-primary" type="button" data-toggle="collapse" data-target="#c05" aria-expanded="false" aria-controls="collapseThree">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#c05" aria-expanded="false" aria-controls="collapseThree"
+          [ngClass]="{
+            'text-light':selectedTheme=='dark',
+            'text-dark':selectedTheme=='light'
+          }">
             What is Blockstack?
           </button>
         </h2>
@@ -36,10 +54,18 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card"  [ngClass]="{
+      'bg-dark':selectedTheme=='dark',
+      'bg-light':selectedTheme=='light',
+      'text-light':selectedTheme=='dark',
+      'text-dark':selectedTheme=='light'
+    }">
       <div class="card-header" id="h06">
         <h2 class="mb-0">
-          <button class="btn btn-link collapsed  text-primary" type="button" data-toggle="collapse" data-target="#c06" aria-expanded="false" aria-controls="collapseThree">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#c06" aria-expanded="false" aria-controls="collapseThree" [ngClass]="{
+            'text-light':selectedTheme=='dark',
+            'text-dark':selectedTheme=='light'
+          }">
             What is Blockstack ID?
           </button>
         </h2>
@@ -54,10 +80,19 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card"  [ngClass]="{
+      'bg-dark':selectedTheme=='dark',
+      'bg-light':selectedTheme=='light',
+      'text-light':selectedTheme=='dark',
+      'text-dark':selectedTheme=='light'
+    }">
         <div class="card-header" id="h03">
           <h2 class="mb-0">
-            <button class="btn btn-link collapsed  text-primary" type="button" data-toggle="collapse" data-target="#c03" aria-expanded="false" aria-controls="collapseTwo">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#c03" aria-expanded="false" aria-controls="collapseTwo"
+            [ngClass]="{
+              'text-light':selectedTheme=='dark',
+              'text-dark':selectedTheme=='light'
+            }">
                 What is a Decentralized Application (SApps)
             </button>
           </h2>
@@ -70,10 +105,19 @@
       </div>
 
 
-    <div class="card">
+    <div class="card"  [ngClass]="{
+      'bg-dark':selectedTheme=='dark',
+      'bg-light':selectedTheme=='light',
+      'text-light':selectedTheme=='dark',
+      'text-dark':selectedTheme=='light'
+    }">
       <div class="card-header" id="h02">
         <h2 class="mb-0">
-          <button class="btn btn-link text-primary" type="button" data-toggle="collapse" data-target="#c02" aria-expanded="true" aria-controls="collapseOne">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#c02" aria-expanded="true" aria-controls="collapseOne" 
+          [ngClass]="{
+            'text-light':selectedTheme=='dark',
+            'text-dark':selectedTheme=='light'
+          }">
               Where is the data stored?
           </button>
         </h2>
@@ -89,10 +133,19 @@
 
     
 
-    <div class="card">
+    <div class="card"  [ngClass]="{
+      'bg-dark':selectedTheme=='dark',
+      'bg-light':selectedTheme=='light',
+      'text-light':selectedTheme=='dark',
+      'text-dark':selectedTheme=='light'
+    }">
       <div class="card-header" id="h04">
         <h2 class="mb-0">
-          <button class="btn btn-link collapsed  text-primary" type="button" data-toggle="collapse" data-target="#c04" aria-expanded="false" aria-controls="collapseThree">
+          <button class="btn btn-link collapsed " type="button" data-toggle="collapse" data-target="#c04" aria-expanded="false" aria-controls="collapseThree"
+          [ngClass]="{
+            'text-light':selectedTheme=='dark',
+            'text-dark':selectedTheme=='light'
+          }">
             Why use dMy Blog?
           </button>
         </h2>
@@ -106,10 +159,19 @@
 
    
 
-    <div class="card">
+    <div class="card"  [ngClass]="{
+      'bg-dark':selectedTheme=='dark',
+      'bg-light':selectedTheme=='light',
+      'text-light':selectedTheme=='dark',
+      'text-dark':selectedTheme=='light'
+    }">
         <div class="card-header" id="h07">
           <h2 class="mb-0">
-            <button class="btn btn-link collapsed  text-primary" type="button" data-toggle="collapse" data-target="#c07" aria-expanded="false" aria-controls="collapseThree">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#c07" aria-expanded="false" aria-controls="collapseThree"
+            [ngClass]="{
+              'text-light':selectedTheme=='dark',
+              'text-dark':selectedTheme=='light'
+            }">
               Is it free to use?
             </button>
           </h2>
@@ -130,10 +192,19 @@
       </div>
   
 
-      <div class="card">
+      <div class="card"  [ngClass]="{
+        'bg-dark':selectedTheme=='dark',
+        'bg-light':selectedTheme=='light',
+        'text-light':selectedTheme=='dark',
+        'text-dark':selectedTheme=='light'
+      }">
           <div class="card-header" id="h08">
             <h2 class="mb-0">
-              <button class="btn btn-link collapsed  text-primary" type="button" data-toggle="collapse" data-target="#c08" aria-expanded="false" aria-controls="collapseThree">
+              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#c08" aria-expanded="false" aria-controls="collapseThree"
+              [ngClass]="{
+                'text-light':selectedTheme=='dark',
+                'text-dark':selectedTheme=='light'
+              }">
                   How can we contact dMy Blog team?
               </button>
             </h2>

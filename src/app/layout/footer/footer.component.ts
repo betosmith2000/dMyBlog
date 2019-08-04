@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { GlobalsService } from 'src/app/share/globals.service';
 
 @Component({
   selector: 'app-footer',
@@ -8,10 +9,16 @@ import { environment } from 'src/environments/environment';
 })
 export class FooterComponent implements OnInit {
   public version : string = environment.VERSION;
+  public selectedTheme:string;
 
-  constructor() { }
+  constructor( private globals: GlobalsService) { 
+   
+  }
 
   ngOnInit() {
+     this.globals.getTheme().subscribe(theme=>{
+      this.selectedTheme = theme;
+    });
   }
 
 }

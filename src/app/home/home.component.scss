@@ -4,3 +4,21 @@
     min-height: 250px;
     max-height: 250px;
 }
+
+.enlaces{
+    
+}
+
+.enlaces:hover{
+    animation: bounceIn .5s ease-in-out 0s 1 alternate;
+ //   border-color: $primary!important;
+  //  border-width: 2px!important;
+    box-shadow: 0 .2rem 1rem  black!important;
+}
+
+.feature-item{
+min-height: 400px;
+max-height: 400px;
+overflow: hidden;
+
+}

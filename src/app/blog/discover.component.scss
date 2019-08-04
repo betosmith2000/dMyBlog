@@ -151,6 +151,13 @@ $primary: blueviolet !default;
     padding: 10px;
 }
 
+.post:hover{
+    animation: bounceIn .5s ease-in-out 0s 1 alternate;
+ //   border-color: $primary!important;
+  //  border-width: 2px!important;
+    box-shadow: 0 .2rem 1rem  black!important;
+}
+
 
 .stack-site{
     font-size: 45%;
@@ -194,4 +201,8 @@ $primary: blueviolet !default;
 	text-align:center;
     box-shadow: 2px 2px 3px #999;
     z-index: 1001;
+}
+
+hr {
+    border: 0 none black!important;
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../share/data-service';
 import { IPostStatistics, PostStatistics } from '../blog/models/PostStatistics';
+import { GlobalsService } from '../share/globals.service';
 
 @Component({
   selector: 'app-home',
@@ -9,13 +10,21 @@ import { IPostStatistics, PostStatistics } from '../blog/models/PostStatistics';
 })
 export class HomeComponent implements OnInit {
   statistics:IPostStatistics;
-  constructor(private _api:ApiService) { 
+  public selectedTheme:string='';
+
+  constructor(private _api:ApiService, private globals:GlobalsService ) { 
     this._api.setApi("Statistics");
+   
   }
 
   public ngOnInit() {
-    //this.loadScript('assets/js/agency.js');           
+    this.selectedTheme= this.globals.getCurrentTheme();
+    this.globals.getTheme().subscribe(theme=>{
+      this.selectedTheme = theme;
+    });
+
     this.getData();
+  
   }
   
   public loadScript(url) {

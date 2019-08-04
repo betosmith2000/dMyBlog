@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/share/data-service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ToastrService } from 'ngx-toastr';
+import { GlobalsService } from 'src/app/share/globals.service';
 
 @Component({
   selector: 'app-contact-us',
@@ -15,12 +16,22 @@ export class ContactUsComponent implements OnInit {
   name: FormControl;
   email: FormControl;
   message: FormControl;
+  public selectedTheme:string='';
 
-  constructor(private _api:ApiService, private ngxService: NgxUiLoaderService,private toastr:ToastrService) {
+  constructor(private _api:ApiService, private ngxService: NgxUiLoaderService,
+    private toastr:ToastrService, private globals:GlobalsService) {
     this._api.setApi("Contact");
    }
 
   ngOnInit() {
+
+    this.selectedTheme= this.globals.getCurrentTheme();
+    this.globals.getTheme().subscribe(theme=>{
+      this.selectedTheme = theme;
+    });
+
+
+
     this.name = new FormControl('', Validators.required);
     this.email = new FormControl('', [Validators.required,Validators.email]);
     this.message = new FormControl('',[Validators.required] );

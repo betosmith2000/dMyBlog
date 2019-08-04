@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/share/data-service';
 import * as introJs from 'intro.js/intro.js';
 import { Post } from 'src/app/blog/models/Post';
 import { Router } from '@angular/router';
+import { GlobalsService } from 'src/app/share/globals.service';
 
 @Component({
   selector: 'app-settings',
@@ -17,6 +18,7 @@ import { Router } from '@angular/router';
 })
 export class SettingsComponent implements OnInit {
   introJS = introJs();
+  selectedTheme:string ='dark';
 
   userName :string  = 'User name';
   readonly settingsFileName:string = '/settings.txt';
@@ -42,7 +44,9 @@ export class SettingsComponent implements OnInit {
   selectedPost: any;
   shareablePost: any;
   isShowingTour :boolean=false;
-  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, private _api: ApiService, private route: Router) {
+
+  constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, 
+    private _api: ApiService, private route: Router, private globals: GlobalsService) {
     this._api.setApi('posts')
   }
    
@@ -113,6 +117,11 @@ export class SettingsComponent implements OnInit {
 
   
   ngOnInit() {
+    this.selectedTheme= this.globals.getCurrentTheme();
+    this.globals.getTheme().subscribe(theme=>{
+      this.selectedTheme = theme;
+    });
+
     this.initializeForm();
     this.userSession = new blockstack.UserSession()
     if (this.userSession.isUserSignedIn()) {

@@ -3,7 +3,12 @@
 </button>
 <div class="container top-padding">    
     <h2 class="display-4">{{title}}</h2>
-    <div class="card ">
+    <div class="card"  [ngClass]="{
+      'bg-dark':selectedTheme=='dark',
+      'bg-light':selectedTheme=='light',
+      'text-light':selectedTheme=='dark',
+      'text-dark':selectedTheme=='light'
+    }">
         <div class="card-body">
           <form novalidate (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
             <div class="form-group row" id="step1">
@@ -63,7 +68,7 @@
             </div>-->
             <h6>Start to write great content below!</h6>
             <div class="form-group row" id="step4">
-              <div class="col-sm-12">
+              <div class="col-sm-12 text-dark" >
                 <ckeditor [editor]="Editor" formControlName="postContent"   [config]="ckconfig" ></ckeditor>
               </div>
             </div>

@@ -10,6 +10,7 @@ import { NameValue } from '../share/name-value';
 import { Post } from './models/Post';
 import * as introJs from 'intro.js/intro.js';
 import * as ClassicEditor from './CKEditor/ckeditor.js';
+import { GlobalsService } from '../share/globals.service';
 
 
 
@@ -41,6 +42,7 @@ export class PostComponent implements OnInit {
   
   editingPost:any;
   catStatus: NameValue[];
+  selectedTheme:string ='dark';
 
   public Editor = ClassicEditor;
   ckconfig = {
@@ -69,7 +71,8 @@ export class PostComponent implements OnInit {
     };
   }
 
-  constructor(private toastr:ToastrService, private ngxService: NgxUiLoaderService, private _api:ApiService) { 
+  constructor(private toastr:ToastrService, private ngxService: NgxUiLoaderService, 
+    private _api:ApiService, private globals: GlobalsService) { 
   
   }
 
@@ -134,6 +137,11 @@ export class PostComponent implements OnInit {
 
 
   ngOnInit() {
+    this.selectedTheme= this.globals.getCurrentTheme();
+    this.globals.getTheme().subscribe(theme=>{
+      this.selectedTheme = theme;
+    });
+
     this.hasImageHeader=false;
     this.catStatus = [
       new NameValue(0, 'Private'),

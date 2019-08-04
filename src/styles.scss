@@ -2,10 +2,6 @@
 @import "~@fortawesome/fontawesome-free/css/all.css";
 @import "~ngx-toastr/toastr.css";  
 
-body{
-    // background-color:#FAFAFA!important;
-    background-image: url('assets/beige-paper.png')
-}
 
 .noPadding {
     padding: 0px !important;
@@ -30,3 +26,30 @@ body{
 }
 
 
+.dark-theme{
+    color: 212529;
+    hr {
+        border: 1px solid black;
+    }
+}
+
+.light-theme{
+    color: white;
+    hr {
+        border: 1px solid white;
+    }
+}
+
+
+
+@keyframes bounceIn {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.03);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }

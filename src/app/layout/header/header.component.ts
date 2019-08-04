@@ -1,16 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Renderer2 } from '@angular/core';
 
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { Router, NavigationEnd } from '@angular/router';
+import { GlobalsService } from 'src/app/share/globals.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
+  ngAfterViewInit(): void {
+    this.themeConfig();
+    
+  }
+  selectedTheme:string ='dark';
 
-  constructor(private route: Router) { 
+  constructor(private route: Router, private globals: GlobalsService, private render: Renderer2) { 
+    
     this.scrollToAnchor("topPage",0);
     this.route.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -20,7 +27,18 @@ export class HeaderComponent implements OnInit {
           }
        }
     });
+  
 
+  }
+  
+  onThemeChange(theme:string):void{
+    this.selectedTheme = theme;
+    localStorage.setItem('dmyblog.theme',theme);
+    this.globals.setTheme(theme);
+    if(theme == 'dark')
+      this.render.setStyle(document.body, 'background-image',"url('assets/bg-dark.png'")
+    else
+      this.render.setStyle(document.body, 'background-image',"url('assets/bg-light.png'")
   }
 
   public scrollToAnchor(location: string, wait: number): void {
@@ -40,6 +58,11 @@ export class HeaderComponent implements OnInit {
   userName :string  = 'User name';
   LOGO = require("../../../assets/logo-header.png");
   userSession :any;
+
+  themeConfig(){
+    var theme = this.globals.getCurrentTheme();
+    this.onThemeChange( theme);
+  }
 
   ngOnInit() {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])

@@ -1,4 +1,9 @@
-   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+   <nav class="navbar navbar-expand-lg fixed-top shadow" id="mainNav" [ngClass]="{
+     'navbar-light':selectedTheme=='light',
+     'bg-light':selectedTheme=='light',
+     'bg-dark':selectedTheme=='dark',
+     'navbar-dark':selectedTheme=='dark'
+   }" > 
     <div class="container">
       <a class="navbar-brand" href="#page-top" [routerLink]="['']" fragment="headSite" (click)="scrollToAnchor('headSite',100)"  ><img [src]="LOGO" alt="dMy Blog" class="logo-header rounded-circle"></a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,8 +11,8 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav text-uppercase ml-auto">
-          <li class="nav-item"  *ngIf="!isSignIn">
-            <a class="nav-link" [routerLink]="['']" fragment="headSite" (click)="scrollToAnchor('headSite',100)" >Home</a>
+          <li class="nav-item "  *ngIf="!isSignIn">
+            <a class="nav-link " [routerLink]="['']" fragment="headSite" (click)="scrollToAnchor('headSite',100)" >Home</a>
           </li>
           <li class="nav-item"  *ngIf="!isSignIn">
               <a class="nav-link"  [routerLink]="['']" fragment="features" (click)="scrollToAnchor('features',100)">Features</a>
@@ -20,7 +25,7 @@
             <a class="nav-link " [routerLinkActive]="['active']" [routerLink]="['/blog/'+ userName]" >My Blog</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " [routerLinkActive]="['active']" [routerLink]="['/browse']">Browse</a>
+            <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/browse']">Browse</a>
           </li>
           <li class="nav-item"  >
               <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/faq']" >FAQ</a>
@@ -30,6 +35,18 @@
           <a class="text-info "   [routerLink]="['/settings']" *ngIf="isSignIn">{{userName}} <i class="fas fa-cog"></i> </a>&nbsp;&nbsp;
           <button class="btn btn-primary my-2 my-sm-0" type="button" (click)="signIn()" *ngIf="!isSignIn" id="stepLogIn">Sign In with Blockstack</button>
           <button class="btn btn-primary my-2 my-sm-0" type="button" (click)="signOut()" *ngIf="isSignIn">Sign Out</button>
+
+          
+          <div class="btn-toolbar pl-3" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+              <button type="button" class="btn btn-warning"   (click)="onThemeChange('light')" >
+                <i class="far fa-sun"></i>
+              </button>
+              <button type="button" class="btn btn-secondary"   (click)="onThemeChange('dark')" >
+                <i class="far fa-moon"></i>
+              </button>
+            </div>
+          </div>
       </form>
       </div>
     </div>
