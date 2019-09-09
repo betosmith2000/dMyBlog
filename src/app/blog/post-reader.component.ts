@@ -9,6 +9,7 @@ import { PostComment } from './models/comment';
 import { ToastrService } from 'ngx-toastr';
 import * as introJs from 'intro.js/intro.js';
 import { GlobalsService } from '../share/globals.service';
+import { attachedFile } from '../share/attached-file';
 
 
 
@@ -30,6 +31,9 @@ export class PostReaderComponent implements OnInit {
   isShareURL:boolean=false;
   shareTitle:string;
   comments:any;
+  attachedFiles: Array<attachedFile> = new Array<attachedFile>();
+
+
   private LOGO = require("../../assets/post-head.jpg");
   readonly postsFileName:string = '/posts.txt';
    //Paginacion
@@ -177,6 +181,15 @@ export class PostReaderComponent implements OnInit {
       this.selectedTheme = theme;
     });
 
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 0) {
+          window.scrollTo(0, pos - 20); // how far to scroll on each step
+      } else {
+          window.clearInterval(scrollToTop);
+      }
+    }, 16);
+
 
     this.comments = new Array();
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
@@ -216,10 +229,14 @@ export class PostReaderComponent implements OnInit {
           this.posts = JSON.parse(fileContents);
           if(this.posts == null)
             this.posts=new Array();
+
+          
           let post = this.posts.filter(e=> e.id == this.postId && e.status != 0);
           if(post.length > 0){
             this._post = post[0];
             this.isMissingPost  =false;
+
+            
           }
           else{
             this.isMissingPost = true;
@@ -256,6 +273,8 @@ export class PostReaderComponent implements OnInit {
       this.ngxService.stop();  
       this.getMediaEmbed();
       this.getData();
+      if( this._post.attachedFiles)
+            this.attachedFiles = this._post.attachedFiles;
     })
     .catch((error)=>{
       console.log('Error reading post');
@@ -276,7 +295,6 @@ export class PostReaderComponent implements OnInit {
   }
   
   getMediaHTML(url:any):string{
-    debugger
     let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     var match = url.attributes.url.value.match(regExp);
     if (match && match[2].length == 11) {
@@ -396,5 +414,25 @@ export class PostReaderComponent implements OnInit {
       if(idx!== -1)
         this.comments.splice(idx,1);
     }
+  }
+
+  downloadAttachedFile(f){
+    var ro = this.readOptions;
+    ro.decrypt = false;
+    this.userSession.getFile(f.id, ro)
+        .then((fileContents) => {
+          debugger
+          var element = document.createElement('a');
+          element.setAttribute('href', fileContents);
+          element.setAttribute('download', f.name);
+          element.style.display = 'none';
+          document.body.appendChild(element);
+          element.click();
+          document.body.removeChild(element);
+        })
+        .catch((error)=>{
+          console.log('Error loading post collection');
+          this.ngxService.stop();
+        });
   }
 }

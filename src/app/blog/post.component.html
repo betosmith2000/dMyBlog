@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-sm-9" *ngIf="hasImageHeader">
                   <img [src]="postImageContent" class="img-tumb" alt="Current image header"> &nbsp;
-                  <button class="btn btn-outline-danger align-top" type="button" (click)="removeImageHeader()"><i class="far fa-times-circle" title="Remove image header"></i></button>
+                  <button class="btn btn-outline-danger align-top" type="button" (click)="removeImageHeader()" title="Remove image"><i class="far fa-times-circle" title="Remove image header"></i></button>
               </div>
             </div>
 
@@ -73,10 +73,34 @@
               </div>
             </div>
 
-            
-            <div class="float-md-right" id="step5">
-              <button type="button" class="btn btn-outline-secondary" (click)="close()"  >Cancel</button>&nbsp;
-              <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Save</button>
+            <div class="form-group row" id="step5">
+              <label for="file" class="col-sm-3 col-form-label">Attached files:</label>
+              <div class="col-sm-9" >
+                  <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Upload</span>
+                      </div>
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="attachedFile" accept="image/*" name="attachedFile" (change)="handleAttachedFile($event)">
+                        <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                      </div>
+                    </div>
+              </div>
+              <label for="file" class="col-sm-3 col-form-label">&nbsp;</label>
+              <div class="col-sm-9" >
+                <ul class="list-group">
+                  <li class="list-group-item"  *ngFor="let f of attachedFiles">
+                    <button type="button" class="btn btn-link" (click)="downloadAttachedFile(f)" title="Dowload file">{{f.name}}</button>
+                    
+                    <button type="button" class="btn btn-danger" (click)="deleteAttachedFile(f)" title="Delete file" ><i class="fas fa-trash"></i></button>
+                  </li>
+                 
+                </ul>
+              </div>
+          </div>
+            <div class="float-md-right" id="step6">
+              <button type="button" class="btn btn-outline-secondary" (click)="close()" title="Cancel changes"  >Cancel</button>&nbsp;
+              <button type="submit" class="btn btn-primary" [disabled]="!form.valid" title="Save changes">Save</button>
             </div>
     
           </form>

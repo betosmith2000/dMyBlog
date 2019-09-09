@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ApiService } from '../share/data-service';
 import { Post } from './models/Post';
@@ -111,6 +111,9 @@ export class BlogComponent implements OnInit {
 
   ngOnInit() {
     this._api.setApi('Posts');
+   
+    
+
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     this.route.paramMap.subscribe(params => {
@@ -161,7 +164,7 @@ export class BlogComponent implements OnInit {
             });
             this.ngxService.stop();
             this.startTour(false);
-
+            
           })
           .catch((error) => {
             console.log('Error reading post collection!')

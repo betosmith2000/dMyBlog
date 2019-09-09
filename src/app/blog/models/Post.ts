@@ -1,4 +1,5 @@
 import { InteractionTypeResult } from './InteractionTypeResult';
+import { attachedFile } from 'src/app/share/attached-file';
 
 
 export interface IPost {
@@ -13,6 +14,7 @@ export interface IPost {
     shareCode:string;
     interactions:InteractionTypeResult;
     encrypt:boolean;
+    attachedFiles: attachedFile[];
 }
 
 export class Post implements IPost{
@@ -27,4 +29,5 @@ export class Post implements IPost{
     shareCode:string;
     interactions:InteractionTypeResult;
     encrypt:boolean;
+    attachedFiles: attachedFile[];
 }

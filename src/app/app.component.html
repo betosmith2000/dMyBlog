@@ -5,6 +5,6 @@
 <app-header></app-header>
 <div id="topPage"></div>
 <ngx-ui-loader></ngx-ui-loader>
-<router-outlet></router-outlet>
+<router-outlet (activate)="onActivate($event)" ></router-outlet>
 <app-footer></app-footer>
 </div>

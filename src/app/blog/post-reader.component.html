@@ -37,12 +37,21 @@
       </div>
       <div class="card-body  ">
         <div class="row">
-          <div class="col">
+          <div class="col-12">
               <div id="step2" [innerHTML]="content|safeHtml"></div>
           </div>
-            
+          
+          <div class="col-12 mt-5" *ngIf="attachedFiles?.length > 0">
+           
+            <h6>Attached files</h6>
+            <ul class="list-group">
+              <li class="list-group-item"  *ngFor="let f of attachedFiles">
+                <button type="button" class="btn btn-link" (click)="downloadAttachedFile(f)" title="Dowload file">{{f.name}}</button>
+              </li>
+            </ul>
+          </div>
         </div>
-        
+      
         <div class="pt-3">
           &nbsp;
         </div>

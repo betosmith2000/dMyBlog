@@ -11,6 +11,7 @@ import { Post } from './models/Post';
 import * as introJs from 'intro.js/intro.js';
 import * as ClassicEditor from './CKEditor/ckeditor.js';
 import { GlobalsService } from '../share/globals.service';
+import { attachedFile } from '../share/attached-file';
 
 
 
@@ -39,7 +40,7 @@ export class PostComponent implements OnInit {
   postTitle:FormControl;
   postContent:FormControl;
   status:FormControl;
-  
+  attachedFiles: Array<attachedFile> = new Array<attachedFile>();
   editingPost:any;
   catStatus: NameValue[];
   selectedTheme:string ='dark';
@@ -117,6 +118,12 @@ export class PostComponent implements OnInit {
         },
         {
           element: "#step5",
+          intro: "You can attach some files here!",
+          disableInteraction:true
+
+        },
+        {
+          element: "#step6",
           intro: "Finally you can save or cancel the post changes!",
           disableInteraction:true
 
@@ -141,6 +148,15 @@ export class PostComponent implements OnInit {
     this.globals.getTheme().subscribe(theme=>{
       this.selectedTheme = theme;
     });
+
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 0) {
+          window.scrollTo(0, pos - 20); // how far to scroll on each step
+      } else {
+          window.clearInterval(scrollToTop);
+      }
+    }, 16);
 
     this.hasImageHeader=false;
     this.catStatus = [
@@ -167,6 +183,10 @@ export class PostComponent implements OnInit {
           this.editingPost = JSON.parse(fileContents);
           this.postTitle.setValue(this.editingPost.postTitle);
           this.postContent.setValue(this.editingPost.postContent);
+          
+          if( this.editingPost.attachedFiles)
+            this.attachedFiles = this.editingPost.attachedFiles;
+
           let statusPost = this.editingPost.status?this.editingPost.status:0;
           this.status.setValue(statusPost);
           if(this.Post.imageFileName){
@@ -243,7 +263,8 @@ export class PostComponent implements OnInit {
         status: this.status.value,
         shareCode: hash.toString(),
         interactions:null,
-        encrypt:this.status.value == "0"
+        encrypt:this.status.value == "0",
+        attachedFiles : this.attachedFiles
       };
       if(this.postImageContent == null || this.postImageContent == '')
         postData.imageFileName = null;
@@ -282,6 +303,7 @@ export class PostComponent implements OnInit {
         postResume.title = this.postTitle.value;
         postResume.status =  this.status.value;
         postResume.encrypt =  this.status.value == "0";
+        postResume.attachedFiles = this.attachedFiles;
       }
       
       if(this.postImageContent != null && this.postImageContent != "" && postResume.imageFileName == null)
@@ -341,7 +363,8 @@ export class PostComponent implements OnInit {
   saveFiles(postData:Post):void{
     
     let p = Object.assign({},  this.form.value);
-   
+    p.attachedFiles = postData.attachedFiles;
+
     let postsArray = JSON.stringify(this.posts);
     let postContent = JSON.stringify(p);
     this.writeOptions.encrypt=false;
@@ -408,6 +431,67 @@ export class PostComponent implements OnInit {
     this.postImageContent =  reader.result;
     this.hasImageHeader = true;
     
+  }
+
+  handleAttachedFile(e){
+    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+
+   // var pattern = /image-*/;
+    var reader = new FileReader();
+
+    // if (!file.type.match(pattern)) {
+    //   this.toastr.error("Uploaded file is not a valid image. Only image files are allowed!",'Error');
+    //   return;
+    // }
+    
+
+    reader.onload = this._handleAttachedFileLoaded.bind(this, file.name);
+    reader.readAsDataURL(file);
+  }
+
+  
+  _handleAttachedFileLoaded(fileName, e) {
+    var reader = e.target;
+    let hash  = Md5.hashStr(new Date().toISOString(),false);
+    var newFile = new attachedFile();
+    newFile.name = fileName;
+    newFile.id = hash.toString();
+    this.ngxService.start();
+    var wo = this.writeOptions;
+    wo.encrypt = false;
+    this.userSession.putFile(newFile.id,reader.result, wo)
+      .then(() =>{
+        this.ngxService.stop();
+        this.attachedFiles.push(newFile);
+      })
+      .catch((error)=>{
+        console.log('Error saving file');
+        this.ngxService.stop();
+      });
+  }
+
+  deleteAttachedFile(f){
+    if(confirm('Are you sure you want to delete file?')){
+      
+      let idx = this.attachedFiles.findIndex(e=> e.id == f.id);
+      this.attachedFiles.splice(idx,1);
+    }
+  }
+  downloadAttachedFile(f){
+    this.userSession.getFile(f.id,this.readOptions)
+        .then((fileContents) => {
+          var element = document.createElement('a');
+          element.setAttribute('href', fileContents);
+          element.setAttribute('download', f.name);
+          element.style.display = 'none';
+          document.body.appendChild(element);
+          element.click();
+          document.body.removeChild(element);
+        })
+        .catch((error)=>{
+          console.log('Error loading post collection');
+          this.ngxService.stop();
+        });
   }
 
   removeImageHeader():void{
