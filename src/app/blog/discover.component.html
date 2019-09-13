@@ -3,28 +3,28 @@
       <app-post-reader [Post]="selectedPost" (closed)="onClosedViewer($event)"></app-post-reader>
     </div>
     
-<button  title="Help" class="btn btn-link float-button" (click)="startTour(true)" >
+<button  title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)" >
   <i class="fas fa-question fa-2x"></i>
 </button>
 <div class="container top-padding">
-    <h2 class="display-4 bm-2"  *ngIf="!isViewingPost">Latest posts</h2>
+    <h2 class="display-4 bm-2"  *ngIf="!isViewingPost">{{'browse.latest'|translate}}</h2>
     <div class="p-2"  *ngIf="!isViewingPost">
     <div class="row"  *ngIf="!isViewingPost">
       <div class="col-lg-6 col-md-6">
         <label for="txtFilter" *ngIf="currentFilter!=''">
-          Filter by: <span class="font-weight-bold">{{currentFilter}}</span> 
+            {{'browse.filtertext'|translate}}: <span class="font-weight-bold">{{currentFilter}}</span> 
         </label>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12" id="step1">
           <div class="input-group search-container mb-4">
-            <input type="text" class="form-control " (keyup.enter)="performSearch($event)" placeholder="Filter posts by Title or Author" aria-describedby="inputGroupPrepend3" [(ngModel)]='searchTerm'  >
+            <input type="text" class="form-control " (keyup.enter)="performSearch($event)" [placeholder]="'browse.filter'|translate" aria-describedby="inputGroupPrepend3" [(ngModel)]='searchTerm'  >
             <div class="input-group-prepend  ">
                 <!-- <span class="input-group-text" id="inputGroupPrepend3">@</span> -->
-                <button title="Filter posts" class="btn btn-primary" (click)='performSearch()' type="button"><i class="fas fa-filter"></i></button>
+                <button title="{{'browse.buttonfilter'|translate}}" class="btn btn-primary" (click)='performSearch()' type="button"><i class="fas fa-filter"></i></button>
               </div>
             <div class="input-group-prepend  ">
                 <!-- <span class="input-group-text" id="inputGroupPrepend3">@</span> -->
-                <button title="Clear filter" class="btn btn-primary" (click)='clearSearch()' type="button"><i class="fas fa-recycle"></i></button>
+                <button title="{{'browse.buttonclearfilter'|translate}}" class="btn btn-primary" (click)='clearSearch()' type="button"><i class="fas fa-recycle"></i></button>
               </div>
           </div>
       </div>
@@ -58,11 +58,11 @@
                       </div>
               </div>
               <div class="btn-group button-bar"  role="group" aria-label="Basic example" >
-                  <button class="btn btn-outline-info text-white" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"
+                  <button class="btn btn-outline-info text-white" type="button" title="{{'browse.share'|translate}}" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"
                     *ngIf="p.status == 1 || p.status == 2">
                       <i class="fas fa-share-alt"></i>
                   </button>
-                  <button class="btn btn-outline-info text-white" type="button"  title="View post" (click)="viewPost(p)">
+                  <button class="btn btn-outline-info text-white" type="button"  title="{{'browse.view'|translate}}" (click)="viewPost(p)">
                       <i class="far fa-eye"></i>
                   </button>
               </div>
@@ -75,7 +75,7 @@
               <hr />
             </div>
             <div class="col-lg-12">
-              <span class="small font-weight-light"  >By: <strong>{{p.author}}</strong> on {{p.date|date:'medium'}}</span>
+              <span class="small font-weight-light"  >{{'browse.by'|translate}}: <strong>{{p.author}}</strong> {{'browse.on'|translate}} {{p.date|date:'medium'}}</span>
             </div>
           </div>
         </div>
@@ -88,8 +88,8 @@
     </div>
   
       
-      <div class="col" *ngIf="posts?.length==0">
-        <p class="alert alert-info" role="alert">User <span class="font-weight-bold" >{{userName}}</span>  has not posted yet!</p>
+      <div class="col" *ngIf="posts?.length==0 &&  currentFilter==''">
+        <p class="alert alert-info" role="alert">{{'browse.userblog'|translate}} <span class="font-weight-bold" >{{userName}}</span>  {{'browse.userblogtext'|translate}}</p>
       </div>
     </div>
 </div>
@@ -97,14 +97,14 @@
       <div class="col-lg-12">
         <nav aria-label="Paginación" *ngIf="pagination.data?.length > 0">
           <ul class="pagination justify-content-center">
-            <li class="page-item"><button class="page-link text-dark" (click)="firstPage()"><span class="fas fa-fast-backward"></span></button></li>
-            <li class="page-item"><button class="page-link text-dark" (click)="previousPage()"><span class="fas fa-backward"></span></button></li>
-            <li class="page-item d-none d-sm-block"><span class="page-link text-dark" href="#">Page {{pagination.pageNumber + 1}} of {{pagination.totalPages}} | {{pagination.totalRegs}} Posts</span></li>
-            <li class="page-item d-block d-sm-none"><span class="page-link text-dark" href="#">P. {{pagination.pageNumber + 1}} of {{pagination.totalPages}}</span></li>
-            <li class="page-item"><button class="page-link text-dark" (click)="nextPage()"><span class="fas fa-forward"></span></button></li>
-            <li class="page-item"><button class="page-link text-dark" (click)="lastPage()"><span class="fas fa-fast-forward"></span></button></li>
+            <li class="page-item"><button class="page-link text-dark" (click)="firstPage()" title="{{'pagination.first'|translate}}" ><span class="fas fa-fast-backward"></span></button></li>
+            <li class="page-item"><button class="page-link text-dark" (click)="previousPage()" title="{{'pagination.previous'|translate}}"><span class="fas fa-backward"></span></button></li>
+            <li class="page-item d-none d-sm-block"><span class="page-link text-dark" href="#">{{'pagination.page'|translate}} {{pagination.pageNumber + 1}} {{'pagination.of'|translate}} {{pagination.totalPages}} - {{pagination.totalRegs}} Posts</span></li>
+            <li class="page-item d-block d-sm-none"><span class="page-link text-dark" href="#">P. {{pagination.pageNumber + 1}} {{'pagination.of'|translate}} {{pagination.totalPages}}</span></li>
+            <li class="page-item"><button class="page-link text-dark" (click)="nextPage()" title="{{'pagination.next'|translate}}"><span class="fas fa-forward"></span></button></li>
+            <li class="page-item"><button class="page-link text-dark" (click)="lastPage()" title="{{'pagination.last'|translate}}"><span class="fas fa-fast-forward"></span></button></li>
             <li class="page-item">&nbsp;&nbsp;&nbsp;&nbsp;</li>
-            <li class="page-item"><span class="page-link text-dark">Go to:</span></li>
+            <li class="page-item"><span class="page-link text-dark">{{'pagination.go'|translate}}:</span></li>
             <li class="page-item"><input type="number" class="form-control page-link cursor-text text-dark go-to" [(ngModel)]="page" /> </li>
             <li class="page-item"><button type="button" class="page-link text-dark" (click)="toPage()"><span class="fas fa-search"></span></button></li>
           </ul>
@@ -112,8 +112,8 @@
       </div>
     </div>
       
-  <div class="col" *ngIf="posts?.length==0">
-    <p class="alert alert-warning text-center" role="alert">No Posts have been published yet!</p>
+  <div class="col" *ngIf="posts?.length==0 && currentFilter!=''">
+    <p class="alert alert-warning text-center" role="alert">{{'browse.nofilterresults'|translate}}</p>
   </div>
   
     

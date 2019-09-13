@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as introJs from 'intro.js/intro.js';
 import { GlobalsService } from '../share/globals.service';
 import { attachedFile } from '../share/attached-file';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -64,18 +65,11 @@ export class PostReaderComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService, 
     private _api:ApiService, private toastr: ToastrService, 
-    private cdRef:ChangeDetectorRef, private globals: GlobalsService) {
+    private cdRef:ChangeDetectorRef, private globals: GlobalsService,
+    private translate: TranslateService) {
    }
 
-
-   
-  startTour(start:boolean) {
-    var h = localStorage.getItem('dmyblog.globalHelp');
-    if(h=="1" && !start)
-      return;
-
-    this.isShowingTour=true;
-   
+   setENTutorial(){
     this.introJS.setOptions({
       steps: [
         {
@@ -102,7 +96,7 @@ export class PostReaderComponent implements OnInit {
         },
         {
           element: '#step4-read',
-          intro: "If you liked the Post and want to share it, this is the place to do it, you have link, facebook or twitter options!<br/><strong>Only posts with public status can be shared!</strong>",
+          intro: "If you liked the Post and want to share it, this is the place to do it, you have link, LinkedIn, facebook or twitter options!<br/><strong>Only posts with public status can be shared!</strong>",
           disableInteraction:true,
           position:"left",
           tooltipPosition:'auto'
@@ -129,6 +123,68 @@ export class PostReaderComponent implements OnInit {
         // },
       ]
     });
+   }
+   setESTutorial(){
+    this.introJS.setOptions({
+      steps: [
+        {
+          intro: "Bienvenido a la sección <strong> Lectura de post </strong>, ¡hagamos un recorrido!"+
+          "<br /><br />Puede abandonar este recorrido en cualquier momento haciendo clic en el botón Skip o fuera de este cuadro de mensaje, también puede iniciarlo haciendo clic en el botón '?'."
+        },
+        {
+          element: '#step1',
+          intro: "Este es el encabezado del post, aquí puede encontrar el título, el autor y la fecha en que se publicó el post.",
+          disableInteraction:true
+        },
+        {
+          element: '#step2',
+          intro: "Este es el cuerpo del post, probablemente sea muy interesante, ¡así que vamos a leer!",
+          disableInteraction:true,
+          position:"top",
+          scrollTo:"tooltip"
+        },
+        {
+          element: "#step3",
+          intro: "Aquí están los comentarios de los usuarios, puede leerlos para encontrar algunas correcciones, recomendaciones o información adicional.",
+          position:"top",
+          disableInteraction:true
+        },
+        {
+          element: '#step4-read',
+          intro: "¡Si te gustó la publicación y quieres compartirla, este es el lugar para hacerlo, tienes opciones de enlaces, Facebook, LinkedIn o Twitter! <br/> <strong> ¡Solo se pueden compartir publicaciones con estado público! </strong>",
+          disableInteraction:true,
+          position:"left",
+          tooltipPosition:'auto'
+        },
+        {
+          element: '#step5',
+          intro: "Por cierto, si quieres hacer un comentario, aquí tienes la opción de hacerlo. <br/> <strong> ¡Solo se pueden comentar las publicaciones con estado público! </strong>",
+          disableInteraction:true,
+          position:"left"
+        },
+        {
+          element: "#step6",
+          intro: "¡Si le gusta la publicación, puede indicarla presionando este botón! <br/> <strong> ¡Solo las publicaciones con estado público pueden marcarse como me gusta! </strong>",
+          disableInteraction:true,
+          position:"left"
+
+        },
+        
+      ]
+    });
+   }
+   
+  startTour(start:boolean) {
+    var h = localStorage.getItem('dmyblog.globalHelp');
+    if(h=="1" && !start)
+      return;
+
+    this.isShowingTour=true;
+    if(this.translate.currentLang == 'es')
+      this.setESTutorial();
+    else 
+      this.setENTutorial();
+    
   this.introJS.onafterchange(function(targetElement) {
       if(this._currentStep == 4){
           let overlay:any = document.getElementsByClassName("introjs-fixedTooltip");

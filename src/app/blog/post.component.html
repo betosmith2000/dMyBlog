@@ -1,4 +1,4 @@
-<button  title="Help" class="btn btn-link float-button" (click)="startTour(true)">
+<button  title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)">
   <i class="fas fa-question fa-2x"></i>
 </button>
 <div class="container top-padding">    
@@ -12,32 +12,33 @@
         <div class="card-body">
           <form novalidate (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
             <div class="form-group row" id="step1">
-              <label for="postTitle" class="col-sm-3 col-form-label">*Title:</label>
+              <label for="postTitle" class="col-sm-3 col-form-label">*{{'post.title'|translate}}</label>
               <div class="col-sm-9">
-                  <input type="text" class="form-control" id="postTitle"  placeholder="Title" formControlName="postTitle"
+                  <input type="text" class="form-control" id="postTitle"  [placeholder]="'post.titleplaceholder'|translate" formControlName="postTitle"
                          [ngClass]="{'is-invalid':(postTitle.touched || postTitle.dirty) && !postTitle.valid}" />
                   <span class="invalid-feedback" *ngIf="postTitle.invalid && (postTitle.touched || postTitle.dirty) ">
-                      <span *ngIf="postTitle.errors.required">Title is required.</span>
-                      <span *ngIf="postTitle.errors.maxlength">Max title length 128.</span>
+                      <span *ngIf="postTitle.errors.required">{{'post.titlevalreq'|translate}}</span>
+                      <span *ngIf="postTitle.errors.maxlength">{{'post.titlevalmax'|translate}}</span>
                   </span>
               </div>
             </div>
             <div class="form-group row" id="step2">
-                <label for="file" class="col-sm-3 col-form-label">Header image:</label>
+                <label for="file" class="col-sm-3 col-form-label">{{'post.image'|translate}}</label>
                 <div class="col-sm-9" *ngIf="!hasImageHeader">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                          <span class="input-group-text">Upload</span>
+                          <span class="input-group-text">{{'post.upload'|translate}}</span>
                         </div>
                         <div class="custom-file">
                           <input type="file" class="custom-file-input" id="file" accept="image/*" name="file" (change)="handleInputChange($event)">
-                          <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                          <label class="custom-file-label" for="inputGroupFile01">{{'post.choose'|translate}}</label>
                         </div>
                       </div>
                 </div>
                 <div class="col-sm-9" *ngIf="hasImageHeader">
                   <img [src]="postImageContent" class="img-tumb" alt="Current image header"> &nbsp;
-                  <button class="btn btn-outline-danger align-top" type="button" (click)="removeImageHeader()" title="Remove image"><i class="far fa-times-circle" title="Remove image header"></i></button>
+                  <button class="btn btn-outline-danger align-top" type="button" (click)="removeImageHeader()" title="{{'post.remove'|translate}}">
+                    <i class="far fa-times-circle" ></i></button>
               </div>
             </div>
 
@@ -49,7 +50,7 @@
                   <option *ngFor="let s of catStatus" [value]="s.value"> {{s.name}}</option>
                 </select>
                   <span class="invalid-feedback" *ngIf="status.invalid && (status.touched || status.dirty) ">
-                      <span *ngIf="status.errors.required">Status is required.</span>
+                      <span *ngIf="status.errors.required">{{'post.titlevalreq'|translate}}</span>
                       
                   </span>
               </div>
@@ -66,7 +67,7 @@
                   </span>
               </div>
             </div>-->
-            <h6>Start to write great content below!</h6>
+            <h6>{{'post.posttext'|translate}}</h6>
             <div class="form-group row" id="step4">
               <div class="col-sm-12 text-dark" >
                 <ckeditor [editor]="Editor" formControlName="postContent"   [config]="ckconfig" ></ckeditor>
@@ -74,15 +75,15 @@
             </div>
 
             <div class="form-group row" id="step5">
-              <label for="file" class="col-sm-3 col-form-label">Attached files:</label>
+              <label for="file" class="col-sm-3 col-form-label">{{'post.attached'|translate}}</label>
               <div class="col-sm-9" >
                   <div class="input-group mb-3">
                       <div class="input-group-prepend">
-                        <span class="input-group-text">Upload</span>
+                        <span class="input-group-text">{{'post.upload'|translate}}</span>
                       </div>
                       <div class="custom-file">
                         <input type="file" class="custom-file-input" id="attachedFile" accept="image/*" name="attachedFile" (change)="handleAttachedFile($event)">
-                        <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                        <label class="custom-file-label" for="inputGroupFile02">{{'post.choose'|translate}}</label>
                       </div>
                     </div>
               </div>
@@ -90,17 +91,17 @@
               <div class="col-sm-9" >
                 <ul class="list-group">
                   <li class="list-group-item"  *ngFor="let f of attachedFiles">
-                    <button type="button" class="btn btn-link" (click)="downloadAttachedFile(f)" title="Dowload file">{{f.name}}</button>
+                    <button title="{{'post.download'|translate}}" type="button" class="btn btn-link" (click)="downloadAttachedFile(f)" title="Dowload file">{{f.name}}</button>
                     
-                    <button type="button" class="btn btn-danger" (click)="deleteAttachedFile(f)" title="Delete file" ><i class="fas fa-trash"></i></button>
+                    <button title="{{'post.remove'|translate}}" type="button" class="btn btn-danger" (click)="deleteAttachedFile(f)" title="Delete file" ><i class="fas fa-trash"></i></button>
                   </li>
                  
                 </ul>
               </div>
           </div>
             <div class="float-md-right" id="step6">
-              <button type="button" class="btn btn-outline-secondary" (click)="close()" title="Cancel changes"  >Cancel</button>&nbsp;
-              <button type="submit" class="btn btn-primary" [disabled]="!form.valid" title="Save changes">Save</button>
+              <button type="button" class="btn btn-outline-secondary" (click)="close()" title="Cancel changes"  >{{'post.cancel'|translate}}</button>&nbsp;
+              <button type="submit" class="btn btn-primary" [disabled]="!form.valid" title="Save changes">{{'post.save'|translate}}</button>
             </div>
     
           </form>

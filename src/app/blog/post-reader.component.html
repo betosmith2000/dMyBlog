@@ -1,13 +1,13 @@
-<button  title="Help" class="btn btn-link float-button" (click)="startTour(true)">
+<button  title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)">
   <i class="fas fa-question fa-2x"></i>
 </button>
-<button id="step4-read" title="Help" class="btn btn-link float-share" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost()" [disabled]="(Post?.status=='0')">
+<button id="step4-read" title="{{'help.sharepost'|translate}}" class="btn btn-link float-share" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost()" [disabled]="(Post?.status=='0')">
   <i class="fas fa-share-alt fa-2x"></i>
 </button>
-<button id="step5" class="btn btn-link float-comment" type="button" title="Reply post" data-toggle="modal" data-target="#comment" (click)="commentPost()" [disabled]="Post?.status=='0'" >
+<button id="step5" class="btn btn-link float-comment" type="button" title="{{'read.commentpost'|translate}}" data-toggle="modal" data-target="#comment" (click)="commentPost()" [disabled]="Post?.status=='0'" >
   <i class="far fa-comment-dots fa-2x"></i>
 </button>
-<button title="Return" type="button small" class="btn btn-link float-return" (click)="close()" *ngIf="!isShareURL" >
+<button title="{{'read.return'|translate}}" type="button small" class="btn btn-link float-return" (click)="close()" *ngIf="!isShareURL" >
   <i class="fas fa-arrow-left fa-2x"></i>
 </button>  
 
@@ -31,7 +31,7 @@
               <div class="col-lg-10 header">
                 <h1>{{title}}</h1>
                   <label class="text-muted text-right font-weight header-content">{{date | date:'medium' }}</label>
-                  <label class="text-muted text-right font-weight header-content-left"><span>By:</span> {{author}} </label>
+                  <label class="text-muted text-right font-weight header-content-left"><span>{{'read.by'|translate}}</span> {{author}} </label>
               </div>
           </div>
       </div>
@@ -43,10 +43,10 @@
           
           <div class="col-12 mt-5" *ngIf="attachedFiles?.length > 0">
            
-            <h6>Attached files</h6>
+            <h6>{{'read.attached'|translate}}</h6>
             <ul class="list-group">
               <li class="list-group-item"  *ngFor="let f of attachedFiles">
-                <button type="button" class="btn btn-link" (click)="downloadAttachedFile(f)" title="Dowload file">{{f.name}}</button>
+                <button type="button" class="btn btn-link" (click)="downloadAttachedFile(f)" title="{{'read.download'|translate}}">{{f.name}}</button>
               </li>
             </ul>
           </div>
@@ -58,13 +58,13 @@
       </div>
       
   <div class="card-footer"  id="step3">
-   
-      <h3>Comments </h3>
+      
+      <h3>{{'read.comments'|translate}}</h3>
       <br>
       <div *ngIf="comments?.length === 0" class="alert alert-warning pt-3" role="alert">
           <div class="align-middle">
-            <label >No comments yet!</label>&nbsp;<label *ngIf="!isSignIn"> You need to login to comment on this post.</label>
-            <a class="btn btn-link manita text-primary mb-1" (click)="commentPost(true)">Reply</a>
+            <label >{{'read.nocomments'|translate}}</label>&nbsp;<label *ngIf="!isSignIn"> {{'read.logintocomments'|translate}}</label>
+            <a class="btn btn-link manita text-primary mb-1" (click)="commentPost(true)">{{'read.commentpost'|translate}}</a>
           </div>
   
       </div>
@@ -84,7 +84,7 @@
   </div>
   <div *ngIf='isMissingPost'>
       <div class="align-middle mt-5" >
-          <p class="alert alert-warning text-center" role="alert">The requested Post does not exist or is not published</p>
+          <p class="alert alert-warning text-center" role="alert">{{'read.nopost'|translate}}</p>
        </div>
   </div>
  
@@ -95,7 +95,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">{{shareTitle}}</h5>
+          <h5 class="modal-title text-dark" id="exampleModalLongTitle">{{shareTitle}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -104,7 +104,7 @@
             <app-blog-share [Post]="Post" ></app-blog-share>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">{{'read.done'|translate}}</button>
         </div>
       </div>
     </div>

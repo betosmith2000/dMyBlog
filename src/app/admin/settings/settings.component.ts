@@ -10,6 +10,7 @@ import * as introJs from 'intro.js/intro.js';
 import { Post } from 'src/app/blog/models/Post';
 import { Router } from '@angular/router';
 import { GlobalsService } from 'src/app/share/globals.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-settings',
@@ -46,23 +47,13 @@ export class SettingsComponent implements OnInit {
   isShowingTour :boolean=false;
 
   constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, 
-    private _api: ApiService, private route: Router, private globals: GlobalsService) {
+    private _api: ApiService, private route: Router, private globals: GlobalsService,
+    private translate: TranslateService) {
     this._api.setApi('posts')
   }
    
-  startTour(start:boolean) {
-    var h = localStorage.getItem('dmyblog.globalHelp');
-    if(h=="1" && !start)
-      return;
-
-    this.isShowingTour=true;
-    if(this.posts.length==0){
-      let pEx = new Post();
-      pEx.id="example";
-      pEx.title="Example title post!";
-      pEx.date=new Date().toISOString();
-      this.posts.push(pEx);
-    }
+  setENTutorial(){
+    
     this.introJS.setOptions({
       steps: [
         {
@@ -97,6 +88,67 @@ export class SettingsComponent implements OnInit {
       ]
     });
  
+  }
+
+  
+  setESTutorial(){
+    
+    this.introJS.setOptions({
+      steps: [
+        {
+          intro: "Bienvenido a la sección de configuración, hagamos un recorrido!"+
+          "<br /><br />Puede abandonar este recorrido en cualquier momento haciendo clic en el botón Skip o fuera de este cuadro de mensaje, también puede iniciarlo haciendo clic en ewl botón '?'."
+        },
+        {
+          element: '#step0',
+          intro: "Este es tu nombre de usuario"
+        },
+        {
+          element: '#step1',
+          intro: "El nombre, la descripción y la imagen son parte del encabezado de su blog, que se muestra cuando se comparte su blog o en el menú <strong> Mi blog </strong>.",
+          disableInteraction:true
+        },
+        {
+          element: '#step2',
+          intro: "Debe guardar los cambios para verlos en el encabezado de su blog.",
+          disableInteraction:true
+        },
+        {
+          element: "#step3",
+          intro: "Puede agregar una nueva publicación, solo presione este botón!",
+          disableInteraction:true
+
+        },
+        {
+          element: "#step4",
+          intro: "Aquí está la lista de los posts que ha creado. Puede compartir<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button>, editar<button type='button' class='btn btn-link btn-sm'><i class='far fa-edit'></i></button> or eliminar<button type='button' class='btn btn-link btn-sm'><i class='far fa-trash-alt'></i></button> cualquier post. ",
+          disableInteraction:true
+        },
+      ]
+    });
+ 
+  }
+
+  startTour(start:boolean) {
+    var h = localStorage.getItem('dmyblog.globalHelp');
+    if(h=="1" && !start)
+      return;
+
+    this.isShowingTour=true;
+    if(this.posts.length==0){
+      let pEx = new Post();
+      pEx.id="example";
+      pEx.title="Example title post!";
+      pEx.date=new Date().toISOString();
+      this.posts.push(pEx);
+    }
+
+    if(this.translate.currentLang == 'es')
+      this.setESTutorial();
+    else 
+      this.setENTutorial()
+
+      
     this.introJS.start();
     this.introJS.onexit(x =>{
       let idx = this.posts.findIndex(e=> e.id == "example");
@@ -240,7 +292,13 @@ export class SettingsComponent implements OnInit {
 
   deletePost(p:any):void{
     let idx = this.posts.findIndex(e=> e.shareCode == p.shareCode);
-    if(confirm('Are you sure you want to delete this post?')){
+    let deleteQ = "";
+    if(this.translate.currentLang == 'es')
+      deleteQ = '¿Esta seguro de que quiere eliminar este post?'
+    else 
+      deleteQ = 'Are you sure you want to delete this post?'
+
+    if(confirm(deleteQ)){
       this.ngxService.start();
       this.posts.splice(idx,1);
 

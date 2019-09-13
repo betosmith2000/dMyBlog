@@ -7,7 +7,7 @@
             </div>
             <input type="text" class="form-control"  aria-label="Url to share" [(ngModel)]="url" #urlinput>
             <div class="input-group-append">
-              <button class="input-group-text" type="button" (click)="copyInputMessage(urlinput)">Copy</button>
+              <button class="input-group-text" type="button" (click)="copyInputMessage(urlinput)">{{'share.copy'|translate}}</button>
             </div>
 
            
@@ -17,13 +17,13 @@
 <div class="form-row float-right">
     <div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group " role="group" aria-label="First group">
-          <button type="button" class="btn  btn-link" (click)="share('twitter')">
+          <button type="button" class="btn  btn-link" (click)="share('twitter')" title="{{'share.twitter'|translate}}">
               <i class="fab fa-twitter-square fa-2x"></i>
           </button>
-          <button type="button" class="btn btn-link" (click)="share('facebook')" >
+          <button type="button" class="btn btn-link" (click)="share('facebook')"  title="{{'share.facebook'|translate}}">
               <i class="fab fa-facebook-square fa-2x"></i>
           </button> 
-          <button type="button" class="btn btn-link" (click)="share('linkedIn')" >
+          <button type="button" class="btn btn-link" (click)="share('linkedIn')"  title="{{'share.linkedin'|translate}}">
               <i class="fab fa-linkedin fa-2x"></i>
           </button> 
         </div>

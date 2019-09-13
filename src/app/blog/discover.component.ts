@@ -6,6 +6,7 @@ import { Pagination } from '../share/pagination';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { InteractionTypeResult } from './models/InteractionTypeResult';
 import * as introJs from 'intro.js/intro.js';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-discover',
@@ -34,29 +35,13 @@ export class DiscoverComponent implements OnInit {
    pagination: Pagination<Post> = new Pagination(10, 0);
 
 
-  constructor(private _api:ApiService, private ngxService: NgxUiLoaderService) { 
+  constructor(private _api:ApiService, private ngxService: NgxUiLoaderService,
+    private translate: TranslateService) { 
     _api.setApi('Posts');
+   
   }
 
-  
-  
-  startTour(start:boolean) {
-    var h = localStorage.getItem('dmyblog.globalHelp');
-    if(h=="1" && !start)
-      return;
-
-    this.isShowingTour=true;
-    if(this.posts.length==0){
-      let pEx = new Post();
-      pEx.id="example";
-      pEx.title="Example title post!";
-      pEx.date=new Date().toISOString();
-      pEx.status =2;
-      this.getPostImage(pEx);
-      this.getInteractions(pEx);
-      this.posts.push(pEx);
-    }
-
+  setENTutorial(){
     let _steps= [
       {
         intro: "Welcome to <strong>Browse</strong> section. Here you can see the posts that users have created with the Public status, let's take a tour!"+
@@ -88,7 +73,6 @@ export class DiscoverComponent implements OnInit {
       }
       
     ];
-
     if(!this.isSignIn)
     _steps.push({
       intro: "If you are not a user yet you can access the platform by clicking on 'Sign In with Blockstack' button, it is very easy to start your own blog and write your first Post."
@@ -97,6 +81,71 @@ export class DiscoverComponent implements OnInit {
       steps :  _steps
     });
  
+  }
+  setESTutorial(){
+    let _steps= [
+      {
+        intro: "Bienvenido a la sección <strong> Explorar </strong>. Aquí puede ver las publicaciones que los usuarios han creado con el estatus Público, ¡hagamos un recorrido!"+
+        "<br /> <br /> Puede abandonar este recorrido en cualquier momento haciendo clic en el botón Omitir o fuera de este cuadro de mensaje, también puede iniciarlo haciendo clic en el botón '?' ."
+      },
+      {
+        element: '#step1',
+        intro: "Aquí puede filtrar la información con el nombre del autor o con el título de la publicación.",
+        disableInteraction:true
+      },
+      {
+        element: '#step2',
+        intro: "Esta es la lista de publicaciones, ordenada por fechas desde la más reciente hasta la más antigua."+
+        " Puede ver <button type='button' class='btn btn-link btn-sm'><i class='far fa-eye'></i></button>,"+
+        " compartir<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button> cualquier publicación,"+
+        " también puede hacer doble clic en cualquiera para ver el contenido." +
+        " <p>También puede ver si su publicación ha gustado a los lectores s<button type='button' class='btn btn-link btn-sm'><i class='far fa-thumbs-up'></i></button></p>",
+        position:"top",
+        disableInteraction:true
+
+      },
+      {
+        element: "#step3",
+        intro: "Finalmente, puede navegar entre páginas, cada página tiene 10 publicaciones.",
+        disableInteraction:true
+
+
+      }
+      
+    ];
+    if(!this.isSignIn)
+    _steps.push({
+      intro: "Si aún no es usuario, puede acceder a la plataforma haciendo clic en el botón 'Iniciar sesión con Blockstack', es muy fácil comenzar su propio blog y escribir su primera publicación."
+    });
+    this.introJS.setOptions({
+      steps :  _steps
+    });
+ 
+  }
+  
+  startTour(start:boolean) {
+    var h = localStorage.getItem('dmyblog.globalHelp');
+    if(h=="1" && !start)
+      return;
+
+    this.isShowingTour=true;
+    if(this.posts.length==0){
+      let pEx = new Post();
+      pEx.id="example";
+      pEx.title="Example title post!";
+      pEx.date=new Date().toISOString();
+      pEx.status =2;
+      this.getPostImage(pEx);
+      this.getInteractions(pEx);
+      this.posts.push(pEx);
+    }
+
+    if(this.translate.currentLang == 'es')
+      this.setESTutorial();
+    else
+      this.setENTutorial();
+
+    
     this.introJS.start();
     this.introJS.onexit(x =>{
       let idx = this.posts.findIndex(e=> e.id == "example");

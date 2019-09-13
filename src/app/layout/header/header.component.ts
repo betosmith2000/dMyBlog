@@ -3,6 +3,8 @@ import { Component, OnInit, AfterViewInit, Renderer2 } from '@angular/core';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import { Router, NavigationEnd } from '@angular/router';
 import { GlobalsService } from 'src/app/share/globals.service';
+import { NameValue } from 'src/app/share/name-value';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -14,10 +16,25 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.themeConfig();
     
   }
-  selectedTheme:string ='dark';
 
-  constructor(private route: Router, private globals: GlobalsService, private render: Renderer2) { 
+  selectedTheme:string ='dark';
+  selectedLang :NameValue;
+  langCat : Array<NameValue>;
+
+  constructor(private route: Router, private globals: GlobalsService, private render: Renderer2
+    , private translate: TranslateService) { 
+    this.langCat = new Array<NameValue>();
+    this.langCat.push({ name : 'en', value: 'en'});
+    this.langCat.push({ name : 'es', value: 'es'});
+
+    let lang = localStorage.getItem('dmyblog.lang');
+    if(lang == 'es')
+      this.selectedLang = this.langCat[1];  
+    else
+      this.selectedLang = this.langCat[0];
+
     
+
     this.scrollToAnchor("topPage",0);
     this.route.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -61,12 +78,17 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   themeConfig(){
     var theme = this.globals.getCurrentTheme();
-    this.onThemeChange( theme);
+    
+    setTimeout(()=>{    //<<<---    using ()=> syntax
+      this.onThemeChange( theme);
+    }, 100);
   }
 
   ngOnInit() {
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
+   
+
     if (this.userSession.isSignInPending()) {
       this.userSession.handlePendingSignIn()
       .then(userData => {
@@ -96,6 +118,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.userName = userData.username;
       //this.route.navigate(['blog/' +this.userName]);
      } 
+    // this.themeConfig();
   }
 
   signIn():void{
@@ -115,6 +138,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.userSession.signUserOut(window.location.origin);
   }
 
-
+  onLangChange(val){    
+    this.translate.use(val.value);
+    localStorage.setItem('dmyblog.lang',val.value);
+  }
 
 }

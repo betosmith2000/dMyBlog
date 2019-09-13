@@ -7,19 +7,21 @@ import { PostComponent } from '../blog/post.component';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, POSITION } from 'ngx-ui-loader';
 import { BlogShareComponent } from '../blog/blog-share.component';
 import { ContactUsComponent } from '../layout/contact-us/contact-us.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
 @NgModule({
 
-    declarations: [PostComponent,BlogShareComponent,     ContactUsComponent],
+    declarations: [PostComponent,BlogShareComponent, ContactUsComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     BrowserModule,
     CKEditorModule,
-    NgxUiLoaderModule
+    NgxUiLoaderModule,
+    TranslateModule
   ],
   exports: [
     CommonModule,
@@ -28,7 +30,10 @@ import { ContactUsComponent } from '../layout/contact-us/contact-us.component';
     BrowserModule,
     CKEditorModule, 
     PostComponent,
-    NgxUiLoaderModule,BlogShareComponent,    ContactUsComponent
+    NgxUiLoaderModule,
+    BlogShareComponent,    
+    ContactUsComponent,
+    TranslateModule
   ]
 })
 export class ShareModule { }

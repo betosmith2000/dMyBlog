@@ -7,6 +7,7 @@ import { ApiService } from '../share/data-service';
 import { Post } from './models/Post';
 import { InteractionTypeResult } from './models/InteractionTypeResult';
 import * as introJs from 'intro.js/intro.js';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-blog',
@@ -36,28 +37,16 @@ export class BlogComponent implements OnInit {
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
   posts:any = new Array();
-  constructor(private toastr: ToastrService, private route:ActivatedRoute, 
-    private ngxService: NgxUiLoaderService, private _api: ApiService) { 
-     
-  }
 
   
-  startTour(start:boolean) {    
-    var h = localStorage.getItem('dmyblog.globalHelp');
-    if(h=="1" && !start)
-      return;
 
-    this.isShowingTour=true;
-    if(this.posts.length==0){
-      let pEx = new Post();
-      pEx.id="example";
-      pEx.title="Example title post!";
-      pEx.date=new Date().toISOString();
-      pEx.status =2;
-      this.getPostImage(pEx);
-      this.getInteractions(pEx);
-      this.posts.push(pEx);
-    }
+  constructor(private toastr: ToastrService, private route:ActivatedRoute, 
+    private ngxService: NgxUiLoaderService, private _api: ApiService,
+    private translate: TranslateService) { 
+   
+  }
+
+  setENTutorial(){
     this.introJS.setOptions({    
       steps: [
         {
@@ -71,7 +60,7 @@ export class BlogComponent implements OnInit {
         },
         {
           element: '#step2',
-          intro: "With this button you can share your blog through a link, twitter or facebook.",
+          intro: "With this button you can share your blog through a link, Twitter, LinkedIn or Facebook.",
           disableInteraction:true
         },
         {
@@ -95,6 +84,69 @@ export class BlogComponent implements OnInit {
         }
       ]
     });
+  }
+
+  setESTutorial(){
+    this.introJS.setOptions({    
+      steps: [
+        {
+          intro: "Bienvenido a la sección <strong> Mi blog </strong>, ¡hagamos un recorrido!" +
+          "<br /><br />Puede abandonar este recorrido en cualquier momento haciendo clic en el botón Skip o fuera de este cuadro de mensaje, también puede iniciarlo haciendo clic en en el botón '?'."
+        },
+        {
+          element: '#step1',
+          intro: "Este es el encabezado de su blog, puede personalizarlo en la sección de configuración haciendo clic en el nombre de usuario del menú. Así es como se verá cuando comparta el enlace a su blog.",
+          disableInteraction:true
+        },
+        {
+          element: '#step2',
+          intro: "Con este botón puede compartir su blog a través de un enlace, Twitter, LinkedIn o Facebook.",
+          disableInteraction:true
+        },
+        {
+          element: "#step3",
+          intro: "Puede agregar una nuevo post, solo presiona el botón.",
+          disableInteraction:true
+
+        },
+        {
+          element: "#step4",
+          intro: "<p>Aquí está la lista de los posts que ha creado." +
+          " Puede ver<button type='button' class='btn btn-link btn-sm'><i class='far fa-eye'></i></button>,"+
+          " compartit<button type='button' class='btn btn-link btn-sm'><i class='fas fa-share-alt'></i></button>,"+
+          " editar<button type='button' class='btn btn-link btn-sm'><i class='far fa-edit'></i></button> o"+
+          " eliminar<button type='button' class='btn btn-link btn-sm'><i class='far fa-trash-alt'></i></button> cualquier post.</p> "+
+          " <p>También puede ver si su publicación ha gustado a los lectores<button type='button' class='btn btn-link btn-sm'><i class='far fa-thumbs-up'></i></button></p>",
+          
+          position:"top",
+          disableInteraction:true
+
+        }
+      ]
+    });
+  }
+  
+  startTour(start:boolean) {    
+    var h = localStorage.getItem('dmyblog.globalHelp');
+    if(h=="1" && !start)
+      return;
+
+    this.isShowingTour=true;
+    if(this.posts.length==0){
+      let pEx = new Post();
+      pEx.id="example";
+      pEx.title="Example title post!";
+      pEx.date=new Date().toISOString();
+      pEx.status =2;
+      this.getPostImage(pEx);
+      this.getInteractions(pEx);
+      this.posts.push(pEx);
+    }
+   
+    if(this.translate.currentLang == 'es')
+      this.setESTutorial();
+    else 
+      this.setENTutorial()
  
     this.introJS.start();
     this.introJS.onexit(x =>{
@@ -251,8 +303,12 @@ export class BlogComponent implements OnInit {
   deletePost(event:Event, p:any):void{
     event.stopPropagation();    
     this._api.setApi('Posts');
-
-    if(confirm('Are you sure you want to delete this post?')){
+    let deleteQ = "";
+    if(this.translate.currentLang == 'es')
+      deleteQ = '¿Esta seguro de que quiere eliminar este post?'
+    else 
+      deleteQ = 'Are you sure you want to delete this post?'
+    if(confirm(deleteQ)){
       this.ngxService.start(); 
       let idx = this.posts.findIndex(e=> e.shareCode == p.shareCode);
       this.posts.splice(idx,1);
@@ -302,7 +358,11 @@ export class BlogComponent implements OnInit {
   }
 
   shareBlog():void {
-    this.shareTitle = "Share this Blog!"
+    
+    if(this.translate.currentLang == 'es')
+      this.shareTitle = "Compartir este Blog!"
+    else 
+      this.shareTitle = "Share this Blog!"
     this.selectedPost = null;
     this.postId = null;
   }
@@ -310,8 +370,13 @@ export class BlogComponent implements OnInit {
   sharePost(event:Event, p:any):void{
 
     this.selectedPost = p;
-      
-    this.shareTitle = "Share this Post!"
+    
+    if(this.translate.currentLang == 'es')
+      this.shareTitle = "Compartir este Post!"
+    else 
+      this.shareTitle = "Share this Post!"
+
+    
     this.postId=p.shareCode?p.shareCode:p.id;
    // event.stopPropagation(); 
     // event.stopPropagation();  

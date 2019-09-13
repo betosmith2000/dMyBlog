@@ -1,4 +1,4 @@
-<button title="Help" class="btn btn-link float-button" (click)="startTour(true)" *ngIf="!isNewPost && !isUpdatePost">
+<button title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)" *ngIf="!isNewPost && !isUpdatePost">
   <i class="fas fa-question fa-2x"></i>
 </button>
 <div class="container top-padding" *ngIf="!isNewPost && !isUpdatePost">    
@@ -15,45 +15,45 @@
       <form novalidate (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
         <div id="step1">
         <div class="form-group row">
-          <label for="blogName" class="col-sm-3 col-form-label">Blog name:</label>
+          <label for="blogName" class="col-sm-3 col-form-label">{{'settings.name'|translate}}</label>
           <div class="col-sm-9">
-              <input type="text" class="form-control" id="blogName"  placeholder="Blog name" formControlName="blogName"
+              <input type="text" class="form-control" id="blogName"  [placeholder]="'settings.nameplaceholder'|translate" formControlName="blogName"
                      [ngClass]="{'is-invalid':(blogName.touched || blogName.dirty) && !blogName.valid}" />
               <span class="invalid-feedback" *ngIf="blogName.invalid && (blogName.touched || blogName.dirty) ">
-                  <span *ngIf="blogName.errors.required">Blog name is required.</span>
-                  <span *ngIf="blogName.errors.maxlength">Max blog name length 64.</span>
+                  <span *ngIf="blogName.errors.required">{{'settings.namevalreq'|translate}}</span>
+                  <span *ngIf="blogName.errors.maxlength">{{'settings.namevalmax'|translate}}</span>
               </span>
           </div>
         </div>
 
         <div class="form-group row">
-          <label for="blogDescription" class="col-sm-3 col-form-label">Blog Description:</label>
+          <label for="blogDescription" class="col-sm-3 col-form-label">{{'settings.description'|translate}}</label>
           <div class="col-sm-9">
-              <input type="text" class="form-control" id="blogDescription" placeholder="Blog description" formControlName="blogDescription"
+              <input type="text" class="form-control" id="blogDescription" [placeholder]="'settings.descriptionplaceholder'|translate" formControlName="blogDescription"
                      [ngClass]="{'is-invalid':(blogDescription.touched || blogDescription.dirty) && !blogDescription.valid}" />
               <span class="invalid-feedback" *ngIf="blogDescription.invalid && (blogDescription.touched || blogDescription.dirty) ">
-                  <span *ngIf="blogDescription.errors.required">Blog description is required.</span>
-                  <span *ngIf="blogDescription.errors.maxlength">Max blog description length 1024.</span>
+                  <span *ngIf="blogDescription.errors.required">{{'settings.descriptionvalreq'|translate}}</span>
+                  <span *ngIf="blogDescription.errors.maxlength">{{'settings.descriptionvalmax'|translate}} </span>
               </span>
           </div>
         </div>
 
         <div class="form-group row">
-            <label for="file" class="col-sm-3 col-form-label">Blog header image:</label>
+            <label for="file" class="col-sm-3 col-form-label">{{'settings.image'|translate}}</label>
             <div class="col-sm-9" *ngIf="!hasImageHeader">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                      <span class="input-group-text">Upload</span>
+                      <span class="input-group-text">{{'settings.imageupload'|translate}}</span>
                     </div>
                     <div class="custom-file">
                       <input type="file" class="custom-file-input" id="file" accept="image/*" name="file" (change)="handleInputChange($event)">
-                      <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                      <label class="custom-file-label" for="inputGroupFile01">{{'settings.imagechoose'|translate}}</label>
                     </div>
                   </div>
             </div>
             <div class="col-sm-9" *ngIf="hasImageHeader">
               <img [src]="postImageContent" class="img-tumb inline" alt="Current image header"> &nbsp;
-              <button class="btn btn-outline-danger align-top inline" type="button" (click)="removeImageHeader()"><i class="far fa-times-circle" title="Remove image header"></i></button>
+              <button class="btn btn-outline-danger align-top inline" type="button" (click)="removeImageHeader()"><i class="far fa-times-circle" title="{{'settings.imageremove'|translate}}"></i></button>
             </div>
               
         </div>
@@ -61,7 +61,7 @@
       </div>
 
         <div class="float-md-right" id="step2">
-          <button type="submit" class="btn btn-primary" [disabled]="!form.valid" >Save</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!form.valid" >{{'settings.save'|translate}}</button>
         </div>
 
       </form>
@@ -69,8 +69,8 @@
   </div>
   
   
-  <h2 class="display-4 d-none d-sm-block" id="step0">My Posts</h2>
-  <h4 class="d-block d-sm-none" id="step0">My Posts</h4>
+  <h2 class="display-4 d-none d-sm-block" id="step0">{{'settings.myposts'|translate}}</h2>
+  <h4 class="d-block d-sm-none" id="step0">{{'settings.myposts'|translate}}</h4>
   
   
   <div class="card shadow-sm"  [ngClass]="{
@@ -82,8 +82,8 @@
     <div class="card-body">
         <div >
             <div >
-                <button id="step3"  type="button" (click)="showNewPost()" class="btn btn-link float-right" >New Post <i class="far fa-file"></i></button>
-                <label *ngIf="posts.length === 0" for="btnNewPost" class="float-right mt-2">There is nothing yet!, try add</label> 
+                <button id="step3"  type="button" (click)="showNewPost()" class="btn btn-link float-right" >{{'settings.newpost'|translate}} <i class="far fa-file"></i></button>
+                <label *ngIf="posts.length === 0" for="btnNewPost" class="float-right mt-2">{{'settings.tableempty'|translate}}</label> 
             </div>
         </div>
 
@@ -95,9 +95,9 @@
           }"   >
           <thead>
             <tr>
-              <th scope="col">Title</th>
+              <th scope="col">{{'settings.tabletitle'|translate}}</th>
               <!-- <th scope="col">Content</th> -->
-              <th scope="col">Date</th>
+              <th scope="col">{{'settings.tabledate'|translate}}</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -108,9 +108,9 @@
               <td class="small">{{p.date|date:'medium'}}</td>
               <td class="float-right small">
                 <div class="btn-group" role="group" aria-label="Actions">
-                  <button type="button" class="btn btn-primary btn-sm" title="share post"  data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"><i class="fas fa-share-alt"></i></button>&nbsp;
-                  <button type="button" class="btn btn-primary btn-sm" title="Edit post" (click)="editPost(p)"><i class="far fa-edit"></i></button>&nbsp;
-                  <button type="button" class="btn btn-danger btn-sm" title="Delete post" (click)="deletePost(p)">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>
+                  <button type="button" class="btn btn-primary btn-sm" title="{{'settings.tableshare'|translate}}"  data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"><i class="fas fa-share-alt"></i></button>&nbsp;
+                  <button type="button" class="btn btn-primary btn-sm" title="{{'settings.tableedit'|translate}}" (click)="editPost(p)"><i class="far fa-edit"></i></button>&nbsp;
+                  <button type="button" class="btn btn-danger btn-sm" title="{{'settings.tabledelete'|translate}}" (click)="deletePost(p)">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>
                 </div>
               </td>
             </tr>
@@ -136,7 +136,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Share this Post!</h5>
+          <h5 class="modal-title text-dark" id="exampleModalLongTitle">{{'settings.tableshare'|translate}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -145,7 +145,7 @@
             <app-blog-share [Post]="shareablePost"  [PostUser]="userName"></app-blog-share>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal"> {{'settings.tablesharedone'|translate}}</button>
         </div>
       </div>
     </div>

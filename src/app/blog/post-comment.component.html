@@ -4,8 +4,8 @@
     <br>
     <div class="row">
         <div class="col ">
-            <button class="btn btn-primary float-right mx-2"  [disabled]="!form.valid">Reply</button>
-            <button class="btn btn-secondary float-right mx-2" (click)="cancelComment()">Cancel</button> 
+            <button class="btn btn-primary float-right mx-2"  [disabled]="!form.valid">{{'read.reply'|translate}}</button>
+            <button class="btn btn-secondary float-right mx-2" (click)="cancelComment()">{{'read.cancel'|translate}}</button> 
         </div>
     </div>
 </form>

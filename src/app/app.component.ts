@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalsService } from './share/globals.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,14 @@ export class AppComponent implements OnInit {
   title = 'dMyBlog';
   public selectedTheme:string;
 
-  constructor(private globals:GlobalsService){}
+  constructor(private globals:GlobalsService, translate: TranslateService){
+
+    let lang = localStorage.getItem('dmyblog.lang');
+    if(lang)
+      translate.setDefaultLang(lang);
+    else
+      translate.setDefaultLang('en');
+  }
 
   ngOnInit(): void {
     this.globals.getTheme().subscribe(theme=>{

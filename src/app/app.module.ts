@@ -11,12 +11,18 @@ import { ToastrModule} from 'ngx-toastr';
 import { ShareModule } from './share/share.module';
 import { PostReaderComponent } from './blog/post-reader.component';
 import { DiscoverComponent } from './blog/discover.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { SafeHtmlPipe } from './Pipes/safe-html';
 import { PostInteractionComponent } from './blog/post-interaction.component';
 import { PostCommentComponent } from './blog/post-comment.component';
 import { CommentReaderComponent } from './blog/comment-reader.component';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
+
+export function HttpLoaderFactory(http: HttpClient){
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   declarations: [
@@ -38,7 +44,14 @@ import { CommentReaderComponent } from './blog/comment-reader.component';
     ShareModule,
     AdminModule,
     ToastrModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      }
+  })
     
     ],
   providers: [],

@@ -5,6 +5,7 @@ import { ApiService } from '../share/data-service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Post } from './models/Post';
 import { ToastrService } from 'ngx-toastr';
+import { GlobalsService } from '../share/globals.service';
 
 @Component({
   selector: 'app-comment-reader',
@@ -21,6 +22,7 @@ export class CommentReaderComponent implements OnInit {
   writeOptions : any = {encrypt:false};
   isEditing :boolean=false;
   isNewComment :boolean = false;
+  selectedTheme:string ='dark';
 
   @Output() deleteComment = new EventEmitter();
   @Output() updateComment = new EventEmitter();
@@ -38,11 +40,18 @@ export class CommentReaderComponent implements OnInit {
   }
 
   constructor(private _api:ApiService, private ngxService: NgxUiLoaderService,  
-    private cdRef:ChangeDetectorRef,  private toastr: ToastrService) {
+    private cdRef:ChangeDetectorRef,  private toastr: ToastrService,
+     private globals: GlobalsService,
+    ) {
 
    }
 
   ngOnInit() {
+    this.selectedTheme= this.globals.getCurrentTheme();
+    this.globals.getTheme().subscribe(theme=>{
+      this.selectedTheme = theme;
+    });
+
     const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
     this.userSession = new blockstack.UserSession({appConfig:appConfig});
     if(this.userSession.isUserSignedIn())

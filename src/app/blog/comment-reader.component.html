@@ -1,16 +1,21 @@
-<div class="border-left comment">
+<div class="border-left comment" [ngClass]="{
+  'bg-dark':selectedTheme=='dark',
+  'bg-light':selectedTheme=='light',
+  'text-light':selectedTheme=='dark',
+  'text-dark':selectedTheme=='light'
+}">
   <div class="w-100 d-inline-flex">
     <span class="font-weight-bold small">{{Comment.userId}}</span>&nbsp;
     <span class="font-weight-lighter small">{{Comment.date|date:'medium'}}</span>
 
     <span class="ml-3"  *ngIf="!isNewComment">
-      <button class="btn btn-link text-danger btn-sm " title="Delete comment!" type="button" *ngIf="canEdit" (click)="delete(Comment)">
+      <button class="btn btn-link text-danger btn-sm " title="{{'read.deletecomment'|translate}}" type="button" *ngIf="canEdit" (click)="delete(Comment)">
         <i class="far fa-trash-alt"></i>
       </button>&nbsp;
-      <button class="btn btn-link btn-sm " title="Edit comment!" type="button" *ngIf="canEdit" (click)="showUpdate(Comment)">
+      <button class="btn btn-link btn-sm " title="{{'read.editcomment'|translate}}" type="button" *ngIf="canEdit" (click)="showUpdate(Comment)">
         <i class="far fa-edit"></i>
       </button>&nbsp;
-      <button class="btn btn-link btn-sm " title="Reply comment!" type="button" *ngIf="canReply" (click)="responseComment(Comment)">
+      <button class="btn btn-link btn-sm " title="{{'read.replycomment'|translate}}" type="button" *ngIf="canReply" (click)="responseComment(Comment)">
         <i class="far fa-comment-dots"></i>
       </button>&nbsp;
     </span>

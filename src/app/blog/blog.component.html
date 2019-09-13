@@ -1,10 +1,10 @@
-<button title="Help" class="btn btn-link float-button" (click)="startTour(true)" *ngIf="!isNewPost && !isViewingPost" >
+<button  title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)" *ngIf="!isNewPost && !isViewingPost" >
   <i class="fas fa-question fa-2x"></i>
 </button>
-<button id="step3" class="btn btn-link float-new-post" (click)="showNewPost()" title="New Post" *ngIf="isAdmin && !isNewPost && !isViewingPost">
+<button title="{{'help.newpost'|translate}}"  id="step3" class="btn btn-link float-new-post" (click)="showNewPost()" *ngIf="isAdmin && !isNewPost && !isViewingPost">
     <i class="fas fa-plus fa-2x"></i>
 </button>
-<button title="Share this blog" id="step2" class="btn btn-link float-share" type="button" data-toggle="modal" data-target="#share" (click)="shareBlog()" *ngIf="isAdmin && !isNewPost && !isViewingPost">
+<button title="{{'help.shareblog'|translate}}" id="step2" class="btn btn-link float-share" type="button" data-toggle="modal" data-target="#share" (click)="shareBlog()" *ngIf="isAdmin && !isNewPost && !isViewingPost">
     <i class="fas fa-share-alt fa-2x"></i>
 </button>
 
@@ -32,7 +32,7 @@
 
   
 
-  <h2 class="display-4 d-none d-sm-block pt-4" id="step0">{{userName}} Posts</h2>
+  <h2 class="display-4 d-none d-sm-block pt-4" id="step0">{{userName}} {{'myblog.posts'|translate}}</h2>
   <h4 class="d-block d-sm-none pt-4" id="step0">{{userName}} Posts</h4>
   
 <!-- aca esta el nuevo diseño -->
@@ -60,13 +60,13 @@
                     </div>
               </div>
               <div class="btn-group button-bar"  role="group" aria-label="Basic example" >
-                  <button type="button" class="btn btn-outline-danger text-white" title="Delete post" (click)="deletePost($event, p)" *ngIf="isAdmin">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>             
-                  <button type="button" class="btn btn-outline-info text-white" title="Edit post" (click)="editPost(p)"*ngIf="isAdmin"><i class="far fa-edit"></i></button>
-                  <button class="btn btn-outline-info text-white" type="button" title="Share post" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"
+                  <button type="button" class="btn btn-outline-danger text-white" title="{{'myblog.delete'|translate}}" (click)="deletePost($event, p)" *ngIf="isAdmin">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>             
+                  <button type="button" class="btn btn-outline-info text-white" title="{{'myblog.edit'|translate}}" (click)="editPost(p)"*ngIf="isAdmin"><i class="far fa-edit"></i></button>
+                  <button class="btn btn-outline-info text-white" type="button" title="{{'myblog.share'|translate}}" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"
                     *ngIf="p.status == 1 || p.status == 2">
                       <i class="fas fa-share-alt"></i>
                   </button>
-                  <button class="btn btn-outline-info text-white" type="button"  title="View post" (click)="viewPost(p)">
+                  <button class="btn btn-outline-info text-white" type="button"  title="{{'myblog.view'|translate}}" (click)="viewPost(p)">
                       <i class="far fa-eye"></i>
                   </button>
               </div>
@@ -79,7 +79,7 @@
               <hr />
             </div>
             <div class="col-lg-12">
-              <span class="small font-weight-light"  >By: <strong>{{p.author}}</strong> on {{p.date|date:'medium'}}</span>
+              <span class="small font-weight-light"  >{{'myblog.by'|translate}}: <strong>{{p.author}}</strong> {{'myblog.on'|translate}} {{p.date|date:'medium'}}</span>
             </div>
           </div>
         </div>
@@ -121,7 +121,7 @@
             <app-blog-share [Post]="selectedPost" [PostUser]="userName"></app-blog-share>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">{{'myblog.done'|translate}}</button>
         </div>
       </div>
     </div>

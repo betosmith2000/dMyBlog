@@ -12,6 +12,7 @@ import * as introJs from 'intro.js/intro.js';
 import * as ClassicEditor from './CKEditor/ckeditor.js';
 import { GlobalsService } from '../share/globals.service';
 import { attachedFile } from '../share/attached-file';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -73,19 +74,12 @@ export class PostComponent implements OnInit {
   }
 
   constructor(private toastr:ToastrService, private ngxService: NgxUiLoaderService, 
-    private _api:ApiService, private globals: GlobalsService) { 
+    private _api:ApiService, private globals: GlobalsService,
+    private translate: TranslateService) { 
   
   }
 
-  
-  
-  startTour(start:boolean) {
-    var h = localStorage.getItem('dmyblog.globalHelp');
-    if(h=="1" && !start)
-      return;
-
-    this.isShowingTour=true;
-   
+  setENTtutorial(){
     this.introJS.setOptions({
       steps: [
         {
@@ -113,7 +107,7 @@ export class PostComponent implements OnInit {
         },
         {
           element: '#step4',
-          intro: "Here is where to write the content of your post, use the editing tools: <strong>Paragraph, Bold, Italic, links, bulleted list, numbered list, images, tables and media</strong>.",
+          intro: "Here is where you should write the content of your post, use the editing tools: <strong>Paragraph, Bold, Italic, links, bulleted list, numbered list, images, tables and media</strong>.",
           disableInteraction:true
         },
         {
@@ -130,6 +124,65 @@ export class PostComponent implements OnInit {
         },
       ]
     });
+  }
+  
+  setESTtutorial(){
+    this.introJS.setOptions({
+      steps: [
+        {
+          intro: "Bienvenido a la sección <strong> Nuevo post </strong>, hagamos un recorrido!"+
+          "<br /><br />Puede abandonar este recorrido en cualquier momento haciendo clic en el botón Omitir o fuera de este cuadro de mensaje, también puede iniciarlo haciendo clic en el botón '?'."
+        },
+        {
+          element: '#step1',
+          intro: "Este es el título de su post, ¡recuerde que debe ser atractivo!",
+          disableInteraction:true
+        },
+        {
+          element: '#step2',
+          intro: "Esta es la imagen del encabezado,el tamaño recomendado 350x350 píxeles.",
+          disableInteraction:true
+        },
+        {
+          element: "#step3",
+          intro: "<p>Aquí está el estado de su post, seleccione según sus necesidades: <br/>" +
+          "<strong>Private</strong>: El post se guarda encriptado, ¡nadie más que usted puede acceder!<br/>"+
+          "<strong>Public</strong>: Puede verlo y las personas que tienen el enlace de su publicación y se puede compartir en Twitter, LinkedIn y Facebook.<br/>",          
+          position:"top",
+          disableInteraction:true
+        },
+        {
+          element: '#step4',
+          intro: "Aquí es donde debe escribir el contenido de su post, use las herramientas de edición: <strong> Párrafo, Negrita, Cursiva, enlaces, lista con viñetas, lista numerada, imágenes, tablas y medios </strong>.",
+          disableInteraction:true
+        },
+        {
+          element: "#step5",
+          intro: "Puedes adjuntar algunos archivos aquí!",
+          disableInteraction:true
+
+        },
+        {
+          element: "#step6",
+          intro: "Finalmente puedes guardar o cancelar los cambios de publicación!",
+          disableInteraction:true
+
+        },
+      ]
+    });
+  }
+
+  startTour(start:boolean) {
+    var h = localStorage.getItem('dmyblog.globalHelp');
+    if(h=="1" && !start)
+      return;
+
+    this.isShowingTour=true;
+    if(this.translate.currentLang == 'es')
+      this.setESTtutorial();
+    else 
+      this.setENTtutorial()
+   
  
     this.introJS.start();
     this.introJS.onexit(x =>{
