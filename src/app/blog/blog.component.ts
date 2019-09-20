@@ -42,7 +42,7 @@ export class BlogComponent implements OnInit {
 
   constructor(private toastr: ToastrService, private route:ActivatedRoute, 
     private ngxService: NgxUiLoaderService, private _api: ApiService,
-    private translate: TranslateService) { 
+    private translate: TranslateService, private router: Router) { 
    
   }
 
@@ -265,9 +265,10 @@ export class BlogComponent implements OnInit {
     this.isNewPost = true;
   }
   
-  viewPost(p:any){
-    this.selectedPost = p;
-    this.isViewingPost =true;
+  viewPost(p:Post){
+    //this.selectedPost = p;
+    //this.isViewingPost =true;
+    this.router.navigate(['/read/' + p.author + '/' + p.id])
   }
 
   

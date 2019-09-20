@@ -29,7 +29,6 @@ export class CustomUploaderAdapter {
     }
   
     abort(){
-        debugger;
         if ( this.reader ) {
 			this.reader.abort();
 		}

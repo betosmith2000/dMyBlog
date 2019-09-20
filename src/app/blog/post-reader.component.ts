@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Pagination } from '../share/pagination';
 import { ApiService } from '../share/data-service';
@@ -66,7 +66,7 @@ export class PostReaderComponent implements OnInit {
   constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService, 
     private _api:ApiService, private toastr: ToastrService, 
     private cdRef:ChangeDetectorRef, private globals: GlobalsService,
-    private translate: TranslateService) {
+    private translate: TranslateService, private router: Router) {
    }
 
    setENTutorial(){
@@ -329,8 +329,8 @@ export class PostReaderComponent implements OnInit {
       this.ngxService.stop();  
       this.getMediaEmbed();
       this.getData();
-      if( this._post.attachedFiles)
-            this.attachedFiles = this._post.attachedFiles;
+      if( this.viewingPost.attachedFiles)
+            this.attachedFiles = this.viewingPost.attachedFiles;
     })
     .catch((error)=>{
       console.log('Error reading post');
@@ -339,6 +339,7 @@ export class PostReaderComponent implements OnInit {
   }
   close():void{
     this.closed.emit(null);
+    this.router.navigate(['/browse'])
   }
 
   getMediaEmbed(){
@@ -406,7 +407,6 @@ export class PostReaderComponent implements OnInit {
   }
 
   onCloseComments(comment:any):void{
-    debugger
     if(comment){
       this.content ='Loading content...';
       this.comments.push(comment);
@@ -454,7 +454,6 @@ export class PostReaderComponent implements OnInit {
   }
 
   onUpdateComment(c:PostComment){
-    debugger
     let comment = this.comments.filter(e=> e.id == c.id)[0];
     comment.content = c.content;
     comment.id=c.id;
@@ -477,7 +476,6 @@ export class PostReaderComponent implements OnInit {
     ro.decrypt = false;
     this.userSession.getFile(f.id, ro)
         .then((fileContents) => {
-          debugger
           var element = document.createElement('a');
           element.setAttribute('href', fileContents);
           element.setAttribute('download', f.name);
