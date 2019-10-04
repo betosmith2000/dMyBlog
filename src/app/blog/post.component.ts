@@ -39,6 +39,7 @@ export class PostComponent implements OnInit {
 
   form :FormGroup;
   postTitle:FormControl;
+  postExcerpt:FormControl;
   postContent:FormControl;
   status:FormControl;
   attachedFiles: Array<attachedFile> = new Array<attachedFile>();
@@ -91,6 +92,7 @@ export class PostComponent implements OnInit {
           intro: "This is the title of your post, remember to be attractive!",
           disableInteraction:true
         },
+        
         {
           element: '#step2',
           intro: "This is the header image, recommended size 350x350 pixels.",
@@ -235,6 +237,7 @@ export class PostComponent implements OnInit {
         .then((fileContents) => {
           this.editingPost = JSON.parse(fileContents);
           this.postTitle.setValue(this.editingPost.postTitle);
+          this.postExcerpt.setValue(this.editingPost.postExcerpt);
           this.postContent.setValue(this.editingPost.postContent);
           
           if( this.editingPost.attachedFiles)
@@ -268,12 +271,14 @@ export class PostComponent implements OnInit {
 
   initializeForm():void{
     this.postTitle = new FormControl('', [Validators.maxLength(128), Validators.required]);
+    this.postExcerpt = new FormControl('', [Validators.maxLength(256), Validators.required]);
     this.postContent = new FormControl('', [Validators.required]);
     this.status = new FormControl('', [Validators.required]);
 
     this.form = new FormGroup({
       postTitle : this.postTitle,
       postContent : this.postContent,
+      postExcerpt: this.postExcerpt, 
       status:this.status
     });
 
@@ -309,7 +314,7 @@ export class PostComponent implements OnInit {
         id: '',
         date: new Date().toISOString(),
         title:this.postTitle.value,
-        excerpt:div.textContent,
+        excerpt:this.postExcerpt.value,
         author: this.userName,
         postFileName: this.postContentFileName.replace('ID',hash.toString()) ,
         imageFileName:this.postImageFileName.replace('ID',hash.toString()) ,
@@ -352,7 +357,7 @@ export class PostComponent implements OnInit {
 
       if(postResume.length==1){
         postResume = postResume[0];
-        postResume.excerpt=div.textContent;
+        postResume.excerpt=this.postExcerpt.value;
         postResume.title = this.postTitle.value;
         postResume.status =  this.status.value;
         postResume.encrypt =  this.status.value == "0";

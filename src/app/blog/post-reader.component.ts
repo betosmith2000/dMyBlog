@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Pagination } from '../share/pagination';
 import { ApiService } from '../share/data-service';
@@ -11,6 +11,8 @@ import * as introJs from 'intro.js/intro.js';
 import { GlobalsService } from '../share/globals.service';
 import { attachedFile } from '../share/attached-file';
 import { TranslateService } from '@ngx-translate/core';
+import { filter } from 'rxjs/operators';
+import { PreviousRouteService } from '../share/previous-route';
 
 
 
@@ -25,8 +27,11 @@ export class PostReaderComponent implements OnInit {
   isShowingTour :boolean=false;
 
   title:string;
+  excerpt:string;
   content:string;
   imageContent:string;
+  avatarContent:string;
+  hasAvatar :boolean = false;
   author:string;
   date:Date;
   isShareURL:boolean=false;
@@ -34,9 +39,9 @@ export class PostReaderComponent implements OnInit {
   comments:any;
   attachedFiles: Array<attachedFile> = new Array<attachedFile>();
 
-
   private LOGO = require("../../assets/post-head.jpg");
   readonly postsFileName:string = '/posts.txt';
+  readonly avatarFileName:string = '/avatar.txt';
    //Paginacion
    page: number = 0;
    pagination: Pagination<PostComment> = new Pagination(1000, 0);
@@ -44,6 +49,7 @@ export class PostReaderComponent implements OnInit {
   userSession : any;
   readOptions : any = {decrypt: false, username: null};
   viewingPost : any;
+  currentUser :string = ""
   
   private _post: any = null;
   @Input()
@@ -66,7 +72,10 @@ export class PostReaderComponent implements OnInit {
   constructor(private route: ActivatedRoute, private ngxService: NgxUiLoaderService, 
     private _api:ApiService, private toastr: ToastrService, 
     private cdRef:ChangeDetectorRef, private globals: GlobalsService,
-    private translate: TranslateService, private router: Router) {
+    private translate: TranslateService, private router: Router,
+    private previousRouteService: PreviousRouteService) {
+
+     
    }
 
    setENTutorial(){
@@ -232,6 +241,11 @@ export class PostReaderComponent implements OnInit {
 
 
   ngOnInit() {
+
+    
+   
+
+
     this.selectedTheme= this.globals.getCurrentTheme();
     this.globals.getTheme().subscribe(theme=>{
       this.selectedTheme = theme;
@@ -253,6 +267,8 @@ export class PostReaderComponent implements OnInit {
    
     if (this.userSession.isUserSignedIn()) {
       this.isSignIn = true;
+      const userData = this.userSession.loadUserData();
+      this.currentUser = userData.username;
     }
 
     this.route.paramMap.subscribe(params => {
@@ -286,19 +302,19 @@ export class PostReaderComponent implements OnInit {
           if(this.posts == null)
             this.posts=new Array();
 
-          
-          let post = this.posts.filter(e=> e.id == this.postId && e.status != 0);
+         
+          let post = this.posts.filter(e=> (e.id == this.postId || e.shareCode == this.postId ) && (e.status != 0 || e.author == this.currentUser));
           if(post.length > 0){
             this._post = post[0];
             this.isMissingPost  =false;
+            this.readPost();
 
             
           }
           else{
             this.isMissingPost = true;
-            
+            this.ngxService.stop();
           }
-          this.readPost();
         })
         .catch((error)=>{
           console.log('Error loading post collection');
@@ -316,15 +332,17 @@ export class PostReaderComponent implements OnInit {
   }
 
   readPost():void{
-      this.readOptions.decrypt=this.Post.encrypt;
+    this.readOptions.decrypt=this.Post.encrypt;
 
     this.userSession.getFile(this.Post.postFileName,this.readOptions)
     .then((fileContents) => {
       this.viewingPost = JSON.parse(fileContents);
       this.title = this.viewingPost.postTitle;
+      this.excerpt = this.Post.excerpt;
       this.content = this.viewingPost.postContent;
       this.author = this.Post.author;
       this.date = this.Post.date;
+      this.getAvatar();
       this.getPostImage(this.Post);
       this.ngxService.stop();  
       this.getMediaEmbed();
@@ -339,7 +357,13 @@ export class PostReaderComponent implements OnInit {
   }
   close():void{
     this.closed.emit(null);
-    this.router.navigate(['/browse'])
+    if(this.previousRouteService.getPreviousUrl().indexOf('/browse') >= 0)
+      this.router.navigate(['/browse'])
+    else if(this.previousRouteService.getPreviousUrl().indexOf('/blog') >= 0)
+      this.router.navigate(['/blog/'+this.currentUser])
+    else{
+      this.router.navigate(['/home/'])
+    }
   }
 
   getMediaEmbed(){
@@ -379,6 +403,23 @@ export class PostReaderComponent implements OnInit {
     }
   }
 
+  getAvatar():void {
+    this.readOptions.decrypt = false;
+    this.userSession.getFile(this.avatarFileName,this.readOptions)
+    .then((imageContent) => {
+      if(imageContent){
+        this.avatarContent= imageContent;
+        this.hasAvatar = true;
+      }
+      else 
+      this.hasAvatar = false;
+    })
+    .catch((error)=>{
+      console.log('Error reading image');
+      
+    });
+    
+  }
 
   
   sharePost(){   
@@ -390,6 +431,13 @@ export class PostReaderComponent implements OnInit {
       this.toastr.info("You need to login to add a comment!","Information")
       return;
     }
+
+    if(!this.Post.id)
+    {
+      this.toastr.info("It is not possible to comment on a private post!","Information")
+      return;
+    }
+
     let idx = this.comments.findIndex(e=> e.id == "");
 
     if(idx!==-1){
@@ -435,7 +483,7 @@ export class PostReaderComponent implements OnInit {
       this.pagination = d;
       this.page = d.pageNumber + 1;
       //this.ngxService.stop();
-      if(this.isSignIn)
+      if(this.isSignIn &&  this.Post.id)
         this.commentPost(false);
       this.startTour(false);
     }, err => {
@@ -488,5 +536,9 @@ export class PostReaderComponent implements OnInit {
           console.log('Error loading post collection');
           this.ngxService.stop();
         });
+  }
+
+  goToAuthorBlog(){
+   this.router.navigate(['/blog/' + this.author])
   }
 }

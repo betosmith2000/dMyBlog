@@ -37,7 +37,7 @@
 <div class="row"  *ngIf="!isViewingPost" id="step2">
     <div class="col-lg-6 col-sm-12" *ngFor="let p of posts">
       <div class="border border-secondary shadow mb-5 post-size rounded post"
-        (dblclick)="viewPost(p)" style="background-color: white" >
+        (click)="viewPost(p)" style="background-color: white" >
         <div class="w-100 h-100"  [ngStyle]="{background: ' url('+p.imageFileContent+') no-repeat center center'}">
           <!-- Footer o header del post -->
           <div class="h-100 d-flex flex-column justify-content-end ">
@@ -71,11 +71,13 @@
           <div class="row transparency text-white footer-post">
             
             <div class="col-lg-12 manita" (click)="viewPost(p)">
-              <h5 class="card-title" > {{p.title}}</h5>
-              <hr />
+              <h5 class="card-title font-weight-bold text-capitalize" > {{p.title}}</h5>
+              <p class="font-weight-normal text-capitalize p-excerpt">
+                {{p.excerpt}}
+              </p>
             </div>
             <div class="col-lg-12">
-              <span class="small font-weight-light"  >{{'browse.by'|translate}}: <strong>{{p.author}}</strong> {{'browse.on'|translate}} {{p.date|date:'medium'}}</span>
+              <span class="small font-weight-lighter"  >{{'browse.by'|translate}}: <strong>{{p.author}}</strong> {{'browse.on'|translate}} {{p.date|date:'medium'}}</span>
             </div>
           </div>
         </div>

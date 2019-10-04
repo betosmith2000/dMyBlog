@@ -23,6 +23,7 @@ export class SettingsComponent implements OnInit {
 
   userName :string  = 'User name';
   readonly settingsFileName:string = '/settings.txt';
+  readonly avatarFileName:string = '/avatar.txt';
   readonly postsFileName:string = '/posts.txt';
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
@@ -37,6 +38,10 @@ export class SettingsComponent implements OnInit {
   blogHeaderImage : FormControl;
   postImageContent: string='';
   hasImageHeader:boolean=false;
+
+  avatarImage : FormControl;
+  avatarImageContent: string='';
+  hasAvatar:boolean=false;
 
   posts:Array<any> = new Array();
 
@@ -189,22 +194,36 @@ export class SettingsComponent implements OnInit {
             this.blogName.setValue(data.blogName);
             this.blogDescription.setValue(data.blogDescription);
             this.blogHeaderImage.setValue(data.blogHeaderImage);
+            
             if(data.blogHeaderImage)
             {
               this.hasImageHeader=true;
               this.postImageContent =   data.blogHeaderImage;
             }
-
-          this.userSession.getFile(this.postsFileName,this.readOptions)
-            .then((postContents) => {
-              this.posts = JSON.parse(postContents);
-              if(this.posts == null)
-                this.posts = new Array();
-              this.ngxService.stop();
+            
+            
+            this.userSession.getFile(this.avatarFileName,this.readOptions)
+            .then((avatarContent) => {
+              this.avatarImage.setValue(avatarContent)
+              if(avatarContent)
+              {
+                this.hasAvatar=true;
+                this.avatarImageContent = avatarContent;
+              }
               
-              this.startTour(false);
-
+              this.userSession.getFile(this.postsFileName,this.readOptions)
+              .then((postContents) => {
+                this.posts = JSON.parse(postContents);
+                if(this.posts == null)
+                  this.posts = new Array();
+                this.ngxService.stop();
+                
+                this.startTour(false);
+  
+              }); 
+           
             });
+          
 
           }
           else{
@@ -224,24 +243,36 @@ export class SettingsComponent implements OnInit {
     this.blogName = new FormControl('', [Validators.maxLength(64)]);
     this.blogDescription = new FormControl('', [Validators.maxLength(1024)]);
     this.blogHeaderImage = new FormControl('');
+    this.avatarImage = new FormControl('');
 
     this.form = new FormGroup({
       blogName : this.blogName,
       blogDescription : this.blogDescription,
-      blogHeaderImage : this.blogHeaderImage
+      blogHeaderImage : this.blogHeaderImage,
+      avatarImage: this.avatarImage
     });
   }
 
   save(){
     let p = Object.assign({},  this.form.value);
     let str = JSON.stringify(p);
+    p.avatarImage='';
     this.ngxService.start();
+    
     this.userSession.putFile(this.settingsFileName,str, this.writeOptions)
       .then(() =>{
-        this.ngxService.stop();
-        this.toastr.success("The changes have been saved!",'Success')
-        this.route.navigate(['blog/' +this.userName]);
-
+        
+        
+        this.userSession.putFile(this.avatarFileName, this.avatarImageContent, this.writeOptions)
+        .then(() =>{
+          this.ngxService.stop();
+          this.toastr.success("The changes have been saved!",'Success')
+          this.route.navigate(['blog/' +this.userName]);
+        })
+        .catch((error)=>{
+          console.log('Errro updating settings');
+          this.ngxService.stop();
+        });
     })
     .catch((error)=>{
       console.log('Errro updating settings');
@@ -267,6 +298,25 @@ export class SettingsComponent implements OnInit {
 
   }
 
+  
+  handleAvatarInputChange(e) {
+    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+
+    var pattern = /image-*/;
+    var reader = new FileReader();
+
+    if (!file.type.match(pattern)) {
+        alert('invalid format');
+        return;
+    }
+
+
+    reader.onload = this._handleAvatarReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+
+  }
+
+
   _handleReaderLoaded(e) {
     var reader = e.target;
     this.blogHeaderImage.setValue( reader.result);
@@ -279,6 +329,22 @@ export class SettingsComponent implements OnInit {
     this.blogHeaderImage.setValue("");
     this.postImageContent=null;
     this.hasImageHeader = false;
+
+  }
+
+  
+  _handleAvatarReaderLoaded(e) {
+    var reader = e.target;
+    this.avatarImage.setValue( reader.result);
+    this.avatarImageContent=reader.result;
+    this.hasAvatar = true;
+  }
+
+  
+  removeAvatarImageHeader():void{
+    this.avatarImage.setValue("");
+    this.avatarImageContent=null;
+    this.hasAvatar = false;
 
   }
 

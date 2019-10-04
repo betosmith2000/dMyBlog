@@ -1,9 +1,8 @@
 
 .img-post{
-    min-width: 150px;
-    min-height: 150px;
-    max-width: 150px;
-    max-height: 150px;
+   //margin: auto;
+  //min-height: 250px;
+  max-height: 350px;
 }
 
 .header{
@@ -220,4 +219,21 @@ table {
   height: 472px;
   max-width: 100%;
   
+}
+
+hr{
+  border: 1px solid gray!important
+}
+
+.avatar {
+  border-radius: 50%;
+  
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid black;
+
 }

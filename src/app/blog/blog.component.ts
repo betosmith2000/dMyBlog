@@ -17,6 +17,7 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 export class BlogComponent implements OnInit {
   introJS = introJs();
   isShowingTour :boolean=false;
+  isSharingPost : boolean = false;
 
   header :any;
   userSession :any;
@@ -268,7 +269,14 @@ export class BlogComponent implements OnInit {
   viewPost(p:Post){
     //this.selectedPost = p;
     //this.isViewingPost =true;
-    this.router.navigate(['/read/' + p.author + '/' + p.id])
+    if(this.isSharingPost){
+      this.isSharingPost = false;
+      return;
+    }
+    if(p.id)
+      this.router.navigate(['/read/' + p.author + '/' + p.id])
+    else
+      this.router.navigate(['/read/' + p.author + '/' + p.shareCode])
   }
 
   
@@ -369,7 +377,7 @@ export class BlogComponent implements OnInit {
   }
 
   sharePost(event:Event, p:any):void{
-
+    
     this.selectedPost = p;
     
     if(this.translate.currentLang == 'es')
@@ -379,8 +387,15 @@ export class BlogComponent implements OnInit {
 
     
     this.postId=p.shareCode?p.shareCode:p.id;
-   // event.stopPropagation(); 
-    // event.stopPropagation();  
+    this.isSharingPost = true;
+    
   }
 
+  goToAuthorBlog(event:Event, p){
+    debugger
+    event.stopPropagation();    
+    this.isSharingPost = true;
+    this.router.navigate(['/blog/'+p.author]);
+    return true
+  }
 }

@@ -1,6 +1,8 @@
 <div class="editor-width">
 <form class="py-4" novalidate (ngSubmit)="saveComment()" [formGroup]="form" autocomplete="off">
-    <ckeditor [editor]="Editor" formControlName="postContent"   [config]="ckconfig" ></ckeditor>
+    <div class="text-dark">
+        <ckeditor [editor]="Editor" formControlName="postContent"   [config]="ckconfig" ></ckeditor>
+    </div>
     <br>
     <div class="row">
         <div class="col ">

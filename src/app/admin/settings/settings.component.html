@@ -53,10 +53,32 @@
             </div>
             <div class="col-sm-9" *ngIf="hasImageHeader">
               <img [src]="postImageContent" class="img-tumb inline" alt="Current image header"> &nbsp;
-              <button class="btn btn-outline-danger align-top inline" type="button" (click)="removeImageHeader()"><i class="far fa-times-circle" title="{{'settings.imageremove'|translate}}"></i></button>
+              <button class="btn btn-outline-danger align-bottom inline" type="button" (click)="removeImageHeader()"><i class="far fa-times-circle" title="{{'settings.imageremove'|translate}}"></i></button>
             </div>
               
         </div>
+
+        <div class="form-group row">
+          <label for="file" class="col-sm-3 col-form-label">{{'settings.avatar'|translate}}</label>
+          <div class="col-sm-9" *ngIf="!hasAvatar">
+              <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">{{'settings.imageupload'|translate}}</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="file" accept="image/*" name="file" (change)="handleAvatarInputChange($event)">
+                    <label class="custom-file-label" for="inputGroupFile01">{{'settings.imagechoose'|translate}}</label>
+                  </div>
+                </div>
+          </div>
+          <div class="col-sm-9" *ngIf="hasAvatar">
+            <img [src]="avatarImageContent" class="img-tumb inline avatar shadow" alt="Current avatar"> &nbsp; 
+            <!-- <div class="avatar shadow bg-light"  [ngStyle]="{background: ' url('+avatarImageContent+') no-repeat center center'}"></div> -->
+            <button class="btn btn-outline-danger align-bottom inline" type="button" (click)="removeAvatarImageHeader()"><i class="far fa-times-circle" title="{{'settings.avataremove'|translate}}"></i> </button>
+          </div>
+            
+      </div>
+
 
       </div>
 

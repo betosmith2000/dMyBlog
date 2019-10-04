@@ -7,6 +7,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { InteractionTypeResult } from './models/InteractionTypeResult';
 import * as introJs from 'intro.js/intro.js';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-discover',
@@ -17,6 +18,8 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 export class DiscoverComponent implements OnInit {
   introJS = introJs();
   isShowingTour :boolean=false;
+  isSharingPost : boolean = false;
+
   isTourStared :boolean=false;
   posts:any=new Array();
   isViewingPost : boolean = false;
@@ -36,7 +39,7 @@ export class DiscoverComponent implements OnInit {
 
 
   constructor(private _api:ApiService, private ngxService: NgxUiLoaderService,
-    private translate: TranslateService) { 
+    private translate: TranslateService, private router : Router) { 
     _api.setApi('Posts');
    
   }
@@ -198,7 +201,7 @@ export class DiscoverComponent implements OnInit {
     //event.stopPropagation();    
     this.shareTitle = "Share this Post!"
     this.selectedPost = p;
-
+    this.isSharingPost=true;
   }
 
   
@@ -223,9 +226,15 @@ export class DiscoverComponent implements OnInit {
   }
   
   
-  viewPost(p:any){
-    this.selectedPost = p;
-    this.isViewingPost = true;
+  viewPost(p:Post){
+    // this.selectedPost = p;
+    // this.isViewingPost = true;
+    if(this.isSharingPost){
+      this.isSharingPost =false;
+      return;
+    }
+    this.router.navigate(['/read/'+ p.author +'/' + p.id])
+
   }
 
 

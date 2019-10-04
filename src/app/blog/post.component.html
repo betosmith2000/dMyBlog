@@ -22,6 +22,17 @@
                   </span>
               </div>
             </div>
+            <div class="form-group row" id="step11">
+              <label for="postExcerpt" class="col-sm-3 col-form-label">*{{'post.excerpt'|translate}}</label>
+              <div class="col-sm-9">
+                  <input type="text" class="form-control" id="postExcerpt"  [placeholder]="'post.excerptplaceholder'|translate" formControlName="postExcerpt"
+                         [ngClass]="{'is-invalid':(postExcerpt.touched || postExcerpt.dirty) && !postExcerpt.valid}" />
+                  <span class="invalid-feedback" *ngIf="postExcerpt.invalid && (postExcerpt.touched || postExcerpt.dirty) ">
+                      <span *ngIf="postExcerpt.errors.required">{{'post.excerptValreq'|translate}}</span>
+                      <span *ngIf="postExcerpt.errors.maxlength">{{'post.excerptValmax'|translate}}</span>
+                  </span>
+              </div>
+            </div>
             <div class="form-group row" id="step2">
                 <label for="file" class="col-sm-3 col-form-label">{{'post.image'|translate}}</label>
                 <div class="col-sm-9" *ngIf="!hasImageHeader">
