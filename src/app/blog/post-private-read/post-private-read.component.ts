@@ -1,28 +1,24 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
-
-import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { Pagination } from '../share/pagination';
-import { ApiService } from '../share/data-service';
-import { PostComment } from './models/comment';
+import { Component, OnInit, EventEmitter, ChangeDetectorRef, Output, Input } from '@angular/core';
+import { PostComment } from '../models/comment';
+import { attachedFile } from 'src/app/share/attached-file';
+import { Pagination } from 'src/app/share/pagination';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from 'src/app/share/data-service';
 import { ToastrService } from 'ngx-toastr';
-import * as introJs from 'intro.js/intro.js';
-import { GlobalsService } from '../share/globals.service';
-import { attachedFile } from '../share/attached-file';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { GlobalsService } from 'src/app/share/globals.service';
 import { TranslateService } from '@ngx-translate/core';
-import { filter } from 'rxjs/operators';
-import { PreviousRouteService } from '../share/previous-route';
-
+import { PreviousRouteService } from 'src/app/share/previous-route';
+import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
+import * as introJs from 'intro.js/intro.js';
 
 
 @Component({
-  selector: 'app-post-reader',
-  templateUrl: './post-reader.component.html',
-  styleUrls: ['./post-reader.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  selector: 'app-post-private-read',
+  templateUrl: './post-private-read.component.html',
+  styleUrls: ['./post-private-read.component.scss']
 })
-export class PostReaderComponent implements OnInit {
+export class PostPrivateReadComponent implements OnInit {
   introJS = introJs();
   isShowingTour :boolean=false;
 
@@ -39,7 +35,7 @@ export class PostReaderComponent implements OnInit {
   comments:any;
   attachedFiles: Array<attachedFile> = new Array<attachedFile>();
 
-  private LOGO = require("../../assets/post-head.jpg");
+  private LOGO = require("../../../assets/post-head.jpg");
   readonly postsFileName:string = '/posts.txt';
   readonly avatarFileName:string = '/avatar.txt';
    //Paginacion
@@ -241,10 +237,13 @@ export class PostReaderComponent implements OnInit {
 
 
   ngOnInit() {
-
-    
-   
-
+    const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
+    this.userSession = new blockstack.UserSession({appConfig:appConfig});
+    if (!this.userSession.isUserSignedIn()){
+      this.router.navigate(['/home/'])
+      
+      return;
+    }
 
     this.selectedTheme= this.globals.getCurrentTheme();
     this.globals.getTheme().subscribe(theme=>{
@@ -262,8 +261,7 @@ export class PostReaderComponent implements OnInit {
 
 
     this.comments = new Array();
-    const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
-    this.userSession = new blockstack.UserSession({appConfig:appConfig});
+   
    
     if (this.userSession.isUserSignedIn()) {
       this.isSignIn = true;
@@ -278,6 +276,10 @@ export class PostReaderComponent implements OnInit {
       this.userName = params.get("userBlog");
       this.postId = params.get("postId");
 
+      // this.readPrivate()
+      // this.ngxService.stop();
+
+      
       if(this.userName && this.postId){
         this.Post = null;
         this.isShareURL = true;
@@ -295,67 +297,114 @@ export class PostReaderComponent implements OnInit {
       if(this.postId == null || this.postId.trim() == ''){
         this.postId= this.Post.id;
       }
-      this.readOptions.username = this.userName;
-      if(this.Post==null){
-        this.userSession.getFile(this.postsFileName,this.readOptions)
-        .then((fileContents) => {
-          this.posts = JSON.parse(fileContents);
-          if(this.posts == null)
-            this.posts=new Array();
+
+    
+      // this.readOptions.username = this.userName;
+      // if(this.Post==null){
+      //   this.userSession.getFile(this.postsFileName,this.readOptions)
+      //   .then((fileContents) => {
+      //     this.posts = JSON.parse(fileContents);
+      //     if(this.posts == null)
+      //       this.posts=new Array();
 
          
-          let post = this.posts.filter(e=> (e.id == this.postId || e.shareCode == this.postId ) && (e.status != 0 || e.author == this.currentUser));
-          if(post.length > 0){
-            this._post = post[0];
-            this.isMissingPost  =false;
-            this.readPost();
+      //     let post = this.posts.filter(e=> (e.id == this.postId || e.shareCode == this.postId ) && (e.status != 0 || e.author == this.currentUser));
+      //     if(post.length > 0){
+      //       this._post = post[0];
+      //       this.isMissingPost  =false;
+      //       this.readPost();
 
             
-          }
-          else{
-            this.isMissingPost = true;
-            this.ngxService.stop();
-          }
-        })
-        .catch((error)=>{
-          console.log('Error loading post collection');
-          this.ngxService.stop();
+      //     }
+      //     else{
+      //       this.isMissingPost = true;
+      //       this.ngxService.stop();
+      //     }
+      //   })
+      //   .catch((error)=>{
+      //     console.log('Error loading post collection');
+      //     this.ngxService.stop();
           
-        });
+      //   });
   
-      }
-      else{
+      // }
+      // else{
         this.readPost()
-      }
+     // }
     });
 
    
   }
 
 
-  readPost():void{
-    this.readOptions.decrypt=this.Post.encrypt;
 
-    this.userSession.getFile(this.Post.postFileName,this.readOptions)
+  readPost():void{
+
+    this.readOptions.username = this.userName;
+
+
+    this.userSession.getFile(this.postId,this.readOptions)
     .then((fileContents) => {
-      this.viewingPost = JSON.parse(fileContents);
-      this.title = this.viewingPost.postTitle;
-      this.excerpt = this.Post.excerpt;
-      this.content = this.viewingPost.postContent;
-      this.author = this.Post.author;
-      this.date = this.Post.date;
-      this.getAvatar();
-      this.getPostImage(this.Post);
-      this.ngxService.stop();  
-      this.getMediaEmbed();
-      this.getData();
-      if( this.viewingPost.attachedFiles)
-            this.attachedFiles = this.viewingPost.attachedFiles;
+     
+      try{ 
+        
+        var json = JSON.parse(fileContents)
+        
+        var decrypted = this.userSession.decryptContent(fileContents);
+        this.viewingPost = JSON.parse(decrypted);
+        this.title = this.viewingPost.postTitle;
+        this.excerpt = this.viewingPost.postExcerpt;
+        this.content = this.viewingPost.postContent;
+        this.author = this.viewingPost.author;
+        this.date = this.viewingPost.date;
+        this.getAvatar();
+        this.getPostImage(this.viewingPost);
+        this.ngxService.stop();  
+        this.getMediaEmbed();
+       //a this.getData();
+        if( this.viewingPost.attachedFiles)
+              this.attachedFiles = this.viewingPost.attachedFiles;
+
+      }
+      catch(err){
+        this.router.navigate(['/home/'])
+
+        console.log('Error reading private post, may be you dont have access to post!');
+        this.ngxService.stop();       
+      } 
+
+
     })
     .catch((error)=>{
-      console.log('Error reading post');
+
+      this.router.navigate(['/home/'])
+
+      console.log('Error reading private post, may be you dont have access to post!');
       this.ngxService.stop();        
-    });
+  });
+
+
+    
+
+    //this.readOptions.decrypt=this.Post.encrypt;
+
+    // this.userSession.getFile(this.Post.postFileName,this.readOptions)
+    // .then((fileContents) => {
+    //   this.viewingPost = JSON.parse(fileContents);
+    //   this.title = this.viewingPost.postTitle;
+    //   this.excerpt = this.Post.excerpt;
+    //   this.content = this.viewingPost.postContent;
+    //   this.author = this.Post.author;
+    //   this.date = this.Post.date;
+    //   this.getAvatar();
+    //   this.getPostImage(this.Post);
+    //   this.ngxService.stop();  
+    //   this.getMediaEmbed();
+    //   this.getData();
+    //   if( this.viewingPost.attachedFiles)
+    //         this.attachedFiles = this.viewingPost.attachedFiles;
+    // })
+   
   }
   close():void{
     this.closed.emit(null);

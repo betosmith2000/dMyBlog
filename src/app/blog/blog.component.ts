@@ -8,6 +8,7 @@ import { Post } from './models/Post';
 import { InteractionTypeResult } from './models/InteractionTypeResult';
 import * as introJs from 'intro.js/intro.js';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { GlobalsService } from '../share/globals.service';
 
 @Component({
   selector: 'app-blog',
@@ -18,6 +19,9 @@ export class BlogComponent implements OnInit {
   introJS = introJs();
   isShowingTour :boolean=false;
   isSharingPost : boolean = false;
+  avatarContent:string;
+  hasAvatar :boolean = false;
+
 
   header :any;
   userSession :any;
@@ -37,15 +41,38 @@ export class BlogComponent implements OnInit {
   readonly postsFileName:string = '/posts.txt';
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
+  readonly avatarFileName:string = '/avatar.txt';
+
   posts:any = new Array();
 
   
 
   constructor(private toastr: ToastrService, private route:ActivatedRoute, 
     private ngxService: NgxUiLoaderService, private _api: ApiService,
-    private translate: TranslateService, private router: Router) { 
+    private translate: TranslateService, private router: Router,
+    private globals: GlobalsService) { 
    
   }
+  
+  
+  getAvatar():void {
+    this.readOptions.decrypt = false;
+    this.userSession.getFile(this.avatarFileName,this.readOptions)
+    .then((imageContent) => {
+      if(imageContent){
+        this.avatarContent= imageContent;
+        this.hasAvatar = true;
+      }
+      else 
+      this.hasAvatar = false;
+    })
+    .catch((error)=>{
+      console.log('Error reading image');
+      
+    });
+    
+  }
+
 
   setENTutorial(){
     this.introJS.setOptions({    
@@ -191,6 +218,7 @@ export class BlogComponent implements OnInit {
       }
       
       this.readOptions.username = this.userName;
+      this.getAvatar();
       
       this.userSession.getFile(this.settingsFileName,this.readOptions)
         .then((fileContents) => {
@@ -377,22 +405,35 @@ export class BlogComponent implements OnInit {
   }
 
   sharePost(event:Event, p:any):void{
-    
-    this.selectedPost = p;
-    
-    if(this.translate.currentLang == 'es')
-      this.shareTitle = "Compartir este Post!"
-    else 
-      this.shareTitle = "Share this Post!"
+   // if(p.status!=0){
+      this.selectedPost = p;
+      if(this.translate.currentLang == 'es')
+        this.shareTitle = "Compartir este Post!"
+      else 
+        this.shareTitle = "Share this Post!"
+      this.postId=p.shareCode?p.shareCode:p.id;
+      this.isSharingPost = true;
+    // }
+    // else{
+    //   alert('private post share')
+    //   this.readOptions.username = 'dmyblog_.id.blockstack';
+    //   this.readOptions.decrypt = false;
+    //   this.userSession.getFile(this.globals.publicKeyFileName, this.readOptions)
+    //     .then(fileContent =>{
+    //       alert(fileContent)
+    //     })
+    //     .catch((error)=>{
+    //       console.log('Error loading public key');
+          
+    //     });
+     
 
-    
-    this.postId=p.shareCode?p.shareCode:p.id;
-    this.isSharingPost = true;
-    
+       
+    //   event.stopPropagation();    
+    // }    
   }
 
   goToAuthorBlog(event:Event, p){
-    debugger
     event.stopPropagation();    
     this.isSharingPost = true;
     this.router.navigate(['/blog/'+p.author]);

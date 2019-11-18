@@ -1,20 +1,37 @@
 <div >
 <div class="form-row">
-    <div class="col">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">URL</span>
-            </div>
-            <input type="text" class="form-control"  aria-label="Url to share" [(ngModel)]="url" #urlinput>
-            <div class="input-group-append">
-              <button class="input-group-text" type="button" (click)="copyInputMessage(urlinput)">{{'share.copy'|translate}}</button>
-            </div>
-
-           
-          </div>
+  <div class="col">
+      <div>
+          <small id="passwordHelpBlock" class="form-text text-muted">
+              {{'share.findPKhelp'|translate}}
+            </small> 
       </div>
+    <div class="input-group mb-3">
+      
+        
+          <div class="input-group-prepend">
+            <span class="input-group-text">Blockstack Id</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Url to share" [(ngModel)]="blockstackIdToShare" #blockstackIdToShareinput>
+          <div class="input-group-append">
+            <button class="input-group-text" type="button" (click)="seachPKBlockstackId()">{{'share.findPKAction'|translate}}</button>
+          </div>
+        
+      </div>
+
+
+      <div class="input-group mb-3" *ngIf="showURL">
+          <div class="input-group-prepend">
+            <span class="input-group-text">URL</span>
+          </div>
+          <input type="text" class="form-control"  aria-label="Url to share" [(ngModel)]="url" #urlinput>
+          <div class="input-group-append">
+            <button class="input-group-text" type="button" (click)="copyInputMessage(urlinput)">{{'share.copy'|translate}}</button>
+          </div>
+        </div>
+    </div>
 </div>
-<div class="form-row float-right">
+<div class="form-row float-right" *ngIf="isPrivateShare==false">
     <div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group " role="group" aria-label="First group">
           <button type="button" class="btn  btn-link" (click)="share('twitter')" title="{{'share.twitter'|translate}}">

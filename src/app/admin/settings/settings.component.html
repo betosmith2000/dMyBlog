@@ -39,6 +39,22 @@
         </div>
 
         <div class="form-group row">
+          <label for="blogDescription" class="col-sm-3 col-form-label">{{'settings.publicKey'|translate}}</label>
+          <div class="col-sm-7">
+              <input type="text" class="form-control" id="publicKey"  formControlName="publicKey"
+                     [ngClass]="{'is-invalid':(publicKey.touched || publicKey.dirty) && !publicKey.valid}" />
+              
+          </div>
+          <div class="col-sm-2" *ngIf="hasPublicKey==false">
+            <button class="btn btn-link" type="button" (click)="showPublicKey()">{{'settings.showPK'|translate}}</button>
+          </div>
+          <div class="col-sm-2" *ngIf="hasPublicKey">
+            <button class="btn btn-link" type="button" (click)="hidePublicKey()">{{'settings.hidePK'|translate}}</button>
+          </div>
+        </div>
+
+
+        <div class="form-group row">
             <label for="file" class="col-sm-3 col-form-label">{{'settings.image'|translate}}</label>
             <div class="col-sm-9" *ngIf="!hasImageHeader">
                 <div class="input-group mb-3">

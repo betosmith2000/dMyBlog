@@ -27,6 +27,7 @@ export class SettingsComponent implements OnInit {
   readonly postsFileName:string = '/posts.txt';
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
+  hasPublicKey: boolean = false;
 
   readOptions : any = {decrypt: false};
   writeOptions : any = {encrypt:false};
@@ -36,11 +37,12 @@ export class SettingsComponent implements OnInit {
   blogName : FormControl;
   blogDescription: FormControl;
   blogHeaderImage : FormControl;
+  publicKey: FormControl;
   postImageContent: string='';
   hasImageHeader:boolean=false;
 
   avatarImage : FormControl;
-  avatarImageContent: string='';
+  avatarImageContent: string=' ';
   hasAvatar:boolean=false;
 
   posts:Array<any> = new Array();
@@ -174,12 +176,14 @@ export class SettingsComponent implements OnInit {
 
   
   ngOnInit() {
+   
     this.selectedTheme= this.globals.getCurrentTheme();
     this.globals.getTheme().subscribe(theme=>{
       this.selectedTheme = theme;
     });
 
     this.initializeForm();
+     this.publicKey.disable();
     this.userSession = new blockstack.UserSession()
     if (this.userSession.isUserSignedIn()) {
       this.ngxService.start();
@@ -194,6 +198,7 @@ export class SettingsComponent implements OnInit {
             this.blogName.setValue(data.blogName);
             this.blogDescription.setValue(data.blogDescription);
             this.blogHeaderImage.setValue(data.blogHeaderImage);
+            this.publicKey.setValue(data.publicKey);
             
             if(data.blogHeaderImage)
             {
@@ -205,11 +210,25 @@ export class SettingsComponent implements OnInit {
             this.userSession.getFile(this.avatarFileName,this.readOptions)
             .then((avatarContent) => {
               this.avatarImage.setValue(avatarContent)
-              if(avatarContent)
+              if(avatarContent!= null && avatarContent != ' ')
               {
                 this.hasAvatar=true;
                 this.avatarImageContent = avatarContent;
               }
+
+              this.userSession.getFile(this.globals.publicKeyFileName,this.readOptions)
+              .then((publickeyContent) => {
+                if(publickeyContent && publickeyContent != ' '){
+                  this.publicKey.setValue(publickeyContent);
+                  this.hasPublicKey = true;
+                }
+                else{
+                  this.publicKey.setValue(" ");
+                  this.hasPublicKey = false;
+                }
+  
+              }); 
+
               
               this.userSession.getFile(this.postsFileName,this.readOptions)
               .then((postContents) => {
@@ -243,13 +262,15 @@ export class SettingsComponent implements OnInit {
     this.blogName = new FormControl('', [Validators.maxLength(64)]);
     this.blogDescription = new FormControl('', [Validators.maxLength(1024)]);
     this.blogHeaderImage = new FormControl('');
+    this.publicKey = new FormControl(' ');
     this.avatarImage = new FormControl('');
 
     this.form = new FormGroup({
       blogName : this.blogName,
       blogDescription : this.blogDescription,
       blogHeaderImage : this.blogHeaderImage,
-      avatarImage: this.avatarImage
+      avatarImage: this.avatarImage,
+      publicKey:this.publicKey
     });
   }
 
@@ -257,17 +278,28 @@ export class SettingsComponent implements OnInit {
     let p = Object.assign({},  this.form.value);
     let str = JSON.stringify(p);
     p.avatarImage='';
+    p.publicación='';
+
     this.ngxService.start();
     
     this.userSession.putFile(this.settingsFileName,str, this.writeOptions)
       .then(() =>{
         
-        
+        if(!this.avatarImageContent)
+          this.avatarImageContent = ' ';
         this.userSession.putFile(this.avatarFileName, this.avatarImageContent, this.writeOptions)
         .then(() =>{
-          this.ngxService.stop();
-          this.toastr.success("The changes have been saved!",'Success')
-          this.route.navigate(['blog/' +this.userName]);
+          this.userSession.putFile(this.globals.publicKeyFileName, this.publicKey.value, this.writeOptions)
+          .then(() =>{
+            this.ngxService.stop();
+            this.toastr.success("The changes have been saved!",'Success')
+            this.route.navigate(['blog/' +this.userName]);
+          })
+          .catch((error)=>{
+            console.log('Errro updating settings');
+            this.ngxService.stop();
+          });
+
         })
         .catch((error)=>{
           console.log('Errro updating settings');
@@ -437,5 +469,19 @@ export class SettingsComponent implements OnInit {
 
   }
 
+  showPublicKey(){
+    const userData = this.userSession.loadUserData();
+    
+    var pk = userData.appPrivateKey;
+    var privK = blockstack.hexStringToECPair(pk).publicKey.toString('hex')
+    this.publicKey.setValue(privK);
+    this.hasPublicKey = true;
+  }
+
+  hidePublicKey(){
+  
+    this.publicKey.setValue(" ")
+    this.hasPublicKey = false;
+  }
 
 }

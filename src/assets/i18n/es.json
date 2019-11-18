@@ -114,11 +114,16 @@
         "copy":"Copiar",
         "facebook":"Compartir en Facebook!",
         "twitter":"Compartir en Twitter!",
-        "linkedin":"Compartir en LinkedIn!"
+        "linkedin":"Compartir en LinkedIn!",
+        "findPKhelp":"Escriba el BlockstackId del usuario al que quiere compartir el post encriptado y presione el botón Obtener PK.",
+        "findPKAction":"Obtener PK"
     },
     "settings":{
         "name":"Nombre del blog:",
         "namevalreq":"El nombre del blog es requerido.",
+        "publicKey":"Llave pública.",
+        "showPK":"Mostrar",
+        "hidePK":"Ocultar",
         "namevalmax":"La longitud máxima es de 64 caracteres.",
         "nameplaceholder":"Nombre del blog",
         "description":"Descripción del blog",

@@ -2,6 +2,15 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Post } from './models/Post';
 import { GlobalsService } from '../share/globals.service';
+import * as blockstack from '../../../node_modules/blockstack/dist/blockstack.js';
+
+import { TranslateService } from '@ngx-translate/core';
+
+
+import * as CryptoJS from 'crypto-js';
+import { Md5 } from 'ts-md5/dist/md5';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+
 
 @Component({
   selector: 'app-blog-share',
@@ -9,15 +18,28 @@ import { GlobalsService } from '../share/globals.service';
   styleUrls: ['./blog-share.component.scss']
 })
 export class BlogShareComponent implements OnInit {
+  userSession :any;
+  readOptions : any = {decrypt: false, username: null};
+
+  blockstackIdToShare : string;
+  pkToShare:string ='';
+
   url:string;
   urlSEO:string;
   shareWidth: string="600";
   shareHeight: string="480";
   title:string;
   selectedTheme:string ='dark';
+  isPrivateShare:boolean = false;
 
+  privatePostEncryptedFileName = '';
+  writeOptions : any = {encrypt:false};
+  showURL:boolean=true;
+  
+  
 
-  constructor(private toastr: ToastrService, private globals: GlobalsService) { }
+  constructor(private toastr: ToastrService, private globals: GlobalsService,private ngxService: NgxUiLoaderService, 
+    private translate: TranslateService) { }
 
   
   private _post: Post = null;
@@ -45,6 +67,11 @@ export class BlogShareComponent implements OnInit {
 
 
   ngOnInit() {
+
+    const appConfig = new blockstack.AppConfig(['store_write', 'publish_data'])
+    this.userSession = new blockstack.UserSession({appConfig:appConfig});
+
+
     this.selectedTheme= this.globals.getCurrentTheme();
     this.globals.getTheme().subscribe(theme=>{
       this.selectedTheme = theme;
@@ -54,9 +81,19 @@ export class BlogShareComponent implements OnInit {
   
   Init() {
     if(this.Post  ){
-      this.title = this.Post.title;
-      this.urlSEO="https://www.dmyblog.co/read/"+  this.Post.id;
-      this.url=window.location.origin +"/#/read/" +this.Post.author +"/" +  this.Post.id;
+      if(this.Post.status == 0){
+        this.isPrivateShare = true;
+        this.privatePostEncryptedFileName = Md5.hashStr(new Date().toISOString(),false).toString() +'.hex';
+        this.url=window.location.origin +"/#/private-read/" +this.Post.author +"/" +  this.privatePostEncryptedFileName;
+        this.showURL=false;
+      }
+      else{
+        this.isPrivateShare=false;
+        this.title = this.Post.title;
+        this.urlSEO="https://www.dmyblog.co/read/"+  this.Post.id;
+        this.url=window.location.origin +"/#/read/" +this.Post.author +"/" +  this.Post.id;
+        this.showURL=true;
+      }
     }
     else{
       this.url=window.location.origin+"#/blog/" + this.PostUser;
@@ -169,7 +206,75 @@ export class BlogShareComponent implements OnInit {
     } else {
         window.location.href = url;
     }
-}
+  }
+
+  seachPKBlockstackId(){
+    this.ngxService.start();        
+
+    if(!this.blockstackIdToShare || this.blockstackIdToShare ==  ''){
+      if(this.translate.currentLang == 'es')
+        this.toastr.warning("Debe indicar el Blockstack Id del usuario.", "Lllave Pública desconocida" )
+      else 
+        this.toastr.warning("You must indicate the Blockstack Id of the user.", "Public Key unknown");
+    }
+
+    this.readOptions.username = this.blockstackIdToShare;
+    this.readOptions.decrypt = false;
+    this.userSession.getFile(this.globals.publicKeyFileName, this.readOptions)
+        .then(fileContent =>{
+          if(fileContent!=null && fileContent != '')
+          {
+
+            this.pkToShare = fileContent;
+            this.encryptFileContents();
+          }
+          else{
+            if(this.translate.currentLang == 'es')
+              this.toastr.warning("El usuario no tiene visible su llave pública, no es posible compartir el post privado.", "Lllave Pública desconocida" )
+            else 
+              this.toastr.warning("The user does not have his public key visible, it is not possible to share the private post.", "Public Key unknown");
+            
+          }
+          
+      })
+      .catch((error)=>{
+        if(this.translate.currentLang == 'es')
+          this.toastr.warning("No se encontro la llave pública del usuario indicado.", "Lllave Pública desconocida")
+        else 
+          this.toastr.warning("The public key of the indicated user was not found.", "Public Key unknown");
+      
+
+        console.log('Error loading public key');
+        
+      });
+     
+
+
+  }
+
+  encryptFileContents(){
+    this.readOptions.decrypt=true;
+    this.readOptions.username=this.Post.author;
+    this.userSession.getFile(this.Post.postFileName,this.readOptions)
+    
+    .then((fileContents) => {
+      var postComp = JSON.parse(fileContents);
+      postComp.author = this.Post.author;
+      postComp.date= this.Post.date;
+      postComp.imageFileName=this.Post.imageFileName;
+    var encryptedBS = this.userSession.encryptContent(JSON.stringify(postComp), { publicKey:this.pkToShare});
+    this.userSession.putFile(this.privatePostEncryptedFileName, encryptedBS, this.writeOptions)
+       .then(cipherTextUrl => { 
+         this.showURL=true
+         this.ngxService.stop();        
+
+        })
+
+    });
+
+  
+
+  }
 
 
 }

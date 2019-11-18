@@ -9,30 +9,39 @@
 </button>
 
 <div class="container top-padding" *ngIf="!isNewPost && !isViewingPost">
-  <div class="card mb-3 shadow-sm shadow header-card" id="step1">
-    <img class="card-img-top header-img  transparency-header" [src]="header?.blogHeaderImage" alt="..." *ngIf="header?.blogHeaderImage">
-    <div class="card-img-overlay">
-      <div class="card-title p-3" >
-          <h2 class="card-title display-4 " >{{header?.blogName}}</h2>
-          <p>{{header?.blogDescription}}</p>
+
+  <!-- <div  class="text-center text-header" >
+      <img [src]="avatarContent" class="avatar shadow" alt="Avatar" *ngIf="hasAvatar">  
+      <p>
+          <label class="small font-weight-bold " >&nbsp;{{userName}}&nbsp; </label>
+      </p>
+      <h2 class="card-title display-4  " >{{header?.blogName}}</h2>
+      <p ><span class="font-italic font-weight-light ">{{header?.blogDescription}}</span> </p>    
+      
+  </div> -->
+  <div class="card mb-3 shadow-sm shadow header-card rounded-lg bg-dark " id="step1">
+    <img class="card-img-top header-img rounded-lg" [src]="header?.blogHeaderImage" alt="..." *ngIf="header?.blogHeaderImage">
+    <div class="card-img-overlay ">
+      <div  class="text-center text-header"  >
+          <h2 class="card-title display-4  " >{{header?.blogName}}</h2>
+          <p ><span class="font-italic font-weight-light ">{{header?.blogDescription}}</span> </p>    
+          <img [src]="avatarContent" class="avatar" alt="Avatar" *ngIf="hasAvatar">  
+          <p>
+              <label class="small font-weight-bold " >&nbsp;{{userName}}&nbsp; </label>
+          </p>
+          
+      </div>
+      <div >
+          
+          
       </div>
     </div>
-    <div class="h-100 d-flex flex-column justify-content-end mx-3 card-img-overlay">
-      <div class="row ">
-        <div class="col">
-            <label class="small float-left" ></label>
-        </div>
-        <div class="col">
-            <label class="small float-right font-weight-bold" >&nbsp;{{userName}}&nbsp; 
-            </label>
-        </div>
-      </div>
-    </div>
+    
   </div>
 
   
 
-  <h2 class="display-4 d-none d-sm-block pt-4" id="step0">{{userName}} {{'myblog.posts'|translate}}</h2>
+  <!-- <h2 class="display-4 d-none d-sm-block pt-4" id="step0">{{userName}} {{'myblog.posts'|translate}}</h2> -->
   <h4 class="d-block d-sm-none pt-4" id="step0">{{userName}} Posts</h4>
   
 <!-- aca esta el nuevo diseño -->
@@ -63,7 +72,7 @@
                   <button type="button" class="btn btn-outline-danger text-white" title="{{'myblog.delete'|translate}}" (click)="deletePost($event, p)" *ngIf="isAdmin">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>             
                   <button type="button" class="btn btn-outline-info text-white" title="{{'myblog.edit'|translate}}" (click)="editPost(p)"*ngIf="isAdmin"><i class="far fa-edit"></i></button>
                   <button class="btn btn-outline-info text-white" type="button" title="{{'myblog.share'|translate}}" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"
-                    *ngIf="p.status == 1 || p.status == 2">
+                    >
                       <i class="fas fa-share-alt"></i>
                   </button>
                   <button class="btn btn-outline-info text-white" type="button"  title="{{'myblog.view'|translate}}" (click)="viewPost(p)">

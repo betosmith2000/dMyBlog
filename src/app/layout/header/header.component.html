@@ -5,7 +5,9 @@
      'navbar-dark':selectedTheme=='dark'
    }" > 
     <div class="container">
-      <a class="navbar-brand" href="#page-top" [routerLink]="['']" fragment="headSite" (click)="scrollToAnchor('headSite',100)"  ><img [src]="LOGO" alt="dMy Blog" class="logo-header rounded-circle"></a>
+      <a class="navbar-brand" href="#page-top" [routerLink]="['']" fragment="headSite" (click)="scrollToAnchor('headSite',100)"  >
+        <img [src]="LOGO" alt="dMy Blog" class="logo-header rounded-circle shadow">
+      </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-bars"></i>
       </button>

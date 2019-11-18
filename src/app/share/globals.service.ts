@@ -5,6 +5,8 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class GlobalsService {
+  readonly publicKeyFileName: string = '/publickey.txt';
+  
   private theme = new Subject<string>();
     getTheme() :  Observable<string> {
         return this.theme.asObservable();

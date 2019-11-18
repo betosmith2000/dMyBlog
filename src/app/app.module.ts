@@ -18,6 +18,7 @@ import { PostCommentComponent } from './blog/post-comment.component';
 import { CommentReaderComponent } from './blog/comment-reader.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { PostPrivateReadComponent } from './blog/post-private-read/post-private-read.component';
 
 
 export function HttpLoaderFactory(http: HttpClient){
@@ -37,6 +38,7 @@ export function HttpLoaderFactory(http: HttpClient){
     PostInteractionComponent,
     PostCommentComponent,
     CommentReaderComponent,
+    PostPrivateReadComponent,
   ],
   imports: [
     BrowserAnimationsModule,
