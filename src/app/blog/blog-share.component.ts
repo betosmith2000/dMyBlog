@@ -233,6 +233,7 @@ export class BlogShareComponent implements OnInit {
               this.toastr.warning("El usuario no tiene visible su llave pública, no es posible compartir el post privado.", "Lllave Pública desconocida" )
             else 
               this.toastr.warning("The user does not have his public key visible, it is not possible to share the private post.", "Public Key unknown");
+            this.ngxService.stop();        
             
           }
           
@@ -243,6 +244,7 @@ export class BlogShareComponent implements OnInit {
         else 
           this.toastr.warning("The public key of the indicated user was not found.", "Public Key unknown");
       
+          this.ngxService.stop();        
 
         console.log('Error loading public key');
         
@@ -270,7 +272,10 @@ export class BlogShareComponent implements OnInit {
 
         })
 
+    }).catch((error)=>{
+        this.ngxService.stop();        
     });
+   
 
   
 
