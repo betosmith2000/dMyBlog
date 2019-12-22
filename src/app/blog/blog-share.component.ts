@@ -7,7 +7,6 @@ import * as blockstack from '../../../node_modules/blockstack/dist/blockstack.js
 import { TranslateService } from '@ngx-translate/core';
 
 
-import * as CryptoJS from 'crypto-js';
 import { Md5 } from 'ts-md5/dist/md5';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 
