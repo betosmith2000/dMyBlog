@@ -12,7 +12,7 @@
         <div class="card-body">
           <form novalidate (ngSubmit)="save()" [formGroup]="form" autocomplete="off">
             <div class="form-group row" id="step1">
-              <label for="postTitle" class="col-sm-3 col-form-label">*{{'post.title'|translate}}</label>
+              <label for="postTitle" class="col-sm-3 col-form-label">{{'post.title'|translate}}*</label>
               <div class="col-sm-9">
                   <input type="text" class="form-control" id="postTitle"  [placeholder]="'post.titleplaceholder'|translate" formControlName="postTitle"
                          [ngClass]="{'is-invalid':(postTitle.touched || postTitle.dirty) && !postTitle.valid}" />
@@ -23,7 +23,7 @@
               </div>
             </div>
             <div class="form-group row" id="step11">
-              <label for="postExcerpt" class="col-sm-3 col-form-label">*{{'post.excerpt'|translate}}</label>
+              <label for="postExcerpt" class="col-sm-3 col-form-label">{{'post.excerpt'|translate}}*</label>
               <div class="col-sm-9">
                   <input type="text" class="form-control" id="postExcerpt"  [placeholder]="'post.excerptplaceholder'|translate" formControlName="postExcerpt"
                          [ngClass]="{'is-invalid':(postExcerpt.touched || postExcerpt.dirty) && !postExcerpt.valid}" />
@@ -54,7 +54,7 @@
             </div>
 
             <div class="form-group row" id="step3">
-              <label for="status" class="col-sm-3 col-form-label">*Status:</label>
+              <label for="status" class="col-sm-3 col-form-label">Status*:</label>
               <div class="col-sm-9">
                 <select class="custom-select" aria-describedby="estatusHelp" formControlName="status"
                       [ngClass]="{'is-invalid':(status.touched || status.dirty) && !status.valid}">
@@ -110,9 +110,16 @@
                 </ul>
               </div>
           </div>
+          <div class="row">
+            <div class="col-sm-12 text-danger" >
+              <span class="small text-info">{{'post.instruction'|translate}}</span>
+            </div>
+            
+
+          </div>
             <div class="float-md-right" id="step6">
               <button type="button" class="btn btn-outline-secondary" (click)="close()" title="Cancel changes"  >{{'post.cancel'|translate}}</button>&nbsp;
-              <button type="submit" class="btn btn-primary" [disabled]="!form.valid" title="Save changes">{{'post.save'|translate}}</button>
+              <button type="submit" class="btn btn-primary"  title="Save changes">{{'post.save'|translate}}</button>
             </div>
     
           </form>

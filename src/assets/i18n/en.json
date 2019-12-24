@@ -170,7 +170,8 @@
         "remove":"Delete file",
         "download":"Download file",
         "cancel":"Cancel",
-        "save":"Save"
+        "save":"Save",
+        "instruction":"Fields marked with * are required"
     },
     "read":{
         "by":"By:",

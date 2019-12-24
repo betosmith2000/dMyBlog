@@ -300,6 +300,14 @@ export class PostComponent implements OnInit {
   }
 
   save():void{
+    if(this.form.invalid)
+    {
+      if(this.translate.currentLang == 'es')
+        this.toastr.warning("Los campos marcados con * son requeridos");
+      else
+        this.toastr.warning("Fields marked with * are required");
+      return;
+    }
     this.ngxService.start();
     if(this.editingPost == null){ //New post
       if(this.posts == null)
@@ -431,7 +439,9 @@ export class PostComponent implements OnInit {
       
       this.writeOptions.encrypt=postData.encrypt;
       
-     // postContent = postContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
+      postContent = postContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
+      postContent = postContent.replace(/a href/g,"a target='_blank' href");
+
       this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)
       .then(() =>{
         if(postData.imageFileName != null && this.postImageContent){          

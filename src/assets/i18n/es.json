@@ -154,6 +154,7 @@
         "excerpt":"Extracto del  post:", 
         "excerptValreq":"El extracto del post es requerido.", 
         "excerptValmax":"La longitud máxima es de 256 caracteres.", 
+        "titleplaceholder":"Titulo del post", 
         "excerptplaceholder":"Extracto del  post", 
         "titlevalreq":"El titulo del post es requerido.", 
         "titlevalmax":"La longitud máxima es de 128 caracteres.", 
@@ -167,7 +168,8 @@
         "remove":"Borrar archivo",
         "download":"Descargar archivo",
         "cancel":"Cancelar",
-        "save":"Guardar"
+        "save":"Guardar",
+        "instruction":"Los campos marcados con * son requeridos"
     },
     "read":{
         "by":"Por:",
