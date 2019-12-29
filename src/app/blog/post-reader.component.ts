@@ -11,7 +11,6 @@ import * as introJs from 'intro.js/intro.js';
 import { GlobalsService } from '../share/globals.service';
 import { attachedFile } from '../share/attached-file';
 import { TranslateService } from '@ngx-translate/core';
-import { filter } from 'rxjs/operators';
 import { PreviousRouteService } from '../share/previous-route';
 
 
@@ -318,8 +317,6 @@ export class PostReaderComponent implements OnInit {
             this._post = post[0];
             this.isMissingPost  =false;
             this.readPost();
-
-            
           }
           else{
             this.isMissingPost = true;
@@ -329,16 +326,12 @@ export class PostReaderComponent implements OnInit {
         .catch((error)=>{
           console.log('Error loading post collection');
           this.ngxService.stop();
-          
         });
-  
       }
       else{
-        this.readPost()
+        this.readPost();
       }
     });
-
-   
   }
 
 
@@ -558,7 +551,11 @@ export class PostReaderComponent implements OnInit {
   
   launchSocial(url:string){
     if(url==null || url == ''){
-      
+      let lang = localStorage.getItem('dmyblog.lang');
+      if(lang == 'es')
+        this.toastr.info("No hay informacón de la red social en el perfil.")
+      else 
+        this.toastr.info("There is no social network information in the profile.")
     }
     else{
       window.open(url, '_blank');
@@ -568,6 +565,7 @@ export class PostReaderComponent implements OnInit {
 
   getProfileData(){
     this.readOptions.username = this.author;
+    this.readOptions.decrypt = false;
     this.userSession.getFile(this.settingsFileName,this.readOptions)
     .then((fileContents) => {
       let settings = JSON.parse(fileContents);

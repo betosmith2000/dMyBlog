@@ -450,7 +450,11 @@ export class BlogComponent implements OnInit {
   
   launchSocial(url:string){
     if(url==null || url == ''){
-      
+      let lang = localStorage.getItem('dmyblog.lang');
+      if(lang == 'es')
+        this.toastr.info("No hay informacón de la red social en el perfil.")
+      else 
+        this.toastr.info("There is no social network information in the profile.")
     }
     else{
       window.open(url, '_blank');

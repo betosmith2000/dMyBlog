@@ -46,7 +46,7 @@ export class BlogShareComponent implements OnInit {
   set Post(post: Post) {
       this._post = post;
       this.Init();
-
+      
   }
   get Post(): Post {
       return this._post;
@@ -79,6 +79,7 @@ export class BlogShareComponent implements OnInit {
   }
   
   Init() {
+    this.blockstackIdToShare = "";
     if(this.Post  ){
       if(this.Post.status == 0){
         this.isPrivateShare = true;
@@ -209,7 +210,7 @@ export class BlogShareComponent implements OnInit {
 
   seachPKBlockstackId(){
     this.ngxService.start();        
-
+    this.blockstackIdToShare = this.blockstackIdToShare.trim();
     if(!this.blockstackIdToShare || this.blockstackIdToShare ==  ''){
       if(this.translate.currentLang == 'es')
         this.toastr.warning("Debe indicar el Blockstack Id del usuario.", "Lllave Pública desconocida" )
@@ -276,6 +277,12 @@ export class BlogShareComponent implements OnInit {
         this.api.setApi("share");
         this.api.add<ShareModel>(share)
         .subscribe(res => {
+          if(this.translate.currentLang == 'es')
+            this.toastr.success("Se ha creado el archivo encriptado correctamente.", "Lllave Pública desconocida")
+          else 
+            this.toastr.success("The encrypted file was created successfully.", "Public Key unknown");
+      
+
           console.log('Password sharing success' );
           this.showURL=true
           this.ngxService.stop();        
