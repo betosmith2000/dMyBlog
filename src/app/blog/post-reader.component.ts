@@ -30,8 +30,15 @@ export class PostReaderComponent implements OnInit {
   excerpt:string;
   content:string;
   imageContent:string;
-  avatarContent:string;
-  hasAvatar :boolean = false;
+  showSocialButtons : boolean=false;
+  // avatarContent:string;
+  // hasAvatar :boolean = false;
+
+  avatarURL:string = '';
+  facebookURL:string='';
+  twitterURL:string='';
+  instagramURL:string='';
+
   author:string;
   date:Date;
   isShareURL:boolean=false;
@@ -41,7 +48,9 @@ export class PostReaderComponent implements OnInit {
 
   private LOGO = require("../../assets/post-head.jpg");
   readonly postsFileName:string = '/posts.txt';
-  readonly avatarFileName:string = '/avatar.txt';
+  readonly settingsFileName:string = '/settings.txt';
+
+  //readonly avatarFileName:string = '/avatar.txt';
    //Paginacion
    page: number = 0;
    pagination: Pagination<PostComment> = new Pagination(1000, 0);
@@ -344,11 +353,13 @@ export class PostReaderComponent implements OnInit {
       this.content = this.viewingPost.postContent;
       this.author = this.Post.author;
       this.date = this.Post.date;
-      this.getAvatar();
+     // this.getAvatar();
       this.getPostImage(this.Post);
       this.ngxService.stop();  
       this.getMediaEmbed();
       this.getData();
+      this.getProfileData();
+
       if( this.viewingPost.attachedFiles)
             this.attachedFiles = this.viewingPost.attachedFiles;
     })
@@ -405,23 +416,23 @@ export class PostReaderComponent implements OnInit {
     }
   }
 
-  getAvatar():void {
-    this.readOptions.decrypt = false;
-    this.userSession.getFile(this.avatarFileName,this.readOptions)
-    .then((imageContent) => {
-      if(imageContent){
-        this.avatarContent= imageContent;
-        this.hasAvatar = true;
-      }
-      else 
-      this.hasAvatar = false;
-    })
-    .catch((error)=>{
-      console.log('Error reading image');
+  // getAvatar():void {
+  //   this.readOptions.decrypt = false;
+  //   this.userSession.getFile(this.avatarFileName,this.readOptions)
+  //   .then((imageContent) => {
+  //     if(imageContent){
+  //       this.avatarContent= imageContent;
+  //       this.hasAvatar = true;
+  //     }
+  //     else 
+  //     this.hasAvatar = false;
+  //   })
+  //   .catch((error)=>{
+  //     console.log('Error reading image');
       
-    });
+  //   });
     
-  }
+  // }
 
   
   sharePost(){   
@@ -542,5 +553,57 @@ export class PostReaderComponent implements OnInit {
 
   goToAuthorBlog(){
    this.router.navigate(['/blog/' + this.author])
+  }
+
+  
+  launchSocial(url:string){
+    if(url==null || url == ''){
+      
+    }
+    else{
+      window.open(url, '_blank');
+    }
+
+  }
+
+  getProfileData(){
+    this.readOptions.username = this.author;
+    this.userSession.getFile(this.settingsFileName,this.readOptions)
+    .then((fileContents) => {
+      let settings = JSON.parse(fileContents);
+      this.showSocialButtons = settings.showSocialButtons;
+    })
+    .catch((error) => {
+      console.log('Error reading settings!')
+      this.ngxService.stop();
+    });
+
+
+    let up = new blockstack.lookupProfile(this.author).then(p=>{
+      let avatarObj = p.image? p.image.filter(e=> e.name=='avatar')[0] : null;
+      if(avatarObj!= null)
+      {
+        this.avatarURL = avatarObj.contentUrl;
+      }
+      else
+        this.avatarURL = 'assets/User-blue-icon.png';
+
+
+      let accounts = p.account;
+      let facebookAccouunt = accounts? accounts.filter(e=> e.service=='facebook'):null;
+      if(facebookAccouunt != null && facebookAccouunt.length>0){
+        this.facebookURL = 'https://www.facebook.com/' + facebookAccouunt[0].identifier;
+      }
+
+      let twitterAccount = accounts? accounts.filter(e=> e.service=="twitter"):null;
+      if(twitterAccount != null && twitterAccount.length>0){
+        this.twitterURL = 'https://twitter.com/' + twitterAccount[0].identifier;
+      }
+
+      let instagramAccount = accounts? accounts.filter(e=> e.service=="instagram"):null;
+      if(instagramAccount != null && instagramAccount.length>0){
+        this.instagramURL  = 'https:///www.instagram.com/' + instagramAccount[0].identifier;
+      }
+    });
   }
 }

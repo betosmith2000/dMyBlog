@@ -2,9 +2,22 @@
   <i class="fas fa-question fa-2x"></i>
 </button>
 <div class="container top-padding" *ngIf="!isNewPost && !isUpdatePost">    
-  <h2 class="display-4 d-none d-sm-block" id="step0">{{userName}} </h2>
-  <h4 class="d-block d-sm-none" id="step0">{{userName}} </h4>
-
+  <h2 class="display-4 d-none d-sm-block text-center" id="step0">{{userName}} </h2>
+  <h4 class="d-block d-sm-none text-center" id="step0">{{userName}} </h4>
+<div class="text-center p-4">
+  <img [src]="avatarURL" alt="Avatar" *ngIf="avatarURL!=''"  class="img-tumb inline avatar shadow" title="Avatar">
+</div>
+<div class="text-center pb-3">
+  <button class="btn btn-link" (click)="launchSocial(facebookURL)">
+    <i class="fab fa-facebook fa-3x"></i>
+  </button>&nbsp;
+  <button class="btn btn-link" (click)="launchSocial(twitterURL)">
+    <i class="fab fa-twitter-square  fa-3x"></i>
+  </button>&nbsp;
+  <button class="btn btn-link" (click)="launchSocial(instagramURL)">
+    <i class="fab fa-instagram  fa-3x"></i>
+  </button>&nbsp;
+</div>
   <div class="card shadow-sm"  [ngClass]="{
     'bg-dark':selectedTheme=='dark',
     'bg-light':selectedTheme=='light',
@@ -40,19 +53,27 @@
 
         <div class="form-group row">
           <label for="blogDescription" class="col-sm-3 col-form-label">{{'settings.publicKey'|translate}}</label>
-          <div class="col-sm-7">
+          <div class="col-sm-8">
               <input type="text" class="form-control" id="publicKey"  formControlName="publicKey"
                      [ngClass]="{'is-invalid':(publicKey.touched || publicKey.dirty) && !publicKey.valid}" />
+              <span class="text-info small">{{'settings.publicKeyinfo'|translate}}</span>
               
           </div>
-          <div class="col-sm-2" *ngIf="hasPublicKey==false">
+          <div class="col-sm-1" *ngIf="hasPublicKey==false">
             <button class="btn btn-link" type="button" (click)="showPublicKey()">{{'settings.showPK'|translate}}</button>
           </div>
-          <div class="col-sm-2" *ngIf="hasPublicKey">
+          <div class="col-sm-1" *ngIf="hasPublicKey">
             <button class="btn btn-link" type="button" (click)="hidePublicKey()">{{'settings.hidePK'|translate}}</button>
           </div>
         </div>
-
+        <div class="form-group row"> 
+          <label for="socialButtons" class="col-sm-3 col-form-label">{{'settings.socialbuttonslabel'|translate}}</label>
+          <div class="col-sm-8">
+              <input type="checkbox" class="form-control checkbox" id="socialButtons"  formControlName="showSocialButtons"/>
+              <label class="text-info small">{{'settings.socialbuttonsinfo'|translate}}</label>
+              
+          </div>
+        </div> 
 
         <div class="form-group row">
             <label for="file" class="col-sm-3 col-form-label">{{'settings.image'|translate}}</label>
@@ -74,7 +95,7 @@
               
         </div>
 
-        <div class="form-group row">
+        <!-- <div class="form-group row">
           <label for="file" class="col-sm-3 col-form-label">{{'settings.avatar'|translate}}</label>
           <div class="col-sm-9" *ngIf="!hasAvatar">
               <div class="input-group mb-3">
@@ -89,13 +110,16 @@
           </div>
           <div class="col-sm-9" *ngIf="hasAvatar">
             <img [src]="avatarImageContent" class="img-tumb inline avatar shadow" alt="Current avatar"> &nbsp; 
-            <!-- <div class="avatar shadow bg-light"  [ngStyle]="{background: ' url('+avatarImageContent+') no-repeat center center'}"></div> -->
             <button class="btn btn-outline-danger align-bottom inline" type="button" (click)="removeAvatarImageHeader()"><i class="far fa-times-circle" title="{{'settings.avataremove'|translate}}"></i> </button>
           </div>
             
-      </div>
+      </div> -->
 
-
+<div class="pt-3">
+  <p class="text-info">
+  <span>{{'settings.avatarinfo'|translate}} </span> <a href="https://browser.blockstack.org/profiles" target="_blank" class="btn btn-link btn-sm">Blockstack ID <i class="fas fa-external-link-alt"></i></a>
+  </p>
+</div>
       </div>
 
         <div class="float-md-right" id="step2">
@@ -117,45 +141,142 @@
     'text-light':selectedTheme=='dark',
     'text-dark':selectedTheme=='light'
   }">
-    <div class="card-body">
-        <div >
+    <div class="card-body ">
+
+      <ul class="nav nav-tabs" id="step4" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="myposts-tab" data-toggle="tab" href="#myposts" role="tab" aria-controls="home" aria-selected="true">{{'settings.mypostsBy'|translate}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="mysharedposts-tab" data-toggle="tab" href="#mysharedposts" role="tab" aria-controls="profile" aria-selected="false">{{'settings.mysharedposts'|translate}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="postssharedwithme-tab" data-toggle="tab" href="#postsharedwithme" role="tab" aria-controls="contact" aria-selected="false">{{'settings.sharedpostswithme'|translate}}</a>
+        </li>
+      </ul>
+      <div class="tab-content table-posts" id="myTabContent">
+        <div class="tab-pane fade show active" id="myposts" role="tabpanel" aria-labelledby="myposts-tab">
             <div >
-                <button id="step3"  type="button" (click)="showNewPost()" class="btn btn-link float-right" >{{'settings.newpost'|translate}} <i class="far fa-file"></i></button>
-                <label *ngIf="posts.length === 0" for="btnNewPost" class="float-right mt-2">{{'settings.tableempty'|translate}}</label> 
-            </div>
+              <div >
+                  <button id="step3"  type="button" (click)="showNewPost()" class="btn btn-link float-right" >{{'settings.newpost'|translate}} <i class="far fa-file"></i></button>
+                  <label *ngIf="posts.length === 0" for="btnNewPost" class="float-right mt-2">{{'settings.tableempty'|translate}}</label> 
+              </div>
+          </div> 
+
+          <div  >
+            <table class="table table-striped table-hover" *ngIf="posts?.length > 0"  [ngClass]="{'table-dark':selectedTheme=='dark'}"   >
+              <thead>
+                <tr>
+                  <th scope="col">{{'settings.tabletitle'|translate}}</th>
+                  <!-- <th scope="col">Content</th> -->
+                  <th scope="col">{{'settings.tabledate'|translate}}</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of posts">
+                  <th class="small" scope="row">{{p.title}}</th>
+                  <!-- <td col="2" >{{p.excerpt}}</td> -->
+                  <td class="small">{{p.date|date:'medium'}}</td>
+                  <td class="float-right small">
+                    <div class="btn-group" role="group" aria-label="Actions">
+                      <button type="button" class="btn btn-primary btn-sm" title="{{'settings.tableshare'|translate}}"  data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"><i class="fas fa-share-alt"></i></button>&nbsp;
+                      <button type="button" class="btn btn-primary btn-sm" title="{{'settings.tableedit'|translate}}" (click)="editPost(p)"><i class="far fa-edit"></i></button>&nbsp;
+                      <button type="button" class="btn btn-danger btn-sm" title="{{'settings.tabledelete'|translate}}" (click)="deletePost(p)">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+    
+    
+          
+    
+          </div>
+          
         </div>
+        <div class="tab-pane fade" id="mysharedposts" role="tabpanel" aria-labelledby="mysharedposts-tab">
+          <table class="table table-striped table-hover" *ngIf="(sharedDataService?.sharedContents?.length > 0)"  
+            [ngClass]="{
+              'table-dark':selectedTheme=='dark'
+            }"   >
+            <thead>
+              <tr>
+                <th scope="col">{{'settings.tabletitle'|translate}}</th>
+                <th scope="col">{{'settings.sharedwith'|translate}}</th>
+                <th scope="col">{{'settings.tablesharedate'|translate}}</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of sharedDataService.sharedContents">
+                <th class="small" scope="row">{{p.name}}</th>
+                <td col="2" class="small" >{{p.target}}</td>
+                <td class="small">{{p.date|date:'medium'}}</td>
+                <td class="float-right small">
+                  <div class="btn-group" role="group" aria-label="Actions">
+                    
+                    <button type="button" class="btn btn-danger btn-sm" title="{{'settings.deletesharedpost'|translate}}"   (click)="deletePrivatePost($event,p)">
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br> <br>
+          <div *ngIf="(sharedDataService?.sharedContents?.length == 0)" >
+            <div class="alert alert-primary" role="alert">
+              {{'settings.Nosharedposts'|translate}}
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="postsharedwithme" role="tabpanel" aria-labelledby="postssharedwithme-tab">
+          <table class="table table-striped table-hover" *ngIf="(sharedDataService?.sharedContentsWithMe?.length > 0)"  
+            [ngClass]="{
+              'table-dark':selectedTheme=='dark'
+            }"   >
+            <thead>
+              <tr>
+                <th scope="col">{{'settings.tabletitle'|translate}}</th>
+                <th scope="col">{{'settings.authorshare'|translate}}</th>
+                <th scope="col">{{'settings.tablesharedate'|translate}}</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of sharedDataService.sharedContentsWithMe">
+                <th class="small" scope="row">{{p.name}}</th>
+                <td col="2" class="small">{{p.source}}</td>
+                <td class="small">{{p.date|date:'medium'}}</td>
+                <td class="float-right small">
+                  <div class="btn-group" role="group" aria-label="Actions">
+                    <button type="button" class="btn btn-primary btn-sm" title="{{'settings.viewsharedpost'|translate}}"   (click)="viewPrivatePost($event,p)">
+                      <i class="far fa-eye"></i></button>&nbsp;
+                      <button type="button" class="btn btn-danger btn-sm" title="{{'settings.deletesharedpost'|translate}}"   (click)="deletePrivatePost($event,p)">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br> <br>
+          <div *ngIf="(sharedDataService?.sharedContentsWithMe?.length == 0)" >
+            <div class="alert alert-primary" role="alert">
+              {{'settings.Nosharedpostswithme'|translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+       
 
         
-      <div id="step4">
-        <table class="table table-striped table-hover" *ngIf="(posts.length > 0)"  
-          [ngClass]="{
-            'table-dark':selectedTheme=='dark'
-          }"   >
-          <thead>
-            <tr>
-              <th scope="col">{{'settings.tabletitle'|translate}}</th>
-              <!-- <th scope="col">Content</th> -->
-              <th scope="col">{{'settings.tabledate'|translate}}</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let p of posts">
-              <th class="small" scope="row">{{p.title}}</th>
-              <!-- <td col="2" >{{p.excerpt}}</td> -->
-              <td class="small">{{p.date|date:'medium'}}</td>
-              <td class="float-right small">
-                <div class="btn-group" role="group" aria-label="Actions">
-                  <button type="button" class="btn btn-primary btn-sm" title="{{'settings.tableshare'|translate}}"  data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"><i class="fas fa-share-alt"></i></button>&nbsp;
-                  <button type="button" class="btn btn-primary btn-sm" title="{{'settings.tableedit'|translate}}" (click)="editPost(p)"><i class="far fa-edit"></i></button>&nbsp;
-                  <button type="button" class="btn btn-danger btn-sm" title="{{'settings.tabledelete'|translate}}" (click)="deletePost(p)">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
+    
     </div>
   </div>
 

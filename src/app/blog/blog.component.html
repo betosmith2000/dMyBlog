@@ -10,26 +10,34 @@
 
 <div class="container top-padding" *ngIf="!isNewPost && !isViewingPost">
 
-  <!-- <div  class="text-center text-header" >
-      <img [src]="avatarContent" class="avatar shadow" alt="Avatar" *ngIf="hasAvatar">  
-      <p>
-          <label class="small font-weight-bold " >&nbsp;{{userName}}&nbsp; </label>
-      </p>
-      <h2 class="card-title display-4  " >{{header?.blogName}}</h2>
-      <p ><span class="font-italic font-weight-light ">{{header?.blogDescription}}</span> </p>    
-      
-  </div> -->
+ 
   <div class="card mb-3 shadow-sm shadow header-card rounded-lg bg-dark " id="step1">
     <img class="card-img-top header-img rounded-lg" [src]="header?.blogHeaderImage" alt="..." *ngIf="header?.blogHeaderImage">
+    
     <div class="card-img-overlay ">
+      <div class="float-right p-3" *ngIf="showSocialButtons"> 
+        <button class="btn btn-link btn-social" (click)="launchSocial(facebookURL)">
+          <i class="fab fa-facebook fa-2x"></i>
+        </button>
+        <button class="btn btn-link btn-social" (click)="launchSocial(twitterURL)">
+          <i class="fab fa-twitter-square fa-2x"></i>
+        </button>
+        <button class="btn btn-link btn-social" (click)="launchSocial(instagramURL)">
+          <i class="fab fa-instagram fa-2x"></i>
+        </button>
+      </div>
       <div  class="text-center text-header"  >
           <h2 class="card-title display-4  " >{{header?.blogName}}</h2>
           <p ><span class="font-italic font-weight-light ">{{header?.blogDescription}}</span> </p>    
-          <img [src]="avatarContent" class="avatar" alt="Avatar" *ngIf="hasAvatar">  
-          <p>
-              <label class="small font-weight-bold " >&nbsp;{{userName}}&nbsp; </label>
+          <img [src]="avatarURL" alt="Avatar" *ngIf="avatarURL!=''"  class="avatar" title="Avatar">
+          <p >
+              <label class="small font-weight-bold px-1 " >&nbsp;{{userName}}&nbsp; </label>
+
+             
+
+              
           </p>
-          
+        
       </div>
       <div >
           

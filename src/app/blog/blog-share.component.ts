@@ -3,12 +3,11 @@ import { ToastrService } from 'ngx-toastr';
 import { Post } from './models/Post';
 import { GlobalsService } from '../share/globals.service';
 import * as blockstack from '../../../node_modules/blockstack/dist/blockstack.js';
-
 import { TranslateService } from '@ngx-translate/core';
-
-
 import { Md5 } from 'ts-md5/dist/md5';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { ShareModel } from '../share/Models/share.model';
+import { ApiService } from '../share/data-service';
 
 
 @Component({
@@ -37,7 +36,8 @@ export class BlogShareComponent implements OnInit {
   
   
 
-  constructor(private toastr: ToastrService, private globals: GlobalsService,private ngxService: NgxUiLoaderService, 
+  constructor(private toastr: ToastrService, private globals: GlobalsService,
+    private ngxService: NgxUiLoaderService, private api: ApiService,
     private translate: TranslateService) { }
 
   
@@ -266,9 +266,23 @@ export class BlogShareComponent implements OnInit {
     var encryptedBS = this.userSession.encryptContent(JSON.stringify(postComp), { publicKey:this.pkToShare});
     this.userSession.putFile(this.privatePostEncryptedFileName, encryptedBS, this.writeOptions)
        .then(cipherTextUrl => { 
-         this.showURL=true
-         this.ngxService.stop();        
-
+        var share= new ShareModel();
+        let hash  = Md5.hashStr(new Date().toISOString(),false);
+        share.id =hash.toString();
+        share.source = postComp.author;
+        share.target = this.blockstackIdToShare;
+        share.fileName = this.privatePostEncryptedFileName;
+        share.name =postComp.postTitle;
+        this.api.setApi("share");
+        this.api.add<ShareModel>(share)
+        .subscribe(res => {
+          console.log('Password sharing success' );
+          this.showURL=true
+          this.ngxService.stop();        
+         }, error =>{
+           console.log('Error sharing password');
+           this.ngxService.stop();
+         });
         })
 
     }).catch((error)=>{

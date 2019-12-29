@@ -11,6 +11,8 @@ import { Post } from 'src/app/blog/models/Post';
 import { Router } from '@angular/router';
 import { GlobalsService } from 'src/app/share/globals.service';
 import { TranslateService } from '@ngx-translate/core';
+import { SharedDataService } from 'src/app/share/shared-data.service';
+import { ShareModel } from 'src/app/share/Models/share.model';
 
 @Component({
   selector: 'app-settings',
@@ -23,10 +25,14 @@ export class SettingsComponent implements OnInit {
 
   userName :string  = 'User name';
   readonly settingsFileName:string = '/settings.txt';
-  readonly avatarFileName:string = '/avatar.txt';
+  //readonly avatarFileName:string = '/avatar.txt';
   readonly postsFileName:string = '/posts.txt';
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
+  avatarURL:string = '';
+  facebookURL:string='';
+  twitterURL:string='';
+  instagramURL:string='';
   hasPublicKey: boolean = false;
 
   readOptions : any = {decrypt: false};
@@ -38,12 +44,13 @@ export class SettingsComponent implements OnInit {
   blogDescription: FormControl;
   blogHeaderImage : FormControl;
   publicKey: FormControl;
+  showSocialButtons:FormControl;
   postImageContent: string='';
   hasImageHeader:boolean=false;
 
-  avatarImage : FormControl;
-  avatarImageContent: string=' ';
-  hasAvatar:boolean=false;
+  // avatarImage : FormControl;
+  // avatarImageContent: string=' ';
+  // hasAvatar:boolean=false;
 
   posts:Array<any> = new Array();
 
@@ -55,8 +62,10 @@ export class SettingsComponent implements OnInit {
 
   constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, 
     private _api: ApiService, private route: Router, private globals: GlobalsService,
-    private translate: TranslateService) {
+    private translate: TranslateService, public sharedDataService:SharedDataService) {
     this._api.setApi('posts')
+
+    
   }
    
   setENTutorial(){
@@ -176,7 +185,6 @@ export class SettingsComponent implements OnInit {
 
   
   ngOnInit() {
-   
     this.selectedTheme= this.globals.getCurrentTheme();
     this.globals.getTheme().subscribe(theme=>{
       this.selectedTheme = theme;
@@ -190,6 +198,32 @@ export class SettingsComponent implements OnInit {
 
       const userData = this.userSession.loadUserData();
       this.userName = userData.username;
+      let avatarObj = userData.profile.image? userData.profile.image.filter(e=> e.name=='avatar')[0] : null;
+      if(avatarObj!= null)
+      {
+        this.avatarURL = avatarObj.contentUrl;
+      }
+      else
+        this.avatarURL = 'assets/User-blue-icon.png';
+
+      let accounts = userData.profile.account;
+      let facebookAccouunt = accounts? accounts.filter(e=> e.service=='facebook'):null;
+      if(facebookAccouunt != null && facebookAccouunt.length>0){
+        this.facebookURL = 'https://www.facebook.com/' + facebookAccouunt[0].identifier;
+      }
+
+      let twitterAccount = accounts? accounts.filter(e=> e.service=="twitter"):null;
+      if(twitterAccount != null && twitterAccount.length>0){
+        this.twitterURL = 'https://twitter.com/' + twitterAccount[0].identifier;
+      }
+
+      let instagramAccount = accounts? accounts.filter(e=> e.service=="instagram"):null;
+      if(instagramAccount != null && instagramAccount.length>0){
+        this.instagramURL  = 'https:///www.instagram.com/' + instagramAccount[0].identifier;
+      }
+
+
+
 
       this.userSession.getFile(this.settingsFileName,this.readOptions)
         .then((fileContents) => {
@@ -199,6 +233,7 @@ export class SettingsComponent implements OnInit {
             this.blogDescription.setValue(data.blogDescription);
             this.blogHeaderImage.setValue(data.blogHeaderImage);
             this.publicKey.setValue(data.publicKey);
+            this.showSocialButtons.setValue(data.showSocialButtons);
             
             if(data.blogHeaderImage)
             {
@@ -207,14 +242,17 @@ export class SettingsComponent implements OnInit {
             }
             
             
-            this.userSession.getFile(this.avatarFileName,this.readOptions)
-            .then((avatarContent) => {
-              this.avatarImage.setValue(avatarContent)
-              if(avatarContent!= null && avatarContent != ' ')
-              {
-                this.hasAvatar=true;
-                this.avatarImageContent = avatarContent;
-              }
+            // this.userSession.getFile(this.avatarFileName,this.readOptions)
+            // .then((avatarContent) => {
+              // this.avatarImage.setValue(avatarContent)
+              // if(avatarContent!= null && avatarContent != ' ')
+              // {
+              //   this.hasAvatar=true;
+              //   this.avatarImageContent = avatarContent;
+              // }
+              // else{
+              //   this.avatarURL = 'assets/User-blue-icon.png';
+              // }
 
               this.userSession.getFile(this.globals.publicKeyFileName,this.readOptions)
               .then((publickeyContent) => {
@@ -238,10 +276,12 @@ export class SettingsComponent implements OnInit {
                 this.ngxService.stop();
                 
                 this.startTour(false);
+
+                this.sharedDataService.getSharedContent();
   
               }); 
            
-            });
+            // });
           
 
           }
@@ -255,7 +295,7 @@ export class SettingsComponent implements OnInit {
 
         });
      }
-
+     
   }
 
   initializeForm():void{
@@ -263,21 +303,24 @@ export class SettingsComponent implements OnInit {
     this.blogDescription = new FormControl('', [Validators.maxLength(1024)]);
     this.blogHeaderImage = new FormControl('');
     this.publicKey = new FormControl(' ');
-    this.avatarImage = new FormControl('');
+    //this.avatarImage = new FormControl('');
+    this.showSocialButtons = new FormControl(false);
+
 
     this.form = new FormGroup({
       blogName : this.blogName,
       blogDescription : this.blogDescription,
       blogHeaderImage : this.blogHeaderImage,
-      avatarImage: this.avatarImage,
-      publicKey:this.publicKey
+      //avatarImage: this.avatarImage,
+      publicKey:this.publicKey,
+      showSocialButtons:this.showSocialButtons
     });
   }
 
   save(){
     let p = Object.assign({},  this.form.value);
     let str = JSON.stringify(p);
-    p.avatarImage='';
+   // p.avatarImage='';
     p.publicación='';
 
     this.ngxService.start();
@@ -285,10 +328,10 @@ export class SettingsComponent implements OnInit {
     this.userSession.putFile(this.settingsFileName,str, this.writeOptions)
       .then(() =>{
         
-        if(!this.avatarImageContent)
-          this.avatarImageContent = ' ';
-        this.userSession.putFile(this.avatarFileName, this.avatarImageContent, this.writeOptions)
-        .then(() =>{
+        // if(!this.avatarImageContent)
+        //   this.avatarImageContent = ' ';
+        // this.userSession.putFile(this.avatarFileName, this.avatarImageContent, this.writeOptions)
+        // .then(() =>{
           this.userSession.putFile(this.globals.publicKeyFileName, this.publicKey.value, this.writeOptions)
           .then(() =>{
             this.ngxService.stop();
@@ -305,11 +348,11 @@ export class SettingsComponent implements OnInit {
           console.log('Errro updating settings');
           this.ngxService.stop();
         });
-    })
-    .catch((error)=>{
-      console.log('Errro updating settings');
-      this.ngxService.stop();
-    });
+    // })
+    // .catch((error)=>{
+    //   console.log('Errro updating settings');
+    //   this.ngxService.stop();
+    // });
 
   }
 
@@ -331,22 +374,22 @@ export class SettingsComponent implements OnInit {
   }
 
   
-  handleAvatarInputChange(e) {
-    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+  // handleAvatarInputChange(e) {
+  //   var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
 
-    var pattern = /image-*/;
-    var reader = new FileReader();
+  //   var pattern = /image-*/;
+  //   var reader = new FileReader();
 
-    if (!file.type.match(pattern)) {
-        alert('invalid format');
-        return;
-    }
+  //   if (!file.type.match(pattern)) {
+  //       alert('invalid format');
+  //       return;
+  //   }
 
 
-    reader.onload = this._handleAvatarReaderLoaded.bind(this);
-    reader.readAsDataURL(file);
+  //   reader.onload = this._handleAvatarReaderLoaded.bind(this);
+  //   reader.readAsDataURL(file);
 
-  }
+  // }
 
 
   _handleReaderLoaded(e) {
@@ -365,20 +408,20 @@ export class SettingsComponent implements OnInit {
   }
 
   
-  _handleAvatarReaderLoaded(e) {
-    var reader = e.target;
-    this.avatarImage.setValue( reader.result);
-    this.avatarImageContent=reader.result;
-    this.hasAvatar = true;
-  }
+  // _handleAvatarReaderLoaded(e) {
+  //   var reader = e.target;
+  //   this.avatarImage.setValue( reader.result);
+  //   this.avatarImageContent=reader.result;
+  //   this.hasAvatar = true;
+  // }
 
   
-  removeAvatarImageHeader():void{
-    this.avatarImage.setValue("");
-    this.avatarImageContent=null;
-    this.hasAvatar = false;
+  // removeAvatarImageHeader():void{
+  //   this.avatarImage.setValue("");
+  //   this.avatarImageContent=null;
+  //   this.hasAvatar = false;
 
-  }
+  // }
 
 
 
@@ -484,4 +527,33 @@ export class SettingsComponent implements OnInit {
     this.hasPublicKey = false;
   }
 
+  viewPrivatePost(event:Event, sharePost: ShareModel){
+    event.preventDefault();
+    this.route.navigate(['/private-read/'+sharePost.source+"/"+sharePost.fileName]);
+  }
+
+  deletePrivatePost(event:Event, sharePost: ShareModel){
+    event.preventDefault();
+    let deleteQ = "";
+
+    if(this.translate.currentLang == 'es')
+      deleteQ = '¿Esta seguro de que quiere eliminar este post privado compartido?'
+    else 
+      deleteQ = 'Are you sure you want to delete this shared private post?'
+
+    if(confirm(deleteQ)){
+    this.sharedDataService.deletePost(sharePost);
+    }
+
+  }
+
+  launchSocial(url:string){
+    if(url==null || url == ''){
+      
+    }
+    else{
+      window.open(url, '_blank');
+    }
+
+  }
 }

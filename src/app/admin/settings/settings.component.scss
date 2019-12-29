@@ -27,5 +27,16 @@ $primary: blueviolet !default;
     width: 150px;
     height: 150px;
   
-  
+  background-color: white;
+  }
+
+  .table-posts{
+
+    min-height: 400px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .checkbox{
+      width: 50px;
   }
