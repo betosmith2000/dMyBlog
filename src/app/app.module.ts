@@ -19,6 +19,7 @@ import { CommentReaderComponent } from './blog/comment-reader.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { PostPrivateReadComponent } from './blog/post-private-read/post-private-read.component';
+import { JasperoConfirmationsModule } from '@jaspero/ng-confirmations';
 
 
 export function HttpLoaderFactory(http: HttpClient){
@@ -47,6 +48,7 @@ export function HttpLoaderFactory(http: HttpClient){
     AdminModule,
     ToastrModule.forRoot(),
     HttpClientModule,
+    JasperoConfirmationsModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,

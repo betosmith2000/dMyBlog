@@ -13,6 +13,10 @@ import { GlobalsService } from 'src/app/share/globals.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SharedDataService } from 'src/app/share/shared-data.service';
 import { ShareModel } from 'src/app/share/Models/share.model';
+import { ConfirmationService, ResolveEmit } from "@jaspero/ng-confirmations";
+
+
+declare var $: any;
 
 @Component({
   selector: 'app-settings',
@@ -30,6 +34,7 @@ export class SettingsComponent implements OnInit {
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
   avatarURL:string = '';
+  avatarContent:string ;
   facebookURL:string='';
   twitterURL:string='';
   instagramURL:string='';
@@ -62,7 +67,8 @@ export class SettingsComponent implements OnInit {
 
   constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, 
     private _api: ApiService, private route: Router, private globals: GlobalsService,
-    private translate: TranslateService, public sharedDataService:SharedDataService) {
+    private translate: TranslateService, public sharedDataService:SharedDataService,
+    private _confirmation: ConfirmationService){
     this._api.setApi('posts')
 
     
@@ -182,8 +188,8 @@ export class SettingsComponent implements OnInit {
   sharePost(event:Event, p:any){
     this.shareablePost = p;
   }
-
   
+   
   ngOnInit() {
     this.selectedTheme= this.globals.getCurrentTheme();
     this.globals.getTheme().subscribe(theme=>{
@@ -439,27 +445,35 @@ export class SettingsComponent implements OnInit {
     else 
       deleteQ = 'Are you sure you want to delete this post?'
 
-    if(confirm(deleteQ)){
-      this.ngxService.start();
-      this.posts.splice(idx,1);
 
-      if(p.id.length == 24)
-      {
-        this._api.delete(p.id)
-        .subscribe(res => {
-          this.saveFiles(p);
-          console.log('Delete discoverable Post id:' + p.id);
-        }, error =>{
-          console.log('Error to save post to index');
-          this.ngxService.stop();
+      this._confirmation.create(deleteQ)
+      .subscribe((ans: ResolveEmit) => {
+          if (ans.resolved) {
 
+            this.ngxService.start();
+            this.posts.splice(idx,1);
+
+            if(p.id.length == 24)
+            {
+              this._api.delete(p.id)
+              .subscribe(res => {
+                this.saveFiles(p);
+                console.log('Delete discoverable Post id:' + p.id);
+              }, error =>{
+                console.log('Error to save post to index');
+                this.ngxService.stop();
+
+              });
+            }
+            else{
+              this.saveFiles(p);
+            }
+
+          }
         });
-      }
-      else{
-        this.saveFiles(p);
-      }
-
-    }
+        setTimeout(() => {
+            $(".jaspero__confirmation_dialog").css("position","fixed")    
+        }, 10);
   }
 
 
@@ -541,9 +555,15 @@ export class SettingsComponent implements OnInit {
     else 
       deleteQ = 'Are you sure you want to delete this shared private post?'
 
-    if(confirm(deleteQ)){
-    this.sharedDataService.deletePost(sharePost);
-    }
+    this._confirmation.create(deleteQ)
+    .subscribe((ans: ResolveEmit) => {
+        if (ans.resolved) {
+          this.sharedDataService.deletePost(sharePost);
+        }
+      });
+      setTimeout(() => {
+        $(".jaspero__confirmation_dialog").css("position","fixed")    
+    }, 10);
 
   }
 

@@ -40,7 +40,7 @@
            <span *ngIf="message?.errors.required">{{'contactus.messagevalreq'|translate}}</span>
            </span>
       </div>
-      <button type="submit" class="btn btn-primary float-right" [disabled]="!form.valid">{{'contactus.send'|translate}}</button>
+      <button type="button" (click)="sendMessage()" class="btn btn-primary float-right" [disabled]="!form.valid">{{'contactus.send'|translate}}</button>
     </form>
         
   </div>

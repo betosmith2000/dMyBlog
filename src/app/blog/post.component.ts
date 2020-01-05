@@ -13,7 +13,9 @@ import * as ClassicEditor from './CKEditor/ckeditor.js';
 import { GlobalsService } from '../share/globals.service';
 import { attachedFile } from '../share/attached-file';
 import { TranslateService } from '@ngx-translate/core';
+import { ConfirmationService, ResolveEmit } from "@jaspero/ng-confirmations";
 
+declare var $: any;
 
 
 @Component({
@@ -76,7 +78,7 @@ export class PostComponent implements OnInit {
 
   constructor(private toastr:ToastrService, private ngxService: NgxUiLoaderService, 
     private _api:ApiService, private globals: GlobalsService,
-    private translate: TranslateService) { 
+    private translate: TranslateService, private _confirmation: ConfirmationService){
   
   }
 
@@ -539,11 +541,16 @@ export class PostComponent implements OnInit {
   }
 
   deleteAttachedFile(f){
-    if(confirm('Are you sure you want to delete file?')){
-      
-      let idx = this.attachedFiles.findIndex(e=> e.id == f.id);
-      this.attachedFiles.splice(idx,1);
-    }
+    this._confirmation.create('Are you sure you want to delete file?')
+    .subscribe((ans: ResolveEmit) => {
+        if (ans.resolved) {
+          let idx = this.attachedFiles.findIndex(e=> e.id == f.id);
+          this.attachedFiles.splice(idx,1);
+      }
+    });
+    setTimeout(() => {
+        $(".jaspero__confirmation_dialog").css("position","fixed")    
+    }, 10);
   }
   downloadAttachedFile(f){
     this.userSession.getFile(f.id,this.readOptions)

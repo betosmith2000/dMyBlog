@@ -6,6 +6,9 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Post } from './models/Post';
 import { ToastrService } from 'ngx-toastr';
 import { GlobalsService } from '../share/globals.service';
+import { ConfirmationService, ResolveEmit } from "@jaspero/ng-confirmations";
+
+declare var $: any;
 
 @Component({
   selector: 'app-comment-reader',
@@ -41,8 +44,8 @@ export class CommentReaderComponent implements OnInit {
 
   constructor(private _api:ApiService, private ngxService: NgxUiLoaderService,  
     private cdRef:ChangeDetectorRef,  private toastr: ToastrService,
-     private globals: GlobalsService,
-    ) {
+     private globals: GlobalsService,private _confirmation: ConfirmationService){
+    
 
    }
 
@@ -97,7 +100,11 @@ export class CommentReaderComponent implements OnInit {
     
     this._api.setApi('comments');
 
-    if(confirm('Are you sure you want to delete this comment?')){
+    
+    this._confirmation.create('Are you sure you want to delete this comment?')
+    .subscribe((ans: ResolveEmit) => {
+        if (ans.resolved) {
+
       this.ngxService.start(); 
       this._api.deleteComment(c.id, c.rootId)
       .subscribe(res => {
@@ -121,6 +128,10 @@ export class CommentReaderComponent implements OnInit {
       });
 
     }
+  });
+  setTimeout(() => {
+      $(".jaspero__confirmation_dialog").css("position","fixed")    
+  }, 10);
     
   }
   showUpdate():void{

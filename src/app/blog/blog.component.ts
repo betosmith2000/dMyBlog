@@ -10,6 +10,10 @@ import * as introJs from 'intro.js/intro.js';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { GlobalsService } from '../share/globals.service';
 
+import { ConfirmationService, ResolveEmit } from "@jaspero/ng-confirmations";
+
+declare var $: any;
+
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
@@ -56,7 +60,7 @@ export class BlogComponent implements OnInit {
   constructor(private toastr: ToastrService, private route:ActivatedRoute, 
     private ngxService: NgxUiLoaderService, private _api: ApiService,
     private translate: TranslateService, private router: Router,
-    private globals: GlobalsService) { 
+    private globals: GlobalsService, private _confirmation: ConfirmationService){ 
    
   }
   
@@ -352,26 +356,34 @@ export class BlogComponent implements OnInit {
       deleteQ = '¿Esta seguro de que quiere eliminar este post?'
     else 
       deleteQ = 'Are you sure you want to delete this post?'
-    if(confirm(deleteQ)){
-      this.ngxService.start(); 
-      let idx = this.posts.findIndex(e=> e.shareCode == p.shareCode);
-      this.posts.splice(idx,1);
-      if(p.id && p.id.length == 24)
-      {
-        this._api.delete(p.id)
-        .subscribe(res => {
-          this.saveFiles(p);
-          console.log('Delete discoverable Post id:' + p.id);
-        }, error =>{
-          console.log('Error to save post to index');
-          this.ngxService.stop();
 
+    this._confirmation.create(deleteQ)
+    .subscribe((ans: ResolveEmit) => {
+        if (ans.resolved) {
+    
+          this.ngxService.start(); 
+          let idx = this.posts.findIndex(e=> e.shareCode == p.shareCode);
+          this.posts.splice(idx,1);
+          if(p.id && p.id.length == 24)
+          {
+            this._api.delete(p.id)
+            .subscribe(res => {
+              this.saveFiles(p);
+              console.log('Delete discoverable Post id:' + p.id);
+            }, error =>{
+              console.log('Error to save post to index');
+              this.ngxService.stop();
+
+            });
+          }
+          else{
+            this.saveFiles(p);
+          }
+        }
         });
-      }
-      else{
-        this.saveFiles(p);
-      }
-    }
+        setTimeout(() => {
+            $(".jaspero__confirmation_dialog").css("position","fixed")    
+        }, 10);
     
   }
 
