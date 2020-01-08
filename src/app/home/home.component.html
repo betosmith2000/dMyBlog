@@ -11,7 +11,7 @@
         <br />
         <br />
         <!-- <div >{{'home.producthunt'|translate}}</div>
-        <a href="https://www.producthunt.com/posts/dmy-blog?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-dmy-blog" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=157734&theme=light" alt="dMy Blog - A decentralized blog maker | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a> -->
+        <a href="https://www.producthunt.com/posts/dmy-blog?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-dmy-blog" target="_self"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=157734&theme=light" alt="dMy Blog - A decentralized blog maker | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a> -->
       </div>
     </div>
   </header>
@@ -133,12 +133,13 @@
 
 
 <!-- How to -->
-   <section class=" page-section" id="howto" name="howto"
+   <section class=" page-section text-dark" id="howto" name="howto"
    [ngClass]="{
     'bg-light':selectedTheme=='light',
     'bg-dark':selectedTheme=='dark'
+    
   }">
-    <div class="container">
+    <div class="container" >
       <div class="row">
         <div class="col-lg-12 text-center">
           <h2 class="section-heading text-uppercase">{{'menu.howto'|translate}}</h2>
@@ -148,7 +149,7 @@
       <div class="row">
 
         <div class="col-md-4 col-sm-6 portfolio-item  enlaces ">
-          <a class="portfolio-link " target="_blank" href="https://www.dmyblog.co/#/read/dmyblog_.id.blockstack/5cf9a7d1050ea51354fa51fd">
+          <a class="portfolio-link " target="_self" href="https://www.dmyblog.co/#/read/dmyblog_.id.blockstack/5cf9a7d1050ea51354fa51fd">
             <div class="portfolio-hover ">
               <div class="portfolio-hover-content">
                 <i class="fas fa-external-link-alt fa-3x"></i>
@@ -163,7 +164,7 @@
         </div>
         
         <div class="col-md-4 col-sm-6 portfolio-item enlaces">
-          <a class="portfolio-link" target="_blank" href="https://www.dmyblog.co/#/read/dmyblog_.id.blockstack/5cf9cd7906094a2978144168">
+          <a class="portfolio-link" target="_self" href="https://www.dmyblog.co/#/read/dmyblog_.id.blockstack/5cf9cd7906094a2978144168">
             <div class="portfolio-hover">
               <div class="portfolio-hover-content">
                 <i class="fas fa-external-link-alt fa-3x"></i>
@@ -178,7 +179,7 @@
         </div>
 
         <div class="col-md-4 col-sm-6 portfolio-item enlaces">
-          <a class="portfolio-link" target="_blank" href="https://www.dmyblog.co/#/read/dmyblog_.id.blockstack/5d197df31616ec477c652a80">
+          <a class="portfolio-link" target="_self" href="https://www.dmyblog.co/#/read/dmyblog_.id.blockstack/5d197df31616ec477c652a80">
             <div class="portfolio-hover">
               <div class="portfolio-hover-content">
                 <i class="fas fa-external-link-alt fa-3x"></i>
@@ -193,7 +194,7 @@
         </div>
 
         <div class="col-md-4 col-sm-6 portfolio-item enlaces">
-          <a class="portfolio-link" target="_blank" href="https://www.dmyblog.co/#/read/dmyblog_.id.blockstack/5d197ff71616ec477c652a81">
+          <a class="portfolio-link" target="_self" href="https://www.dmyblog.co/#/read/dmyblog_.id.blockstack/5d197ff71616ec477c652a81">
             <div class="portfolio-hover">
               <div class="portfolio-hover-content">
                 <i class="fas fa-external-link-alt fa-3x"></i>
@@ -204,6 +205,20 @@
           <div class="portfolio-caption">
             <h4>{{'home.social'|translate}}</h4>
             <p class="text-muted">{{'home.socialtext'|translate}}</p>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6 portfolio-item enlaces">
+          <a class="portfolio-link" target="_self" href="https://www.dmyblog.co/#/read/dmyblog_.id.blockstack/5e1229410fb634712409e916">
+            <div class="portfolio-hover">
+              <div class="portfolio-hover-content">
+                <i class="fas fa-external-link-alt fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid img-min" src="assets/logo.png" alt="Getting started-Update settings">
+          </a>
+          <div class="portfolio-caption">
+            <h4>{{'home.social'|translate}}</h4>
+            <p class="text-muted">{{'home.shareprivate'|translate}}</p>
           </div>
         </div>
 
@@ -302,22 +317,22 @@
       <div class="col-md-4">
         <ul class="list-inline social-buttons">
           <li class="list-inline-item">
-            <a href="https://twitter.com/dMyBlog_" target="_blank">
+            <a href="https://twitter.com/dMyBlog_" target="_self">
               <i class="fab fa-twitter"></i>
             </a>
           </li>
           <li class="list-inline-item">
-            <a href="https://www.facebook.com/dmyblog" target="_blank">
+            <a href="https://www.facebook.com/dmyblog" target="_self">
               <i class="fab fa-facebook-f"></i>
             </a>
           </li>
           <li class="list-inline-item">
-            <a href="https://www.instagram.com/dmyblog_" target="_blank">
+            <a href="https://www.instagram.com/dmyblog_" target="_self">
               <i class="fab fa-instagram"></i>
             </a>
           </li>
           <li class="list-inline-item">
-            <a href="https://github.com/betosmith2000/dMyBlog" target="_blank">
+            <a href="https://github.com/betosmith2000/dMyBlog" target="_self">
               <i class="fab fa-github"></i>
             </a>
           </li>

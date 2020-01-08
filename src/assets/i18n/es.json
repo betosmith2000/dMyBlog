@@ -36,7 +36,8 @@
         "statistics":"Estadística",
         "users":"Usuarios en dMy Blog",
         "posts":"Posts públicos",
-        "contactus":"Contáctanos"
+        "contactus":"Contáctanos",
+        "shareprivate":"Compartir un post privado"
     },
     "contactus":{
         "name":"Nombre*",

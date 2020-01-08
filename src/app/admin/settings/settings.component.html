@@ -4,8 +4,9 @@
 <div class="container top-padding" *ngIf="!isNewPost && !isUpdatePost">    
   <h2 class="display-4 d-none d-sm-block text-center" id="step0">{{userName}} </h2>
   <h4 class="d-block d-sm-none text-center" id="step0">{{userName}} </h4>
-<div class="text-center p-4">
-  <img [src]="avatarURL" alt="Avatar" *ngIf="avatarURL!=''"  class="img-tumb inline avatar shadow" title="Avatar">
+  <div class="text-center p-4">
+    <img [src]="avatarURL" alt="Avatar" *ngIf="avatarURL!=''"  class="img-tumb inline avatar shadow" title="Avatar">
+  
 </div>
 <div class="text-center pb-3">
   <button class="btn btn-link" (click)="launchSocial(facebookURL)">
@@ -117,7 +118,10 @@
 
 <div class="pt-3">
   <p class="text-info">
-  <span>{{'settings.avatarinfo'|translate}} </span> <a href="https://browser.blockstack.org/profiles" target="_blank" class="btn btn-link btn-sm">Blockstack ID <i class="fas fa-external-link-alt"></i></a>
+  <span>{{'settings.avatarinfo'|translate}} </span> 
+  <!-- <button type="button" class="btn btn-link btn-sm" (click)="openBlockstackID()">Blockstack ID <i class="fas fa-external-link-alt"></i></button> -->
+  <a href="https://browser.blockstack.org/profiles" target="_self" class="btn btn-link btn-sm">Blockstack ID <i class="fas fa-external-link-alt"></i></a>
+
   </p>
 </div>
       </div>

@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { SharedDataService } from 'src/app/share/shared-data.service';
 import { ShareModel } from 'src/app/share/Models/share.model';
 import { ConfirmationService, ResolveEmit } from "@jaspero/ng-confirmations";
+import { ImageService } from 'src/app/share/image-service';
 
 
 declare var $: any;
@@ -34,7 +35,6 @@ export class SettingsComponent implements OnInit {
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
   avatarURL:string = '';
-  avatarContent:string ;
   facebookURL:string='';
   twitterURL:string='';
   instagramURL:string='';
@@ -68,7 +68,7 @@ export class SettingsComponent implements OnInit {
   constructor(private toastr: ToastrService, private ngxService:NgxUiLoaderService, 
     private _api: ApiService, private route: Router, private globals: GlobalsService,
     private translate: TranslateService, public sharedDataService:SharedDataService,
-    private _confirmation: ConfirmationService){
+    private _confirmation: ConfirmationService, private imgService: ImageService){
     this._api.setApi('posts')
 
     
@@ -207,7 +207,13 @@ export class SettingsComponent implements OnInit {
       let avatarObj = userData.profile.image? userData.profile.image.filter(e=> e.name=='avatar')[0] : null;
       if(avatarObj!= null)
       {
-        this.avatarURL = avatarObj.contentUrl;
+       // this.avatarURL = avatarObj.contentUrl;
+      this.imgService.getImage(avatarObj.contentUrl);
+      this.imgService.onImageLoaded.subscribe(base64Blob=>{
+        this.avatarURL = base64Blob.toString();
+      });
+    
+
       }
       else
         this.avatarURL = 'assets/User-blue-icon.png';
@@ -569,11 +575,14 @@ export class SettingsComponent implements OnInit {
 
   launchSocial(url:string){
     if(url==null || url == ''){
-      
     }
     else{
       window.open(url, '_blank');
     }
+  }
 
+  openBlockstackID(){
+    var url = "https://browser.blockstack.org/profiles";
+    window.open(url, "_self");
   }
 }

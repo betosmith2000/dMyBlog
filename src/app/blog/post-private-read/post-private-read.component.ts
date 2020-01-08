@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PreviousRouteService } from 'src/app/share/previous-route';
 import * as blockstack from 'node_modules/blockstack/dist/blockstack.js';
 import * as introJs from 'intro.js/intro.js';
+import { ImageService } from 'src/app/share/image-service';
 
 
 @Component({
@@ -77,7 +78,7 @@ export class PostPrivateReadComponent implements OnInit {
     private _api:ApiService, private toastr: ToastrService, 
     private cdRef:ChangeDetectorRef, private globals: GlobalsService,
     private translate: TranslateService, private router: Router,
-    private previousRouteService: PreviousRouteService) {
+    private previousRouteService: PreviousRouteService, private imgService: ImageService) {
 
      
    }
@@ -636,7 +637,11 @@ export class PostPrivateReadComponent implements OnInit {
       let avatarObj = p.image? p.image.filter(e=> e.name=='avatar')[0] : null;
       if(avatarObj!= null)
       {
-        this.avatarURL = avatarObj.contentUrl;
+        //this.avatarURL = avatarObj.contentUrl;
+        this.imgService.getImage(avatarObj.contentUrl);
+        this.imgService.onImageLoaded.subscribe(base64Blob=>{
+          this.avatarURL = base64Blob.toString();
+        });
       }
       else
         this.avatarURL = 'assets/User-blue-icon.png';

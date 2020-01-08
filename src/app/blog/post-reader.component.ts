@@ -12,6 +12,7 @@ import { GlobalsService } from '../share/globals.service';
 import { attachedFile } from '../share/attached-file';
 import { TranslateService } from '@ngx-translate/core';
 import { PreviousRouteService } from '../share/previous-route';
+import { ImageService } from '../share/image-service';
 
 
 
@@ -81,7 +82,7 @@ export class PostReaderComponent implements OnInit {
     private _api:ApiService, private toastr: ToastrService, 
     private cdRef:ChangeDetectorRef, private globals: GlobalsService,
     private translate: TranslateService, private router: Router,
-    private previousRouteService: PreviousRouteService) {
+    private previousRouteService: PreviousRouteService,private imgService: ImageService) {
 
      
    }
@@ -581,7 +582,11 @@ export class PostReaderComponent implements OnInit {
       let avatarObj = p.image? p.image.filter(e=> e.name=='avatar')[0] : null;
       if(avatarObj!= null)
       {
-        this.avatarURL = avatarObj.contentUrl;
+        //this.avatarURL = avatarObj.contentUrl;
+        this.imgService.getImage(avatarObj.contentUrl);
+        this.imgService.onImageLoaded.subscribe(base64Blob=>{
+          this.avatarURL = base64Blob.toString();
+        });
       }
       else
         this.avatarURL = 'assets/User-blue-icon.png';
