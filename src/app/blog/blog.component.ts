@@ -33,6 +33,7 @@ export class BlogComponent implements OnInit {
   twitterURL:string='';
   instagramURL:string='';
 
+  rssUrl:string = "https://www.dmyblog.co/api/rss/";
 
   header :any;
   userSession :any;
@@ -110,6 +111,12 @@ export class BlogComponent implements OnInit {
 
         },
         {
+          element: "#step5",
+          intro: "In this bar are the links to the social networks of the author of the publications, these can be activated in the Settings section, there is also the RSS icon where you can click to copy the URL of the feed to configure my Blog in your RSS reader!",
+          disableInteraction:true
+
+        },
+        {
           element: "#step4",
           intro: "<p>Here is the list of the posts that you have created." +
           " You can view<button type='button' class='btn btn-link btn-sm'><i class='far fa-eye'></i></button>,"+
@@ -146,6 +153,12 @@ export class BlogComponent implements OnInit {
         {
           element: "#step3",
           intro: "Puede agregar una nuevo post, solo presiona el botón.",
+          disableInteraction:true
+
+        },
+        {
+          element: "#step5",
+          intro: "En esta barra están los enlaces a las redes sociales del autor de las publicaciones, estos se pueden activar en la sección Configuración, también está el ícono RSS donde puede hacer clic para copiar la URL del feed para configurar mi Blog en su lector RSS !",
           disableInteraction:true
 
         },
@@ -213,6 +226,7 @@ export class BlogComponent implements OnInit {
 
       let userBlog = params.get("userBlog");
       this.userName = userBlog;
+      this.rssUrl = this.rssUrl + userBlog;
       if(!this.userSession.isUserSignedIn())
       {
         
@@ -507,4 +521,14 @@ export class BlogComponent implements OnInit {
       }
     });
   }
+
+  copyRSSUlr(inputElement):void{
+    
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+
+    this.toastr.success("Copied RSS URL!",'Success')        
+  }
+
 }

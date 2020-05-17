@@ -8,6 +8,7 @@ import { InteractionTypeResult } from './models/InteractionTypeResult';
 import * as introJs from 'intro.js/intro.js';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-discover',
@@ -31,6 +32,7 @@ export class DiscoverComponent implements OnInit {
   userName :string  = '';
   currentFilter:string='';
   isSignIn:boolean=false;
+  rssUrl:string = "https://www.dmyblog.co/api/rss";
 
   private LOGO = require("../../assets/post-head.jpg");
    //Paginacion
@@ -39,7 +41,7 @@ export class DiscoverComponent implements OnInit {
 
 
   constructor(private _api:ApiService, private ngxService: NgxUiLoaderService,
-    private translate: TranslateService, private router : Router) { 
+    private translate: TranslateService, private router : Router, private toastr: ToastrService,) { 
     _api.setApi('Posts');
    
   }
@@ -65,6 +67,13 @@ export class DiscoverComponent implements OnInit {
         //" or not<button type='button' class='btn btn-link btn-sm'><i class='fas fa-grin-hearts'></i></button>.</p>",
         position:"top",
         disableInteraction:true
+
+      },
+      {
+        element: "#step4",
+        intro: "You can click this button to copy the URL of the feed to configure dMy Blog in your RSS reader!",
+        disableInteraction:true
+
 
       },
       {
@@ -105,6 +114,13 @@ export class DiscoverComponent implements OnInit {
         " <p>También puede ver si su publicación ha gustado a los lectores s<button type='button' class='btn btn-link btn-sm'><i class='far fa-thumbs-up'></i></button></p>",
         position:"top",
         disableInteraction:true
+
+      },
+      {
+        element: "#step4",
+        intro: "¡Puede hacer clic en este botón para copiar la URL del feed para configurar dMy Blog en su lector de RSS!",
+        disableInteraction:true
+
 
       },
       {
@@ -317,4 +333,14 @@ export class DiscoverComponent implements OnInit {
     this.pagination.pageNumber  = 0;
     this.getData();
   }
+
+  copyRSSUlr(inputElement):void{
+    
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+
+    this.toastr.success("Copied RSS URL!",'Success')        
+  }
 }
+

@@ -1,3 +1,4 @@
+<input type="text" class="form-control input-hidden"  aria-label="RSS Url to share" [(ngModel)]="rssUrl" #urlinput>
 <button  title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)" *ngIf="!isNewPost && !isViewingPost" >
   <i class="fas fa-question fa-2x"></i>
 </button>
@@ -14,18 +15,23 @@
   <div class="card mb-3 shadow-sm shadow header-card rounded-lg bg-dark " id="step1">
     <img class="card-img-top header-img rounded-lg" [src]="header?.blogHeaderImage" alt="..." *ngIf="header?.blogHeaderImage">
     
-    <div class="card-img-overlay ">
-      <div class="float-right p-3" *ngIf="showSocialButtons"> 
-        <button class="btn btn-link btn-social" (click)="launchSocial(facebookURL)">
+    <div class="card-img-overlay " >
+      <div class="float-right p-3 social-bar" id="step5"> 
+        <button class="btn btn-link btn-social" (click)="launchSocial(facebookURL)" title="Facebook" *ngIf="showSocialButtons">
           <i class="fab fa-facebook fa-2x"></i>
         </button>
-        <button class="btn btn-link btn-social" (click)="launchSocial(twitterURL)">
+        <button  class="btn btn-link btn-social" (click)="launchSocial(twitterURL)" title="Twitter" *ngIf="showSocialButtons">
           <i class="fab fa-twitter-square fa-2x"></i>
         </button>
-        <button class="btn btn-link btn-social" (click)="launchSocial(instagramURL)">
+        <button class="btn btn-link btn-social" (click)="launchSocial(instagramURL)" title="instagram" *ngIf="showSocialButtons">
           <i class="fab fa-instagram fa-2x"></i>
         </button>
+        <button class="btn btn-link btn-social btn-rss" (click)="copyRSSUlr(urlinput)" title="RSS">
+          <i class="fas fa-rss fa-2x"></i>
+        </button>
       </div>
+
+      
       <div  class="text-center text-header"  >
           <h2 class="card-title display-4  " >{{header?.blogName}}</h2>
           <p ><span class="font-italic font-weight-light ">{{header?.blogDescription}}</span> </p>    

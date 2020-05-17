@@ -118,6 +118,20 @@ $primary: blueviolet !default;
     z-index: 1001;
 }
 
+.float-button-rss{
+    position: fixed;
+	width:60px;
+	height:60px;
+	top:170px;
+    right:20px;
+	background-color:#e9722e;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1001;
+}
+
 
 
 
@@ -211,4 +225,10 @@ hr {
 .p-excerpt{
     line-height: 1;
     font-size: small;
+}
+
+.input-hidden{
+    border-width: 0px;
+    background-color: transparent;
+    color: transparent;
 }
