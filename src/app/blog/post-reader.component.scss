@@ -240,3 +240,15 @@ table {
   margin-left: 50px;
   margin-right: 50px;
 }
+
+
+.lateral-toolbar{
+  background: rgba(0, 0, 0, 0.0);
+  padding: 5px;
+  position: fixed;
+  width:45px;
+  top: 25%;
+  margin-bottom: 100px;
+  right:3px;    
+  z-index: 10001;
+}

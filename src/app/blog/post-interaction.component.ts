@@ -118,7 +118,9 @@ export class PostInteractionComponent implements OnInit {
     }
   }
 
-  like():void{
+  like(event:Event):void{
+    event.stopPropagation();    
+
     if(!this.canInteract){
       this.toastr.warning("You need to login to interact with dMy Blog!",'Warning');
     }

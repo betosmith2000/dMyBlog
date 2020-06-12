@@ -1,6 +1,19 @@
-<button title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)" *ngIf="!isNewPost && !isUpdatePost">
-  <i class="fas fa-question fa-2x"></i>
-</button>
+
+
+<div class="lateral-toolbar rounded">
+  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+    <div class="btn-group-vertical" role="group" aria-label="Third group"  >
+      
+      <button title="{{'help.help'|translate}}" class="btn btn-warning" (click)="startTour(true)" *ngIf="!isNewPost && !isUpdatePost">
+        <i class="fas fa-question"></i>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
 <div class="container top-padding" *ngIf="!isNewPost && !isUpdatePost">    
   <h2 class="display-4 d-none d-sm-block text-center" id="step0">{{userName}} </h2>
   <h4 class="d-block d-sm-none text-center" id="step0">{{userName}} </h4>
@@ -9,14 +22,14 @@
   
 </div>
 <div class="text-center pb-3">
-  <button class="btn btn-link" (click)="launchSocial(facebookURL)">
-    <i class="fab fa-facebook fa-3x"></i>
+  <button class="btn btn-link text-info" (click)="launchSocial(facebookURL)">
+    <i class="fab fa-facebook-f fa-2x"></i>
   </button>&nbsp;
-  <button class="btn btn-link" (click)="launchSocial(twitterURL)">
-    <i class="fab fa-twitter-square  fa-3x"></i>
+  <button class="btn btn-link text-info" (click)="launchSocial(twitterURL)">
+    <i class="fab fa-twitter fa-2x"></i>
   </button>&nbsp;
-  <button class="btn btn-link" (click)="launchSocial(instagramURL)">
-    <i class="fab fa-instagram  fa-3x"></i>
+  <button class="btn btn-link text-info" (click)="launchSocial(instagramURL)">
+    <i class="fab fa-instagram  fa-2x"></i>
   </button>&nbsp;
 </div>
   <div class="card shadow-sm"  [ngClass]="{
@@ -61,10 +74,10 @@
               
           </div>
           <div class="col-sm-1" *ngIf="hasPublicKey==false">
-            <button class="btn btn-link" type="button" (click)="showPublicKey()">{{'settings.showPK'|translate}}</button>
+            <button class="btn btn-link text-info" type="button" (click)="showPublicKey()">{{'settings.showPK'|translate}}</button>
           </div>
           <div class="col-sm-1" *ngIf="hasPublicKey">
-            <button class="btn btn-link" type="button" (click)="hidePublicKey()">{{'settings.hidePK'|translate}}</button>
+            <button class="btn btn-link text-info" type="button" (click)="hidePublicKey()">{{'settings.hidePK'|translate}}</button>
           </div>
         </div>
         <div class="form-group row"> 
@@ -96,31 +109,11 @@
               
         </div>
 
-        <!-- <div class="form-group row">
-          <label for="file" class="col-sm-3 col-form-label">{{'settings.avatar'|translate}}</label>
-          <div class="col-sm-9" *ngIf="!hasAvatar">
-              <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">{{'settings.imageupload'|translate}}</span>
-                  </div>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="file" accept="image/*" name="file" (change)="handleAvatarInputChange($event)">
-                    <label class="custom-file-label" for="inputGroupFile01">{{'settings.imagechoose'|translate}}</label>
-                  </div>
-                </div>
-          </div>
-          <div class="col-sm-9" *ngIf="hasAvatar">
-            <img [src]="avatarImageContent" class="img-tumb inline avatar shadow" alt="Current avatar"> &nbsp; 
-            <button class="btn btn-outline-danger align-bottom inline" type="button" (click)="removeAvatarImageHeader()"><i class="far fa-times-circle" title="{{'settings.avataremove'|translate}}"></i> </button>
-          </div>
-            
-      </div> -->
-
 <div class="pt-3">
   <p class="text-info">
   <span>{{'settings.avatarinfo'|translate}} </span> 
   <!-- <button type="button" class="btn btn-link btn-sm" (click)="openBlockstackID()">Blockstack ID <i class="fas fa-external-link-alt"></i></button> -->
-  <a href="https://browser.blockstack.org/profiles" target="_self" class="btn btn-link btn-sm">Blockstack ID <i class="fas fa-external-link-alt"></i></a>
+  <a href="https://browser.blockstack.org/profiles" target="_self" class="btn btn-link text-info btn-sm">Blockstack ID <i class="fas fa-external-link-alt"></i></a>
 
   </p>
 </div>
@@ -149,21 +142,21 @@
 
       <ul class="nav nav-tabs" id="step4" role="tablist"   >
         <li class="nav-item">
-          <a class="nav-link active" id="myposts-tab" data-toggle="tab" href="#myposts" role="tab" aria-controls="home" aria-selected="true">{{'settings.mypostsBy'|translate}}</a>
+          <a class="nav-link active text-info" id="myposts-tab" data-toggle="tab" href="#myposts" role="tab" aria-controls="home" aria-selected="true">{{'settings.mypostsBy'|translate}}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="mysharedposts-tab" data-toggle="tab" href="#mysharedposts" role="tab" aria-controls="profile" aria-selected="false">{{'settings.mysharedposts'|translate}}</a>
+          <a class="nav-link text-info" id="mysharedposts-tab" data-toggle="tab" href="#mysharedposts" role="tab" aria-controls="profile" aria-selected="false">{{'settings.mysharedposts'|translate}}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="postssharedwithme-tab" data-toggle="tab" href="#postsharedwithme" role="tab" aria-controls="contact" aria-selected="false">{{'settings.sharedpostswithme'|translate}}</a>
+          <a class="nav-link text-info" id="postssharedwithme-tab" data-toggle="tab" href="#postsharedwithme" role="tab" aria-controls="contact" aria-selected="false">{{'settings.sharedpostswithme'|translate}}</a>
         </li>
       </ul>
       <div class="tab-content table-posts" id="myTabContent">
         <div class="tab-pane fade show active" id="myposts" role="tabpanel" aria-labelledby="myposts-tab">
             <div >
               <div >
-                  <button id="step3"  type="button" (click)="showNewPost()" class="btn btn-link float-right" >{{'settings.newpost'|translate}} <i class="far fa-file"></i></button>
-                  <label *ngIf="posts.length === 0" for="btnNewPost" class="float-right mt-2">{{'settings.tableempty'|translate}}</label> 
+                  <button id="step3"  type="button" (click)="showNewPost()" class="btn btn-link float-right text-info" >{{'settings.newpost'|translate}} <i class="far fa-file"></i></button>
+                  <label *ngIf="posts.length === 0" for="btnNewPost" class="float-right mt-2 text-info">{{'settings.tableempty'|translate}}</label> 
               </div>
           </div> 
 
@@ -184,8 +177,8 @@
                   <td class="small">{{p.date|date:'medium'}}</td>
                   <td class="float-right small">
                     <div class="btn-group" role="group" aria-label="Actions">
-                      <button type="button" class="btn btn-primary btn-sm" title="{{'settings.tableshare'|translate}}"  data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"><i class="fas fa-share-alt"></i></button>&nbsp;
-                      <button type="button" class="btn btn-primary btn-sm" title="{{'settings.tableedit'|translate}}" (click)="editPost(p)"><i class="far fa-edit"></i></button>&nbsp;
+                      <button type="button" class="btn btn-dark btn-sm" title="{{'settings.tableshare'|translate}}"  data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"><i class="fas fa-share-alt"></i></button>&nbsp;
+                      <button type="button" class="btn btn-dark btn-sm" title="{{'settings.tableedit'|translate}}" (click)="editPost(p)"><i class="far fa-edit"></i></button>&nbsp;
                       <button type="button" class="btn btn-danger btn-sm" title="{{'settings.tabledelete'|translate}}" (click)="deletePost(p)">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>
                     </div>
                   </td>

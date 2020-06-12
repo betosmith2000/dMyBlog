@@ -1,7 +1,29 @@
-<button  title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)">
+<!-- <button  title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)">
   <i class="fas fa-question fa-2x"></i>
-</button>
-<div class="container top-padding">    
+</button> -->
+
+<div class="lateral-toolbar rounded">
+  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+    <div class="btn-group-vertical mb-2 " role="group" aria-label="Second group" >
+      <button type="button" class="btn btn-dark text-white" (click)="close()" title="Cancel changes">
+        <i class="fas fa-undo"></i>
+      </button>
+      <button type="button" (click)="save()" class="btn btn-dark text-white"  title="Save changes">
+        <i class="far fa-save"></i>
+      </button>
+    </div>
+
+    <div class="btn-group-vertical" role="group" aria-label="Third group"  >
+      <button  title="{{'help.help'|translate}}" class="btn btn-dark text-warning" (click)="startTour(true)" >
+        <i class="fas fa-question"></i>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div class="container top-padding">
     <h2 class="display-4">{{title}}</h2>
     <div class="card"  [ngClass]="{
       'bg-dark':selectedTheme=='dark',
@@ -62,7 +84,7 @@
                 </select>
                   <span class="invalid-feedback" *ngIf="status.invalid && (status.touched || status.dirty) ">
                       <span *ngIf="status.errors.required">{{'post.titlevalreq'|translate}}</span>
-                      
+
                   </span>
               </div>
             </div>
@@ -103,10 +125,10 @@
                 <ul class="list-group">
                   <li class="list-group-item"  *ngFor="let f of attachedFiles">
                     <button title="{{'post.download'|translate}}" type="button" class="btn btn-link" (click)="downloadAttachedFile(f)" title="Dowload file">{{f.name}}</button>
-                    
+
                     <button title="{{'post.remove'|translate}}" type="button" class="btn btn-danger" (click)="deleteAttachedFile(f)" title="Delete file" ><i class="fas fa-trash"></i></button>
                   </li>
-                 
+
                 </ul>
               </div>
           </div>
@@ -114,14 +136,14 @@
             <div class="col-sm-12 text-danger" >
               <span class="small text-info">{{'post.instruction'|translate}}</span>
             </div>
-            
+
 
           </div>
             <div class="float-md-right" id="step6">
               <button type="button" class="btn btn-outline-secondary" (click)="close()" title="Cancel changes"  >{{'post.cancel'|translate}}</button>&nbsp;
               <button type="button" (click)="save()" class="btn btn-primary"  title="Save changes">{{'post.save'|translate}}</button>
             </div>
-    
+
           </form>
         </div>
       </div>

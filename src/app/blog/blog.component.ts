@@ -444,6 +444,7 @@ export class BlogComponent implements OnInit {
   }
 
   sharePost(event:Event, p:any):void{
+    
    // if(p.status!=0){
       this.selectedPost = p;
       if(this.translate.currentLang == 'es')
@@ -468,7 +469,7 @@ export class BlogComponent implements OnInit {
      
 
        
-    //   event.stopPropagation();    
+     
     // }    
   }
 

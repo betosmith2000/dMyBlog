@@ -30,19 +30,20 @@
 
 
 $primary: blueviolet !default;
-:host-context(.like-lateral) .float-like{
-    position: fixed;
-    width:60px;
-    height:60px;
-    top:340px;
-    right:20px;
-    background-color:$primary;
-    color:#FFF;
-    border-radius:50px;
+//:host-context(.like-lateral) 
+.float-like{
+    //position: fixed;
+    // width:60px;
+     height:38px;
+    // top:340px;
+    // right:20px;
+    //background-color:$primary;
+    //color:#FFF;
+    //border-radius:50px;
     text-align:center;
-    box-shadow: 2px 2px 3px #999;
-	z-index: 1001;
-	font-size: 2rem;
+    //box-shadow: 2px 2px 3px #999;
+	//z-index: 1001;
+	//font-size: 2rem;
   }
   
   :host-context(.like-lateral) .float-unlike{
@@ -73,7 +74,8 @@ $primary: blueviolet !default;
     
 }
 
-:host-context(.like-inline)  .stack-site{
+// :host-context(.like-inline) 
+ .stack-site{
     font-size: .65rem;
     position: relative;
     top: -40px;

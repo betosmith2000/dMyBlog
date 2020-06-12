@@ -272,3 +272,14 @@ hr {
     width: 100%;
     height: 100%;
 }
+
+.lateral-toolbar{
+    background: rgba(0, 0, 0, 0.0);
+    padding: 5px;
+    position: fixed;
+    width:45px;
+    top: 25%;
+    margin-bottom: 100px;
+    right:3px;    
+    z-index: 10001;
+}

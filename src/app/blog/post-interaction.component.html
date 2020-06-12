@@ -6,10 +6,16 @@
           <span class="badge badge-dark stack-site">{{interactions?.unlikeCount}}</span>
         </span>
       </button> -->
-      <button id="step6" class="btn btn-link float-like" (click)="like()" title="{{'browse.like'|translate}}" [disabled]="Post.status=='0'" >
+      <!-- <button id="step6" class="btn btn-link float-like" (click)="like()" title="{{'browse.like'|translate}}" [disabled]="Post.status=='0'" >
         <span class="fa-layers fa-fw" >
           <i class="far fa-thumbs-up "></i>
           <span class="badge badge-dark stack-site">{{interactions?.likeCount}}</span>
         </span>
+      </button> -->
+
+      <button id="step6" type="button" class="btn btn-dark float-like" (click)="like($event)" title="{{'browse.like'|translate}}" [disabled]="Post.status=='0'" >
+        
+        <span class="sr-only">Post likes</span>
+        <i class="far fa-thumbs-up "></i> <span class="badge badge-light stack-site">{{interactions?.likeCount}}</span>
       </button>
 </div>

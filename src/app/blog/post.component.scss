@@ -29,16 +29,13 @@ $primary: blueviolet !default;
 }
 
 
-// .float-like{
-//     position: fixed;
-//     width:60px;
-//     height:60px;
-//     top:340px;
-//     right:20px;
-//     background-color:$primary;
-//     color:#FFF;
-//     border-radius:50px;
-//     text-align:center;
-//     box-shadow: 2px 2px 3px #999;
-//     z-index: 1001;
-//   }
+.lateral-toolbar{
+    background: rgba(0, 0, 0, 0.0);
+    padding: 5px;
+    position: fixed;
+    width:45px;
+    top: 25%;
+    margin-bottom: 100px;
+    right:3px;    
+    z-index: 10001;
+}

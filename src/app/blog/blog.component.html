@@ -1,13 +1,48 @@
 <input type="text" class="form-control input-hidden"  aria-label="RSS Url to share" [(ngModel)]="rssUrl" #urlinput>
-<button  title="{{'help.help'|translate}}" class="btn btn-link float-button " (click)="startTour(true)" *ngIf="!isNewPost && !isViewingPost" >
+<!-- <button  title="{{'help.help'|translate}}" class="btn btn-link float-button " (click)="startTour(true)" *ngIf="!isNewPost && !isViewingPost" >
   <i class="fas fa-question fa-2x"></i>
-</button>
+</button> 
 <button title="{{'help.newpost'|translate}}"  id="step3" class="btn btn-link float-new-post" (click)="showNewPost()" *ngIf="isAdmin && !isNewPost && !isViewingPost">
     <i class="fas fa-plus fa-2x"></i>
 </button>
 <button title="{{'help.shareblog'|translate}}" id="step2" class="btn btn-link float-share" type="button" data-toggle="modal" data-target="#share" (click)="shareBlog()" *ngIf="isAdmin && !isNewPost && !isViewingPost">
     <i class="fas fa-share-alt fa-2x"></i>
-</button>
+</button>-->
+
+<div class="lateral-toolbar rounded">
+  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+    <div class="btn-group-vertical mb-2" role="group" aria-label="Social group" *ngIf="!isNewPost && !isViewingPost">
+      <button type="button" class="btn btn-dark" (click)="launchSocial(facebookURL)" title="Facebook" *ngIf="showSocialButtons">
+        <i class="fab fa-facebook-square "></i>
+      </button>
+      <button type="button"  class="btn btn-dark " (click)="launchSocial(twitterURL)" title="Twitter" *ngIf="showSocialButtons">
+        <i class="fab fa-twitter-square "></i>
+      </button>
+      <button type="button" class="btn btn-dark" (click)="launchSocial(instagramURL)" title="instagram" *ngIf="showSocialButtons">
+        <i class="fab fa-instagram "></i>
+      </button>
+      <button type="button" class="btn btn-dark" (click)="copyRSSUlr(urlinput)" title="RSS">
+        <i class="fas fa-rss-square "></i>
+      </button>
+    </div>
+
+
+    <div class="btn-group-vertical mb-2" role="group" aria-label="Second group" *ngIf="isAdmin && !isNewPost && !isViewingPost">
+      <button title="{{'help.newpost'|translate}}"  id="step3" class="btn btn-dark text-white" (click)="showNewPost()" >
+        <i class="fas fa-plus"></i>
+      </button>
+      <button title="{{'help.shareblog'|translate}}" id="step2" class="btn btn-dark text-white" type="button" data-toggle="modal" data-target="#share" (click)="shareBlog()" >
+          <i class="fas fa-share-alt"></i>
+      </button>
+    </div>
+    <div class="btn-group-vertical" role="group" aria-label="Third group" *ngIf="!isNewPost && !isViewingPost" >
+      <button  title="{{'help.help'|translate}}" class="btn btn-dark text-warning" (click)="startTour(true)" >
+        <i class="fas fa-question"></i>
+      </button>
+    </div>
+  </div>
+</div>
 
 <div class="container top-padding" *ngIf="!isNewPost && !isViewingPost">
 
@@ -37,23 +72,6 @@
 
       <div class="float-right"> 
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-
-          <div class="btn-group mr-2" role="group" aria-label="Social group">
-            <button type="button" class="btn btn-dark" (click)="launchSocial(facebookURL)" title="Facebook" *ngIf="showSocialButtons">
-              <i class="fab fa-facebook-square "></i>
-            </button>
-            <button type="button"  class="btn btn-dark " (click)="launchSocial(twitterURL)" title="Twitter" *ngIf="showSocialButtons">
-              <i class="fab fa-twitter-square "></i>
-            </button>
-            <button type="button" class="btn btn-dark" (click)="launchSocial(instagramURL)" title="instagram" *ngIf="showSocialButtons">
-              <i class="fab fa-instagram "></i>
-            </button>
-            <button type="button" class="btn btn-dark" (click)="copyRSSUlr(urlinput)" title="RSS">
-              <i class="fas fa-rss-square "></i>
-            </button>
-          </div>
-
-
           <div class="btn-group mr-2" role="group" aria-label="View">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
               <label class="btn btn-dark active" (click)="viewMode='grid'" title="Grid View">
@@ -101,7 +119,7 @@
                   </div>
                 </div>
                 <div class="btn-group button-bar"  role="group" aria-label="Basic example" >
-                    <button type="button" class="btn btn-dark btn-sm text-white" title="{{'myblog.delete'|translate}}" (click)="deletePost($event, p)" *ngIf="isAdmin">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>             
+                    <button type="button" class="btn btn-danger btn-sm text-white" title="{{'myblog.delete'|translate}}" (click)="deletePost($event, p)" *ngIf="isAdmin">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>             
                     <button type="button" class="btn btn-dark btn-sm text-white" title="{{'myblog.edit'|translate}}" (click)="editPost(p)"*ngIf="isAdmin"><i class="far fa-edit"></i></button>
                     <button class="btn btn-dark btn-sm text-white" type="button" title="{{'myblog.share'|translate}}" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)">
                         <i class="fas fa-share-alt"></i>
@@ -137,7 +155,7 @@
       
       <div class="row text-dark" *ngFor="let p of posts | sortBy:orderMode:'date'"  >
         <div class="col-md-2"></div>
-        <div class="col-md-8 shadow mb-5 post-size-block rounded post" (click)="viewPost(p)" style="background-color: white" >
+        <div class="col-md-8 shadow mb-5 post-size-block rounded post" style="background-color: white" >
           <div class="row h-100 manita p-2" (click)="viewPost(p)">
             <div class="col-md-8  ">
               <div class="h-100 d-flex align-items-start flex-column bd-highlight mb-3" style="height: 200px;">

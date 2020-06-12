@@ -119,17 +119,10 @@ $primary: blueviolet !default;
 }
 
 .float-button-rss{
-    position: fixed;
-	width:60px;
-	height:60px;
-	top:170px;
-    right:20px;
-	background-color:#e9722e;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
-    box-shadow: 2px 2px 3px #999;
-    z-index: 1001;
+    
+	color:#e9722e;
+	
+	
 }
 
 
@@ -233,3 +226,14 @@ hr {
     color: transparent;
 }
 
+
+.lateral-toolbar{
+    background: rgba(0, 0, 0, 0.0);
+    padding: 5px;
+    position: fixed;
+    width:45px;
+    top: 25%;
+    margin-bottom: 100px;
+    right:3px;    
+    z-index: 10001;
+}

@@ -3,12 +3,27 @@
     <app-post-reader [Post]="selectedPost" (closed)="onClosedViewer($event)"></app-post-reader>
   </div>
       
-  <button  title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)" >
-    <i class="fas fa-question fa-2x"></i>
-  </button>
-  <button  id="step4" title="dMy Blog RSS" class="btn btn-link float-button-rss" (click)="copyRSSUlr(urlinput)" >
-    <i class="fas fa-rss fa-2x"></i>
-  </button>
+ 
+  
+<div class="lateral-toolbar rounded">
+  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+    <div class="btn-group-vertical mb-2" role="group" aria-label="Second group" >
+      
+      <button  id="step4" title="dMy Blog RSS" class="btn btn-dark float-button-rss" (click)="copyRSSUlr(urlinput)" >
+        <i class="fas fa-rss "></i>
+      </button>
+
+    </div>
+    <div class="btn-group-vertical" role="group" aria-label="Third group"  >
+      <button  title="{{'help.help'|translate}}" class="btn btn-dark text-warning" (click)="startTour(true)" >
+        <i class="fas fa-question"></i>
+      </button>
+      
+    </div>
+  </div>
+</div>
+
 
   <div class="container top-padding">
     <h2 class="display-4 bm-2"  *ngIf="!isViewingPost">{{'browse.latest'|translate}}</h2>
@@ -114,7 +129,7 @@
       
     <div class="row text-dark" *ngFor="let p of posts"  >
       <div class="col-md-2"></div>
-      <div class="col-md-8 shadow mb-5 post-size-block rounded post" (click)="viewPost(p)" style="background-color: white" >
+      <div class="col-md-8 shadow mb-5 post-size-block rounded post" style="background-color: white" >
         <div class="row h-100 manita p-2" (click)="viewPost(p)">
           <div class="col-md-8  ">
             <div class="h-100 d-flex align-items-start flex-column bd-highlight mb-3" style="height: 200px;">
