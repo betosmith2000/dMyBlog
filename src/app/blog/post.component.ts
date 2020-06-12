@@ -440,8 +440,7 @@ export class PostComponent implements OnInit {
     .then(() =>{
       
       this.writeOptions.encrypt=postData.encrypt;
-      
-      postContent = postContent.replace(/img src/g,"img style=\\\"max-width:100%\\\" src");
+      postContent = postContent.replace(/img src/g,"img style=\\\"width:500px\\\" src");
      // postContent = postContent.replace(/a href/g,"a target='_blank' href");
 
       this.userSession.putFile(postData.postFileName,postContent, this.writeOptions)

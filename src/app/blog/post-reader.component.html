@@ -29,32 +29,35 @@
                 <h3 class="text-center text-muted font-weight-light">{{excerpt}}</h3>
                 <div class="text-center">
                   <br>
+                  
                   <div  >
-                    
-                      <!-- <img [src]="avatarContent" class="img-tumb inline avatar shadow" alt="Avatar">   -->
-                      <img [src]="avatarURL" alt="Avatar" *ngIf="avatarURL!=''"  class="avatar" title="Avatar">
+                    <div>
+                        <img [src]="avatarURL" alt="Avatar" *ngIf="avatarURL!=''"  class="avatar" title="Avatar">
+                    </div>
+                    <a href="#"  class="text-info " (click)="goToAuthorBlog()" >{{author}}</a>
+                    <br>
+                    <label class="font-weight-lighter">{{date | date:'medium' }}</label>
                   </div>
                   
-                  <span>{{'read.by'|translate}}</span>
-                  <button type="button" class="btn btn-link" (click)="goToAuthorBlog()">{{author}}  </button> <br>
+                  
                   <div *ngIf="showSocialButtons"> 
-                    <button class="btn btn-link btn-social" (click)="launchSocial(facebookURL)">
-                      <i class="fab fa-facebook fa-2x"></i>
+                    <button class="btn btn-link text-info manita" (click)="launchSocial(facebookURL)">
+                      <i class="fab fa-facebook-f"></i>
                     </button>
-                    <button class="btn btn-link btn-social" (click)="launchSocial(twitterURL)">
-                      <i class="fab fa-twitter-square fa-2x"></i>
+                    <button class="btn btn-link text-info manita" (click)="launchSocial(twitterURL)">
+                      <i class="fab fa-twitter "></i>
                     </button>
-                    <button class="btn btn-link btn-social" (click)="launchSocial(instagramURL)">
-                      <i class="fab fa-instagram fa-2x"></i>
+                    <button class="btn btn-link  text-info manita" (click)="launchSocial(instagramURL)">
+                      <i class="fab fa-instagram "></i>
                     </button>
                   </div>
-                  <label class="font-weight-light">{{date | date:'medium' }}</label>
+                  
                 </div>
               </div>
           </div>
           <div class="row">
               <div class="col">
-                  <img [src]="imageContent"  class="rounded mx-auto d-block img-post" alt="" *ngIf="imageContent">
+                  <img [src]="imageContent"  class="rounded mx-auto d-block img-post img-fluid" alt="" *ngIf="imageContent">
               </div>
             </div>
          
@@ -81,8 +84,8 @@
         </div>
       </div>
       
-  <div class="card-footer"  id="step3">
-      
+  <div class="card-body"  id="step3">
+      <hr class="comments-separator">
       <h3>{{'read.comments'|translate}}</h3>
       <br>
       <div *ngIf="comments?.length === 0" class="alert alert-warning pt-3" role="alert">

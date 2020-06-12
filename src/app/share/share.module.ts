@@ -8,7 +8,7 @@ import { NgxUiLoaderModule, NgxUiLoaderConfig, POSITION } from 'ngx-ui-loader';
 import { BlogShareComponent } from '../blog/blog-share.component';
 import { ContactUsComponent } from '../layout/contact-us/contact-us.component';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { NgpSortModule } from 'ngp-sort-pipe';
 
 
 @NgModule({
@@ -21,7 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
     BrowserModule,
     CKEditorModule,
     NgxUiLoaderModule,
-    TranslateModule
+    TranslateModule, NgpSortModule
   ],
   exports: [
     CommonModule,
@@ -33,7 +33,8 @@ import { TranslateModule } from '@ngx-translate/core';
     NgxUiLoaderModule,
     BlogShareComponent,    
     ContactUsComponent,
-    TranslateModule
+    TranslateModule,
+    NgpSortModule
   ]
 })
 export class ShareModule { }

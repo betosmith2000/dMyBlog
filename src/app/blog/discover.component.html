@@ -1,45 +1,72 @@
   <input type="text" class="form-control input-hidden"  aria-label="RSS Url to share" [(ngModel)]="rssUrl" #urlinput>
   <div *ngIf="isViewingPost" >
-      <app-post-reader [Post]="selectedPost" (closed)="onClosedViewer($event)"></app-post-reader>
-    </div>
-    
-<button  title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)" >
-  <i class="fas fa-question fa-2x"></i>
-</button>
-<button  id="step4" title="dMy Blog RSS" class="btn btn-link float-button-rss" (click)="copyRSSUlr(urlinput)" >
-  <i class="fas fa-rss fa-2x"></i>
-</button>
-<div class="container top-padding">
+    <app-post-reader [Post]="selectedPost" (closed)="onClosedViewer($event)"></app-post-reader>
+  </div>
+      
+  <button  title="{{'help.help'|translate}}" class="btn btn-link float-button" (click)="startTour(true)" >
+    <i class="fas fa-question fa-2x"></i>
+  </button>
+  <button  id="step4" title="dMy Blog RSS" class="btn btn-link float-button-rss" (click)="copyRSSUlr(urlinput)" >
+    <i class="fas fa-rss fa-2x"></i>
+  </button>
+
+  <div class="container top-padding">
     <h2 class="display-4 bm-2"  *ngIf="!isViewingPost">{{'browse.latest'|translate}}</h2>
     <div class="p-2"  *ngIf="!isViewingPost">
     <div class="row"  *ngIf="!isViewingPost">
-      <div class="col-lg-6 col-md-6">
+      <div class=" col-md-4">
         <label for="txtFilter" *ngIf="currentFilter!=''">
             {{'browse.filtertext'|translate}}: <span class="font-weight-bold">{{currentFilter}}</span> 
         </label>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-12" id="step1">
-          <div class="input-group search-container mb-4">
-            <input type="text" class="form-control " (keyup.enter)="performSearch($event)" [placeholder]="'browse.filter'|translate" aria-describedby="inputGroupPrepend3" [(ngModel)]='searchTerm'  >
-            <div class="input-group-prepend  ">
-                <!-- <span class="input-group-text" id="inputGroupPrepend3">@</span> -->
-                <button title="{{'browse.buttonfilter'|translate}}" class="btn btn-primary" (click)='performSearch()' type="button"><i class="fas fa-filter"></i></button>
+      <div class="col-md-8" id="step1">
+        <div class="input-group search-container mb-4">
+          <input type="text" class="form-control text-search " (keyup.enter)="performSearch($event)" [placeholder]="'browse.filter'|translate" aria-describedby="inputGroupPrepend3" [(ngModel)]='searchTerm'  >
+          <div class="input-group-prepend  ">
+              <button title="{{'browse.buttonfilter'|translate}}" class="btn btn-dark" (click)='performSearch()' type="button"><i class="fas fa-filter"></i></button>
+            </div>
+          <div class="input-group-prepend  ">
+              <button title="{{'browse.buttonclearfilter'|translate}}" class="btn btn-dark" (click)='clearSearch()' type="button"><i class="fas fa-recycle"></i></button>
+            </div>
+
+            <div class="btn-group mx-2" role="group" aria-label="View">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-dark active" (click)="viewMode='grid'" title="Grid View">
+                  <input type="radio" name="viewOptions" id="viewBlock" checked> 
+                  <i class="fas fa-th-large"></i>
+                </label>
+                <label class="btn btn-dark" (click)="viewMode='block'" title="Block View">
+                  <input type="radio" name="viewOptions" id="viewGrid"> 
+                  <i class="far fa-square"></i>
+                </label>
               </div>
-            <div class="input-group-prepend  ">
-                <!-- <span class="input-group-text" id="inputGroupPrepend3">@</span> -->
-                <button title="{{'browse.buttonclearfilter'|translate}}" class="btn btn-primary" (click)='clearSearch()' type="button"><i class="fas fa-recycle"></i></button>
+            </div>
+
+
+            <div class="btn-group mr-2" role="group" aria-label="Order">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-dark active" (click)="orderBy('desc')" title="Sort by descending date" >
+                  <input type="radio" name="orderOptions" id="orderRecentPost" checked> 
+                  <i class="fas fa-sort-amount-down" ></i>
+                </label>
+                <label class="btn btn-dark" (click)="orderBy('asc')" title="Sort by ascending date">
+                  <input type="radio" name="orderOptions" id="orderOlderPost"> 
+                  <i class="fas fa-sort-amount-up" ></i>
+                </label>
               </div>
-          </div>
-      </div>
+            </div>
+        </div>
     </div>
+  </div>
 
     
 
   
 <!-- aca esta el nuevo diseño -->
-<div class="row"  *ngIf="!isViewingPost" id="step2">
+<div   *ngIf="!isViewingPost" id="step2">
+  <div class="row" *ngIf="viewMode=='grid'">
     <div class="col-lg-6 col-sm-12" *ngFor="let p of posts">
-      <div class="border border-secondary shadow mb-5 post-size rounded post"
+      <div class="border border-secondary shadow mb-5 post-size rounded post manita"
         (click)="viewPost(p)" style="background-color: white" >
         <div class="w-100 h-100"  [ngStyle]="{background: ' url('+p.imageFileContent+') no-repeat center center'}">
           <!-- Footer o header del post -->
@@ -47,25 +74,15 @@
             <div  class="d-flex  bd-highlight m-2">
                 <div class="flex-grow-1">
                     <div class="like-inline" >
-                        <!-- <button  class="btn btn-link  float-unlike"  title="I don't like it!">
-                          <i class="fas fa-frown-open"></i>
-                          <span class="badge badge-dark stack-site">{{p?.Interaction?.unlikeCount}}</span>
-                        </button> -->
-                        <!-- <button class="btn btn-link float-like" (click)="like()" title="I like it!" *ngIf="p.status!='0'">
-                            <span class="fa-layers fa-fw" >
-                              <i class="far fa-thumbs-up"></i>
-                              <span class="badge badge-dark stack-site">{{p?.Interaction?.likeCount}}</span>
-                            </span>
-                          </button> -->
                           <app-post-interaction   [Post]="p"></app-post-interaction>
                       </div>
               </div>
               <div class="btn-group button-bar"  role="group" aria-label="Basic example" >
-                  <button class="btn btn-outline-info text-white" type="button" title="{{'browse.share'|translate}}" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"
+                  <button class="btn btn-dark text-white" type="button" title="{{'browse.share'|translate}}" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)"
                     *ngIf="p.status == 1 || p.status == 2">
                       <i class="fas fa-share-alt"></i>
                   </button>
-                  <button class="btn btn-outline-info text-white" type="button"  title="{{'browse.view'|translate}}" (click)="viewPost(p)">
+                  <button class="btn btn-dark text-white" type="button"  title="{{'browse.view'|translate}}" (click)="viewPost(p)">
                       <i class="far fa-eye"></i>
                   </button>
               </div>
@@ -91,6 +108,59 @@
           </div>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="viewMode=='block'"  >
+      
+    <div class="row text-dark" *ngFor="let p of posts"  >
+      <div class="col-md-2"></div>
+      <div class="col-md-8 shadow mb-5 post-size-block rounded post" (click)="viewPost(p)" style="background-color: white" >
+        <div class="row h-100 manita p-2" (click)="viewPost(p)">
+          <div class="col-md-8  ">
+            <div class="h-100 d-flex align-items-start flex-column bd-highlight mb-3" style="height: 200px;">
+              <div class="mb-auto pt-2 bd-highlight">
+                  <h4 class="card-title font-weight-bold text-capitalize" > {{p.title}}</h4>
+                  <p class="font-weight-normal text-capitalize p-excerpt">
+                    {{p.excerpt}}
+                  </p>
+              </div>
+              <div class="bd-highlight w-100">
+                <div class="d-flex bd-highlight">
+                  <div class="p-2 bd-highlight">
+                    <div class="like-inline" >
+                      <app-post-interaction   [Post]="p"></app-post-interaction>
+                    </div>
+                  </div>
+                  
+                  <div class="ml-auto p-2 bd-highlight">
+
+                    <div class="btn-group button-bar  btn-group-sm"  role="group" aria-label="Basic example" >
+                      <button type="button" class="btn btn-danger text-white" title="{{'myblog.delete'|translate}}" (click)="deletePost($event, p)" *ngIf="isAdmin">&nbsp;<i class="far fa-trash-alt">&nbsp;</i></button>             
+                      <button type="button" class="btn btn-dark text-white" title="{{'myblog.edit'|translate}}" (click)="editPost(p)"*ngIf="isAdmin"><i class="far fa-edit"></i></button>
+                      <button class="btn btn-dark text-white" type="button" title="{{'myblog.share'|translate}}" data-toggle="modal" data-target="#share" (click)="sharePost($event,p)">
+                          <i class="fas fa-share-alt"></i>
+                      </button>
+                      <button class="btn btn-dark text-white" type="button"  title="{{'myblog.view'|translate}}" (click)="viewPost(p)">
+                          <i class="far fa-eye"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              
+            
+              </div>
+              <div class="pb-2 bd-highlight">
+                <span class="small font-weight-lighter"  >{{'myblog.by'|translate}}: <strong>{{p.author}}</strong> {{'myblog.on'|translate}} {{p.date|date:'medium'}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4"  [ngStyle]="{background: 'padding-box url('+p.imageFileContent+') no-repeat left center/auto auto' }"></div>
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+   
   
       
       <div class="col" *ngIf="posts?.length==0 &&  currentFilter==''">

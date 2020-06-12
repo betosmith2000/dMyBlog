@@ -53,6 +53,9 @@ export class BlogComponent implements OnInit {
   readonly postsFileName:string = '/posts.txt';
   readonly postContentFileName:string = '/post-ID.txt';
   readonly postImageFileName:string = '/post-img-ID.txt';
+
+  orderMode:string='desc';
+  viewMode:string='grid';
   //readonly avatarFileName:string = '/avatar.txt';
 
   posts:any = new Array();
@@ -267,6 +270,7 @@ export class BlogComponent implements OnInit {
               this.posts = new Array();
             this.posts.forEach(p => {
               p.imageFileContent = null;
+              p.date = new Date(p.date);
               this.getPostImage(p);
               this.getInteractions(p);
             });

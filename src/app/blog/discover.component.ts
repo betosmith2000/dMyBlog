@@ -39,6 +39,9 @@ export class DiscoverComponent implements OnInit {
    page: number = 0;
    pagination: Pagination<Post> = new Pagination(10, 0);
 
+   orderMode:string='desc';
+   viewMode:string='grid';
+
 
   constructor(private _api:ApiService, private ngxService: NgxUiLoaderService,
     private translate: TranslateService, private router : Router, private toastr: ToastrService,) { 
@@ -298,7 +301,7 @@ export class DiscoverComponent implements OnInit {
 
   getData(){
     this.ngxService.start();
-    let p = "pageSize=" + this.pagination.pageSize + "&pageNumber=" + this.pagination.pageNumber + "&searchTerm=" + this.searchTerm;
+    let p = "pageSize=" + this.pagination.pageSize + "&pageNumber=" + this.pagination.pageNumber + "&searchTerm=" + this.searchTerm+"&orderMode="+this.orderMode;
     this._api.setApi('Posts');
 
     this._api.getAll<Pagination<Post>>(p).subscribe(d => {
@@ -341,6 +344,11 @@ export class DiscoverComponent implements OnInit {
     inputElement.setSelectionRange(0, 0);
 
     this.toastr.success("Copied RSS URL!",'Success')        
+  }
+
+  orderBy(orderMode:string):void{
+    this.orderMode = orderMode;
+    this.performSearch();
   }
 }
 
